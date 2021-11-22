@@ -6,7 +6,10 @@
 - Poetry
 - WABT
 
+## Run
+
 ```bash
+$ poetry install
 $ wat2wasm add.wasm
 $ poetry run python -m mylang
 7

@@ -7,6 +7,7 @@ authors = ["0918nobita <nobita.0918@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 wasmer = "^1.0.0"
+wasmer-compiler-cranelift = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

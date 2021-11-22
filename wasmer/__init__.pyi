@@ -1,0 +1,19 @@
+from typing import Any
+
+class Engines:
+  def JIT(self, compiler: Any) -> Engine: ...
+
+engine: Engines
+
+class Engine: ...
+
+class Store:
+  def __init__(self, engine: Engine) -> None: ...
+
+class Module:
+  def __init__(self, store: Store, src: bytes) -> None: ...
+
+class Instance:
+  def __init__(self, module: Module) -> None: ...
+
+  exports: Any = ...

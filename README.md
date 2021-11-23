@@ -7,10 +7,26 @@
 - Python 3.9 or later
 - Poetry
 
-## Run
+## Install dependencies
 
 ```bash
 $ poetry install
+```
+
+## Execute
+
+```bash
 $ poetry run python -m mylang
-7
+```
+
+## Type checking
+
+```bash
+$ poetry run mypy .
+```
+
+## Run tests
+
+```bash
+$ poetry run pytest
 ```

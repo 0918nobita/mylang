@@ -1,5 +1,8 @@
-from wasmer import Instance, Module, Store, engine, wat2wasm
+from wasmer import Module, Store, engine, wat2wasm
 from wasmer_compiler_cranelift import Compiler
+
+from mylang.add import Exports
+from mylang.wasmer_wrapper import Instance
 
 store = Store(engine.JIT(Compiler))
 
@@ -10,7 +13,7 @@ wasm = wat2wasm(wat)
 
 module = Module(store, wasm)
 
-instance = Instance(module)
+instance = Instance[Exports](module)
 
-result: int = instance.exports.add(3, 4)
+result = instance.exports.add(3, 4)
 print(result)

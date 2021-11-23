@@ -1,3 +1,3 @@
-from typing import Any
+from wasmer import CompilerBase
 
-Compiler: Any
+class Compiler(CompilerBase): ...

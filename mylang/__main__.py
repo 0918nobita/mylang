@@ -1,9 +1,14 @@
-from wasmer import Instance, Module, Store, engine
+from wasmer import Instance, Module, Store, engine, wat2wasm
 from wasmer_compiler_cranelift import Compiler
 
 store = Store(engine.JIT(Compiler))
 
-module = Module(store, open('add.wasm', 'rb').read())
+with open('add.wat', 'r') as file:
+    wat = file.read()
+
+wasm = wat2wasm(wat)
+
+module = Module(store, wasm)
 
 instance = Instance(module)
 

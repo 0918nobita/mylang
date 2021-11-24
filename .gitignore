@@ -2,4 +2,4 @@
 .pytest_cache/
 .venv/
 __pycache__/
-add.wasm
+output.s

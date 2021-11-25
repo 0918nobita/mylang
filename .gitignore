@@ -3,3 +3,5 @@
 .venv/
 __pycache__/
 output.s
+hello
+hello.o

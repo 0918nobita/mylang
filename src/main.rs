@@ -1,14 +1,8 @@
 #[allow(dead_code)]
-#[derive(Debug)]
+#[derive(Debug, Default)]
 struct Pos {
     line: u32,
     column: u32,
-}
-
-impl Default for Pos {
-    fn default() -> Self {
-        Pos { line: 0, column: 0 }
-    }
 }
 
 #[derive(Debug)]

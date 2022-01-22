@@ -1,7 +1,1 @@
-.mypy_cache/
-.pytest_cache/
-.venv/
-__pycache__/
-output.s
-hello
-hello.o
+/target/

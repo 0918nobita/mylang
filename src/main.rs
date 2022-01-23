@@ -1,28 +1,14 @@
-#[allow(dead_code)]
-#[derive(Debug, Default)]
-struct Pos {
-    line: u32,
-    column: u32,
-}
+use mylang::{Expr, Range, Stmt};
 
-#[derive(Debug)]
-enum Expr {
-    I32Lit(Pos, i32),
-    Add(Pos, Box<Expr>, Box<Expr>),
-}
-
-#[derive(Debug)]
-enum Stmt {
-    Print(Pos, Expr),
-}
+extern crate mylang;
 
 fn main() {
     let program = Stmt::Print(
-        Pos::default(),
+        Range::default(),
         Expr::Add(
-            Pos::default(),
-            Box::new(Expr::I32Lit(Pos::default(), 3)),
-            Box::new(Expr::I32Lit(Pos::default(), 4)),
+            Range::default(),
+            Box::new(Expr::I32Lit(Range::default(), 3)),
+            Box::new(Expr::I32Lit(Range::default(), 4)),
         ),
     );
     println!("{:?}", program);

@@ -1,15 +1,14 @@
-use mylang::{Expr, Range, Stmt};
-
 extern crate mylang;
 
+use mylang::{
+    expr::{Expr, ExprAst},
+    stmt::{Stmt, StmtAst},
+};
+
 fn main() {
-    let program = Stmt::Print(
-        Range::default(),
-        Expr::Add(
-            Range::default(),
-            Box::new(Expr::I32Lit(Range::default(), 3)),
-            Box::new(Expr::I32Lit(Range::default(), 4)),
-        ),
-    );
-    println!("{:?}", program);
+    let lhs = Expr::new(ExprAst::I32Lit(3));
+    let rhs = Expr::new(ExprAst::I32Lit(4));
+    let add_expr = Expr::new(ExprAst::Add(Box::new(lhs), Box::new(rhs)));
+    let stmt = Stmt::new(StmtAst::Print(add_expr));
+    println!("{:?}", stmt);
 }

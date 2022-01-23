@@ -9,7 +9,7 @@ pub enum StmtAst {
 
 pub struct Stmt {
     range: Range,
-    ast: StmtAst,
+    pub ast: StmtAst,
 }
 
 impl Stmt {

@@ -1,6 +1,7 @@
 extern crate mylang;
 
 use mylang::{
+    exec::execute,
     expr::{Expr, ExprAst},
     stmt::{Stmt, StmtAst},
 };
@@ -11,4 +12,6 @@ fn main() {
     let add_expr = Expr::new(ExprAst::Add(Box::new(lhs), Box::new(rhs)));
     let stmt = Stmt::new(StmtAst::Print(add_expr));
     println!("{:?}", stmt);
+
+    execute(&vec![stmt]);
 }

@@ -10,7 +10,7 @@ pub enum ExprAst {
 
 pub struct Expr {
     range: Range,
-    ast: ExprAst,
+    pub ast: ExprAst,
 }
 
 impl Expr {

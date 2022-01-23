@@ -13,5 +13,5 @@ fn main() {
     let stmt = Stmt::new(StmtAst::Print(add_expr));
     println!("{:?}", stmt);
 
-    execute(&vec![stmt]);
+    execute(&[stmt]);
 }

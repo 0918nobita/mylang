@@ -2,7 +2,7 @@ use std::fmt::{Debug, Formatter, Result as FmtResult};
 
 use anyhow::bail;
 
-use super::{expr::Expr, stmt::Stmt};
+use ast::{expr::Expr, stmt::Stmt};
 
 struct I32Entity {
     value: i32,

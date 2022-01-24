@@ -1,0 +1,9 @@
+[package]
+name = "ast_to_bytecode"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.53"
+bincode = "1.3.3"
+bytecode = { path = "../bytecode" }

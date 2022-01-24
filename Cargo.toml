@@ -1,7 +1,7 @@
-[package]
-name = "mylang"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-anyhow = "1.0.53"
+[workspace]
+members = [
+    "components/ast",
+    "components/ast_interp",
+    "components/ast_to_bytecode",
+    "components/bytecode",
+]

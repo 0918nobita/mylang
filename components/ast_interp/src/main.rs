@@ -1,6 +1,8 @@
-extern crate mylang;
+extern crate ast_interp;
 
-use mylang::{exec::execute, expr::Expr, stmt::Stmt};
+use ast::{expr::Expr, stmt::Stmt};
+
+use ast_interp::execute;
 
 fn main() -> anyhow::Result<()> {
     let lhs = Expr::I32Lit(None, 3);

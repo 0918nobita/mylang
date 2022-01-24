@@ -28,6 +28,7 @@ name = "ast_to_bytecode"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "ast",
  "bincode",
  "bytecode",
 ]

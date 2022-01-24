@@ -4,5 +4,6 @@ use serde::{Deserialize, Serialize};
 pub enum Inst {
     I32Const(i32),
     I32Add,
+    StrConst(String),
     Print,
 }

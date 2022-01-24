@@ -1,7 +1,6 @@
 use std::fmt::{Debug, Formatter, Result as FmtResult};
 
 use anyhow::bail;
-
 use ast::{expr::Expr, stmt::Stmt};
 
 struct I32Entity {

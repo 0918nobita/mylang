@@ -1,9 +1,6 @@
 use std::fmt::{Debug, Formatter, Result as FmtResult};
 
-use super::{
-    expr::{Expr, ExprAst},
-    stmt::{Stmt, StmtAst},
-};
+use super::{expr::Expr, stmt::Stmt};
 
 struct I32Entity {
     value: i32,
@@ -33,9 +30,9 @@ enum Entity {
 }
 
 fn eval(expr: &Expr) -> Entity {
-    match expr.ast {
-        ExprAst::I32Lit(i) => Entity::I32(I32Entity::new(i)),
-        ExprAst::Add(ref lhs, ref rhs) => {
+    match expr {
+        Expr::I32Lit(_, i) => Entity::I32(I32Entity::new(*i)),
+        Expr::Add(_, ref lhs, ref rhs) => {
             let Entity::I32(lhs) = eval(lhs);
             let Entity::I32(rhs) = eval(rhs);
             Entity::I32(lhs.add(&rhs))
@@ -45,8 +42,8 @@ fn eval(expr: &Expr) -> Entity {
 
 pub fn execute(stmts: &[Stmt]) {
     for stmt in stmts {
-        match stmt.ast {
-            StmtAst::Print(ref expr) => {
+        match stmt {
+            Stmt::Print(_, ref expr) => {
                 println!("{:?}", eval(expr));
             }
         }

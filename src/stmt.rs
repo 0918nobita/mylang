@@ -1,32 +1,19 @@
-use std::fmt;
+use super::{
+    expr::Expr,
+    range::{Locatable, Range},
+};
 
-use super::{expr::Expr, range::Range};
+type OptRange = Option<Range>;
 
 #[derive(Debug)]
-pub enum StmtAst {
-    Print(Expr),
+pub enum Stmt {
+    Print(OptRange, Expr),
 }
 
-pub struct Stmt {
-    range: Range,
-    pub ast: StmtAst,
-}
-
-impl Stmt {
-    pub fn new(ast: StmtAst) -> Self {
-        Self {
-            range: Range::default(),
-            ast,
+impl Locatable for Stmt {
+    fn get_range(&self) -> Option<Range> {
+        match self {
+            Stmt::Print(r, _) => r.clone(),
         }
-    }
-
-    pub fn new_with_range(ast: StmtAst, range: Range) -> Self {
-        Self { range, ast }
-    }
-}
-
-impl fmt::Debug for Stmt {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "[{:?} {:?}]", self.range, self.ast)
     }
 }

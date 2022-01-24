@@ -1,6 +1,6 @@
 use std::fmt;
 
-#[derive(Default)]
+#[derive(Clone, Default)]
 pub struct Pos {
     line: u32,
     column: u32,

@@ -1,33 +1,17 @@
-use std::fmt;
+use super::range::{Locatable, Range};
 
-use super::range::Range;
+type OptRange = Option<Range>;
 
 #[derive(Debug)]
-pub enum ExprAst {
-    I32Lit(i32),
-    Add(Box<Expr>, Box<Expr>),
+pub enum Expr {
+    I32Lit(OptRange, i32),
+    Add(OptRange, Box<Expr>, Box<Expr>),
 }
 
-pub struct Expr {
-    range: Range,
-    pub ast: ExprAst,
-}
-
-impl Expr {
-    pub fn new(ast: ExprAst) -> Self {
-        Self {
-            range: Range::default(),
-            ast,
+impl Locatable for Expr {
+    fn get_range(&self) -> Option<Range> {
+        match self {
+            Expr::I32Lit(r, _) | Expr::Add(r, _, _) => r.clone(),
         }
-    }
-
-    pub fn new_with_range(range: Range, ast: ExprAst) -> Self {
-        Self { range, ast }
-    }
-}
-
-impl fmt::Debug for Expr {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "[{:?} {:?}]", self.range, self.ast)
     }
 }

@@ -4,4 +4,5 @@ members = [
     "components/ast_interp",
     "components/ast_to_bytecode",
     "components/bytecode",
+    "components/bytecode_interp",
 ]

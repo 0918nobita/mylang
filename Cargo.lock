@@ -21,6 +21,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "ast",
+ "entity",
 ]
 
 [[package]]
@@ -83,6 +84,7 @@ dependencies = [
  "bincode",
  "bytecode",
  "clap",
+ "entity",
 ]
 
 [[package]]
@@ -113,6 +115,13 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "entity"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
 ]
 
 [[package]]

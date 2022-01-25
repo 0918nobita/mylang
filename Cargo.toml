@@ -5,4 +5,5 @@ members = [
     "components/ast_to_bytecode",
     "components/bytecode",
     "components/bytecode_interp",
+    "components/entity",
 ]

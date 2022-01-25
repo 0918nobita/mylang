@@ -1,51 +1,6 @@
-use std::fmt::{Debug, Formatter, Result as FmtResult};
-
 use anyhow::bail;
 use ast::{expr::Expr, stmt::Stmt};
-
-struct I32Entity {
-    value: i32,
-}
-
-impl I32Entity {
-    fn new(value: i32) -> Self {
-        Self { value }
-    }
-
-    fn add(&self, rhs: &Self) -> Self {
-        Self {
-            value: self.value + rhs.value,
-        }
-    }
-}
-
-impl Debug for I32Entity {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
-        write!(f, "{}", self.value)
-    }
-}
-
-struct StrEntity {
-    value: String,
-}
-
-impl StrEntity {
-    fn new(value: String) -> Self {
-        Self { value }
-    }
-}
-
-impl Debug for StrEntity {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
-        write!(f, "{}", self.value)
-    }
-}
-
-#[derive(Debug)]
-enum Entity {
-    I32(I32Entity),
-    Str(StrEntity),
-}
+use entity::{Entity, I32Entity, StrEntity};
 
 fn eval(expr: &Expr) -> anyhow::Result<Entity> {
     match expr {
@@ -70,7 +25,7 @@ fn eval(expr: &Expr) -> anyhow::Result<Entity> {
 fn eval_test() {
     assert!(matches!(
         eval(&Expr::I32Lit(None, 2)),
-        Ok(Entity::I32(I32Entity { value: 2 }))
+        Ok(Entity::I32(ent)) if ent == I32Entity::new(2)
     ));
 
     assert!(matches!(
@@ -79,12 +34,12 @@ fn eval_test() {
             Box::new(Expr::I32Lit(None, 2)),
             Box::new(Expr::I32Lit(None, 3))
         )),
-        Ok(Entity::I32(I32Entity { value: 5 }))
+        Ok(Entity::I32(ent)) if ent == I32Entity::new(5)
     ));
 
     assert!(matches!(
         eval(&Expr::StrLit(None, "foo".to_owned())),
-        Ok(Entity::Str(StrEntity { value })) if value.as_str() == "foo"
+        Ok(Entity::Str(ent)) if ent == StrEntity::new("foo".to_owned())
     ));
 
     assert!(matches!(

@@ -79,9 +79,21 @@ fn eval_test() {
 pub fn execute(stmts: &[Stmt]) -> anyhow::Result<()> {
     for stmt in stmts {
         match stmt {
-            Stmt::Print(_, ref expr) => {
+            Stmt::PrintI32(_, ref expr) => {
                 let val = eval(expr)?;
-                println!("{:?}", val);
+                if let Entity::I32(ent) = val {
+                    println!("{:?}", ent);
+                } else {
+                    bail!("Type mismatch");
+                }
+            }
+            Stmt::PrintStr(_, ref expr) => {
+                let val = eval(expr)?;
+                if let Entity::Str(ent) = val {
+                    println!("{:?}", ent);
+                } else {
+                    bail!("Type mismatch");
+                }
             }
         }
     }

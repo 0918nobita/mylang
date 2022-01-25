@@ -7,13 +7,14 @@ type OptRange = Option<Range>;
 
 #[derive(Debug)]
 pub enum Stmt {
-    Print(OptRange, Expr),
+    PrintI32(OptRange, Expr),
+    PrintStr(OptRange, Expr),
 }
 
 impl Locatable for Stmt {
     fn get_range(&self) -> Option<Range> {
         match self {
-            Stmt::Print(r, _) => r.clone(),
+            Stmt::PrintI32(r, _) | Stmt::PrintStr(r, _) => r.clone(),
         }
     }
 }

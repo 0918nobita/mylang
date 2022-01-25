@@ -16,9 +16,14 @@ fn expr_to_bytecode(expr: &Expr) -> Vec<Inst> {
 
 fn stmt_to_bytecode(stmt: &Stmt) -> Vec<Inst> {
     match stmt {
-        Stmt::Print(_, ref expr) => {
+        Stmt::PrintI32(_, ref expr) => {
             let mut insts = expr_to_bytecode(expr);
-            insts.push(Inst::Print);
+            insts.push(Inst::PrintI32);
+            insts
+        }
+        Stmt::PrintStr(_, ref expr) => {
+            let mut insts = expr_to_bytecode(expr);
+            insts.push(Inst::PrintStr);
             insts
         }
     }

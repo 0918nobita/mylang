@@ -35,12 +35,23 @@ fn main() -> anyhow::Result<()> {
 
             Inst::StrConst(s) => stack.push(Entity::Str(StrEntity::new(s.clone()))),
 
-            Inst::Print => {
+            Inst::PrintI32 => {
                 let ent = stack.pop().context("Failed to get entity")?;
 
-                match ent {
-                    Entity::I32(i) => println!("{:?}", i),
-                    Entity::Str(s) => println!("{:?}", s),
+                if let Entity::I32(ent) = ent {
+                    println!("{:?}", ent);
+                } else {
+                    bail!("Type mismatch");
+                }
+            }
+
+            Inst::PrintStr => {
+                let ent = stack.pop().context("Failed to get entity")?;
+
+                if let Entity::Str(ent) = ent {
+                    println!("{:?}", ent);
+                } else {
+                    bail!("Type mismatch");
                 }
             }
         }

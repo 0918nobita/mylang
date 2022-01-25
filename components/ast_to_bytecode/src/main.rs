@@ -19,7 +19,7 @@ fn main() -> anyhow::Result<()> {
     let lhs = Expr::I32Lit(None, 3);
     let rhs = Expr::I32Lit(None, 4);
     let add_expr = Expr::Add(None, Box::new(lhs), Box::new(rhs));
-    let stmt = Stmt::Print(None, add_expr);
+    let stmt = Stmt::PrintI32(None, add_expr);
 
     let insts = ast_to_bytecode(&[stmt]);
     let encoded = bincode::serialize(&insts)?;

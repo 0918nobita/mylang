@@ -7,12 +7,19 @@
 ## AST を解釈実行する場合
 
 ```bash
-cargo run --bin ast_interp
+cd examples
+# Generate hello.ast.json
+cargo run --bin parser -- hello.mylang
+cargo run --bin ast_interp -- hello.ast.json
 ```
 
 ## AST をバイトコードに変換してから VM で実行する場合
 
 ```bash
-cargo run --bin ast_to_bytecode
-cargo run --bin bytecode_interp
+cd examples
+# Generate hello.ast.json
+cargo run --bin parser -- hello.mylang
+# Generate hello.bytecode
+cargo run --bin ast_to_bytecode -- hello.ast.json
+cargo run --bin bytecode_interp -- hello.bytecode
 ```

@@ -7,7 +7,6 @@ use entity::{Entity, I32Entity, StrEntity};
 
 #[derive(Parser)]
 struct Opts {
-    #[clap(short = 'i', default_value = "out.bin")]
     input: String,
 }
 

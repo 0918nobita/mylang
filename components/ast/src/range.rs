@@ -4,8 +4,8 @@ use super::pos::Pos;
 
 #[derive(Clone, Default)]
 pub struct Range {
-    start: Pos,
-    end: Pos,
+    pub start: Pos,
+    pub end: Pos,
 }
 
 impl fmt::Debug for Range {
@@ -24,5 +24,5 @@ impl From<Pos> for Range {
 }
 
 pub trait Locatable {
-    fn get_range(&self) -> Option<Range>;
+    fn get_range(&self) -> Range;
 }

@@ -4,7 +4,7 @@ use bytecode::Inst;
 fn expr_to_bytecode(expr: &Expr) -> Vec<Inst> {
     match expr {
         Expr::I32Lit(_, i) => vec![Inst::I32Const(*i)],
-        Expr::Add(_, lhs, rhs) => {
+        Expr::Add(lhs, rhs) => {
             let mut insts = expr_to_bytecode(lhs);
             insts.extend(expr_to_bytecode(rhs));
             insts.push(Inst::I32Add);

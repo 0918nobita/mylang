@@ -14,13 +14,14 @@ enum Token {
 }
 
 impl Locatable for Token {
-    fn get_range(&self) -> Option<Range> {
+    fn get_range(&self) -> Range {
         match self {
             Token::I32(r, _)
             | Token::Str(r, _)
             | Token::PrintI32Keyword(r)
-            | Token::PrintStrKeyword(r) => Some(r.clone()),
-            Token::AddOp(p) => Some(p.clone().into()),
+            | Token::PrintStrKeyword(r) => r.clone(),
+
+            Token::AddOp(p) => p.clone().into(),
         }
     }
 }

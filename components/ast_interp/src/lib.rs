@@ -8,7 +8,7 @@ fn eval(expr: &Expr) -> anyhow::Result<Entity> {
 
         Expr::StrLit(_, s) => Ok(Entity::Str(StrEntity::new(s.clone()))),
 
-        Expr::Add(_, ref lhs, ref rhs) => {
+        Expr::Add(ref lhs, ref rhs) => {
             let lhs = eval(lhs)?;
             let rhs = eval(rhs)?;
 
@@ -19,61 +19,6 @@ fn eval(expr: &Expr) -> anyhow::Result<Entity> {
             }
         }
     }
-}
-
-#[test]
-fn eval_test() {
-    assert!(matches!(
-        eval(&Expr::I32Lit(None, 2)),
-        Ok(Entity::I32(ent)) if ent == I32Entity::new(2)
-    ));
-
-    assert!(matches!(
-        eval(&Expr::Add(
-            None,
-            Box::new(Expr::I32Lit(None, 2)),
-            Box::new(Expr::I32Lit(None, 3))
-        )),
-        Ok(Entity::I32(ent)) if ent == I32Entity::new(5)
-    ));
-
-    assert!(matches!(
-        eval(&Expr::StrLit(None, "foo".to_owned())),
-        Ok(Entity::Str(ent)) if ent == StrEntity::new("foo".to_owned())
-    ));
-
-    assert!(matches!(
-        eval(
-            &Expr::Add(
-                None,
-                Box::new(Expr::I32Lit(None, 3)),
-                Box::new(Expr::StrLit(None, "bar".to_owned()))
-            )
-        ),
-        Err(e) if e.to_string() == "Type mismatch"
-    ));
-
-    assert!(matches!(
-        eval(
-            &Expr::Add(
-                None,
-                Box::new(Expr::StrLit(None, "foo".to_owned())),
-                Box::new(Expr::I32Lit(None, 4))
-            )
-        ),
-        Err(e) if e.to_string() == "Type mismatch"
-    ));
-
-    assert!(matches!(
-        eval(
-            &Expr::Add(
-                None,
-                Box::new(Expr::StrLit(None, "foo".to_owned())),
-                Box::new(Expr::StrLit(None, "bar".to_owned()))
-            )
-        ),
-        Err(e) if e.to_string() == "Type mismatch"
-    ));
 }
 
 pub fn execute(stmts: &[Stmt]) -> anyhow::Result<()> {
@@ -99,4 +44,63 @@ pub fn execute(stmts: &[Stmt]) -> anyhow::Result<()> {
     }
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use ast::{expr::Expr, range::Range};
+    use entity::{Entity, I32Entity, StrEntity};
+
+    use super::eval;
+
+    #[test]
+    fn eval_test() {
+        assert!(matches!(
+            eval(&Expr::I32Lit(Range::default(), 2)),
+            Ok(Entity::I32(ent)) if ent == I32Entity::new(2)
+        ));
+
+        assert!(matches!(
+            eval(&Expr::Add(
+                Box::new(Expr::I32Lit(Range::default(), 2)),
+                Box::new(Expr::I32Lit(Range::default(), 3))
+            )),
+            Ok(Entity::I32(ent)) if ent == I32Entity::new(5)
+        ));
+
+        assert!(matches!(
+            eval(&Expr::StrLit(Range::default(), "foo".to_owned())),
+            Ok(Entity::Str(ent)) if ent == StrEntity::new("foo".to_owned())
+        ));
+
+        assert!(matches!(
+            eval(
+                &Expr::Add(
+                    Box::new(Expr::I32Lit(Range::default(), 3)),
+                    Box::new(Expr::StrLit(Range::default(), "bar".to_owned()))
+                )
+            ),
+            Err(e) if e.to_string() == "Type mismatch"
+        ));
+
+        assert!(matches!(
+            eval(
+                &Expr::Add(
+                    Box::new(Expr::StrLit(Range::default(), "foo".to_owned())),
+                    Box::new(Expr::I32Lit(Range::default(), 4))
+                )
+            ),
+            Err(e) if e.to_string() == "Type mismatch"
+        ));
+
+        assert!(matches!(
+            eval(
+                &Expr::Add(
+                    Box::new(Expr::StrLit(Range::default(), "foo".to_owned())),
+                    Box::new(Expr::StrLit(Range::default(), "bar".to_owned()))
+                )
+            ),
+            Err(e) if e.to_string() == "Type mismatch"
+        ));
+    }
 }

@@ -8,13 +8,13 @@ pub enum Expr {
 }
 
 impl Locatable for Expr {
-    fn get_range(&self) -> Range {
+    fn locate(&self) -> Range {
         match self {
             Expr::I32Lit(r, _) | Expr::StrLit(r, _) => r.clone(),
 
             Expr::Add(lhs, rhs) => {
-                let lhs_range = lhs.get_range();
-                let rhs_range = rhs.get_range();
+                let lhs_range = lhs.locate();
+                let rhs_range = rhs.locate();
                 Range {
                     start: lhs_range.start,
                     end: rhs_range.end,

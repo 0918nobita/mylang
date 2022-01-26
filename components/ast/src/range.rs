@@ -24,5 +24,5 @@ impl From<Pos> for Range {
 }
 
 pub trait Locatable {
-    fn get_range(&self) -> Range;
+    fn locate(&self) -> Range;
 }

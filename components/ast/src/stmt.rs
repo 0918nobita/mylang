@@ -10,7 +10,7 @@ pub enum Stmt {
 }
 
 impl Locatable for Stmt {
-    fn get_range(&self) -> Range {
+    fn locate(&self) -> Range {
         match self {
             Stmt::PrintI32(r, _) | Stmt::PrintStr(r, _) => r.clone(),
         }

@@ -1,9 +1,11 @@
+use serde::{Deserialize, Serialize};
+
 use super::{
     expr::Expr,
     range::{Locatable, Range},
 };
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub enum Stmt {
     PrintI32(Range, Expr),
     PrintStr(Range, Expr),

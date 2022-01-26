@@ -1,6 +1,8 @@
 use std::fmt;
 
-#[derive(Clone, Default)]
+use serde::{Deserialize, Serialize};
+
+#[derive(Clone, Default, Serialize, Deserialize)]
 pub struct Pos {
     line: u32,
     column: u32,

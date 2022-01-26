@@ -1,6 +1,8 @@
 use super::range::{Locatable, Range};
 
-#[derive(Debug)]
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Serialize, Deserialize)]
 pub enum Expr {
     I32Lit(Range, i32),
     StrLit(Range, String),

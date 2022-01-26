@@ -14,6 +14,15 @@ impl fmt::Debug for Range {
     }
 }
 
+impl From<Pos> for Range {
+    fn from(pos: Pos) -> Self {
+        Self {
+            start: pos.clone(),
+            end: pos,
+        }
+    }
+}
+
 pub trait Locatable {
     fn get_range(&self) -> Option<Range>;
 }

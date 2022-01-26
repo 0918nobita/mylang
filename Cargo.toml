@@ -6,4 +6,5 @@ members = [
     "components/bytecode",
     "components/bytecode_interp",
     "components/entity",
+    "components/parser",
 ]

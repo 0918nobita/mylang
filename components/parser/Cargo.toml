@@ -1,0 +1,9 @@
+[package]
+name = "parser"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.53"
+ast = { path = "../ast" }
+clap = { version = "3.0.12", features = ["derive"] }

@@ -8,8 +8,10 @@
 
 ```bash
 cd examples
+# Generate hello.tok.json
+cargo run --bin tokenizer -- hello.mylang
 # Generate hello.ast.json
-cargo run --bin parser -- hello.mylang
+cargo run --bin parser -- hello.tok.json
 cargo run --bin ast_interp -- hello.ast.json
 ```
 
@@ -17,8 +19,10 @@ cargo run --bin ast_interp -- hello.ast.json
 
 ```bash
 cd examples
+# Generate hello.tok.json
+cargo run --bin tokenizer -- hello.mylang
 # Generate hello.ast.json
-cargo run --bin parser -- hello.mylang
+cargo run --bin parser -- hello.tok.json
 # Generate hello.bytecode
 cargo run --bin ast_to_bytecode -- hello.ast.json
 cargo run --bin bytecode_interp -- hello.bytecode

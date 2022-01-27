@@ -18,7 +18,6 @@ checksum = "23b62fc65de8e4e7f52534fb52b0f3ed04746ae267519eef2a83941e8085068b"
 name = "ast"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "serde",
 ]
 
@@ -80,8 +79,6 @@ checksum = "bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc18d06fb1037718a"
 name = "bytecode"
 version = "0.1.0"
 dependencies = [
- "anyhow",
- "bincode",
  "serde",
 ]
 
@@ -129,9 +126,6 @@ dependencies = [
 [[package]]
 name = "entity"
 version = "0.1.0"
-dependencies = [
- "anyhow",
-]
 
 [[package]]
 name = "hashbrown"
@@ -206,7 +200,6 @@ dependencies = [
  "clap",
  "serde_json",
  "token",
- "utf8-chars",
 ]
 
 [[package]]
@@ -324,7 +317,6 @@ checksum = "0066c8d12af8b5acd21e00547c3797fde4e8677254a7ee429176ccebbe93dd80"
 name = "token"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "ast",
  "serde",
 ]

@@ -3,15 +3,12 @@
 extern crate parser;
 
 use std::{
-    fs::{self, File},
-    io::Write,
+    fs::File,
+    io::{BufReader, Write},
     path::PathBuf,
 };
 
-use ast::{expr::Expr, range::Range, stmt::Stmt};
 use clap::Parser;
-
-use parser::CharsWithPosExt;
 
 #[derive(Parser)]
 struct Opts {
@@ -32,18 +29,11 @@ fn main() -> anyhow::Result<()> {
         )
     });
 
-    let src = fs::read_to_string(input)?;
+    let src = File::open(&input)?;
+    let mut src = BufReader::new(src);
+    let tokens = parser::tokenize(&mut src);
 
-    // let mut tokens = Vec::<Token>::new();
-    // let mut acc = String::new();
-    for (pos, c) in src.chars().with_pos() {
-        println!("{:?} {:?}", pos, c);
-    }
-
-    let ast = vec![Stmt::PrintStr(
-        Range::default(),
-        Expr::StrLit(Range::default(), "Hello, world!".to_owned()),
-    )];
+    let ast = parser::parse(&tokens);
 
     let json = serde_json::to_string_pretty(&ast)?;
     let mut file = File::create(output)?;

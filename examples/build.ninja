@@ -1,0 +1,14 @@
+rule tokenize
+    command = cargo run --bin tokenizer -- $in -o $out
+
+rule parse
+    command = cargo run --bin parser -- $in -o $out
+
+rule gen_bytecode
+    command = cargo run --bin ast_to_bytecode -- $in -o $out
+
+build hello.tok.json: tokenize hello.mylang
+
+build hello.ast.json: parse hello.tok.json
+
+build hello.bytecode: gen_bytecode hello.ast.json

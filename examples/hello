@@ -1,0 +1,3 @@
+#!/bin/sh -ex
+
+cargo run --bin bytecode_interp -- hello.bytecode

@@ -205,6 +205,7 @@ dependencies = [
  "ast",
  "clap",
  "serde_json",
+ "token",
  "utf8-chars",
 ]
 
@@ -318,6 +319,15 @@ name = "textwrap"
 version = "0.14.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0066c8d12af8b5acd21e00547c3797fde4e8677254a7ee429176ccebbe93dd80"
+
+[[package]]
+name = "token"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "ast",
+ "serde",
+]
 
 [[package]]
 name = "unicode-xid"

@@ -1,5 +1,4 @@
 mod iter;
-pub mod token;
 
 use std::io::BufRead;
 

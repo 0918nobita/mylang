@@ -1,11 +1,12 @@
 #![feature(path_file_prefix)]
 
-extern crate parser;
-
-use std::{fs::File, io::Write, path::PathBuf};
+use std::{
+    fs::File,
+    io::{BufReader, Write},
+    path::PathBuf,
+};
 
 use clap::Parser;
-use token::Token;
 
 #[derive(Parser)]
 struct Opts {
@@ -21,16 +22,16 @@ fn main() -> anyhow::Result<()> {
     let output = output.unwrap_or_else(|| {
         let output = PathBuf::from(&input);
         format!(
-            "{}.ast.json",
+            "{}.tok.json",
             output.file_prefix().unwrap().to_str().unwrap()
         )
     });
 
-    let tokens: Vec<Token> = serde_json::from_reader(File::open(&input)?)?;
+    let src = File::open(&input)?;
+    let mut src = BufReader::new(src);
+    let tokens = tokenizer::tokenize(&mut src);
 
-    let ast = parser::parse(&tokens);
-
-    let json = serde_json::to_string_pretty(&ast)?;
+    let json = serde_json::to_string_pretty(&tokens)?;
     let mut file = File::create(output)?;
     writeln!(file, "{}", json)?;
 

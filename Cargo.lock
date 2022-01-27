@@ -330,6 +330,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "tokenizer"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "ast",
+ "clap",
+ "serde_json",
+ "token",
+ "utf8-chars",
+]
+
+[[package]]
 name = "unicode-xid"
 version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"

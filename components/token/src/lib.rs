@@ -2,8 +2,9 @@ use ast::{
     pos::Pos,
     range::{Locatable, Range},
 };
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub enum Token {
     I32(Range, i32),
     AddOp(Pos),

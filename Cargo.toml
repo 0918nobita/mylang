@@ -8,4 +8,5 @@ members = [
     "components/entity",
     "components/parser",
     "components/token",
+    "components/tokenizer",
 ]

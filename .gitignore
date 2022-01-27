@@ -1,3 +1,4 @@
 /target/
 *.ast.json
 *.bytecode
+*.tok.json

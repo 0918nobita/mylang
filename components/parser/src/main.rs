@@ -11,7 +11,7 @@ use std::{
 use ast::{expr::Expr, range::Range, stmt::Stmt};
 use clap::Parser;
 
-use parser::CharsWithPos;
+use parser::CharsWithPosExt;
 
 #[derive(Parser)]
 struct Opts {
@@ -36,7 +36,7 @@ fn main() -> anyhow::Result<()> {
 
     // let mut tokens = Vec::<Token>::new();
     // let mut acc = String::new();
-    for (pos, c) in CharsWithPos::from(src.chars()) {
+    for (pos, c) in src.chars().with_pos() {
         println!("{:?} {:?}", pos, c);
     }
 

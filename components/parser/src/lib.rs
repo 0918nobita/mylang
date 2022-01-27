@@ -1,5 +1,3 @@
-use std::str::Chars;
-
 use ast::{
     pos::Pos,
     range::{Locatable, Range},
@@ -7,17 +5,19 @@ use ast::{
 
 pub struct CharsWithPos<'a> {
     pos: Pos,
-    chars: Chars<'a>,
+    chars: Box<dyn Iterator<Item = char> + 'a>,
 }
 
-impl<'a> From<Chars<'a>> for CharsWithPos<'a> {
-    fn from(chars: Chars<'a>) -> Self {
-        Self {
+pub trait CharsWithPosExt<'a>: Iterator<Item = char> + 'a {
+    fn with_pos(&'a mut self) -> CharsWithPos<'a> {
+        CharsWithPos {
             pos: Pos::default(),
-            chars,
+            chars: Box::new(self),
         }
     }
 }
+
+impl<'a, I> CharsWithPosExt<'a> for I where I: Iterator<Item = char> + 'a {}
 
 impl Iterator for CharsWithPos<'_> {
     type Item = (Pos, char);

@@ -1,5 +1,3 @@
-#![feature(path_file_prefix)]
-
 extern crate ast_to_bytecode;
 
 use std::{

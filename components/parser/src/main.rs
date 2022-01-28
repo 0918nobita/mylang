@@ -1,5 +1,3 @@
-#![feature(path_file_prefix)]
-
 extern crate parser;
 
 use std::{

@@ -3,6 +3,7 @@ use std::{
     io::{self, BufRead, BufReader, BufWriter, Write},
 };
 
+use anyhow::anyhow;
 use clap::Parser;
 
 #[derive(Parser)]
@@ -33,22 +34,22 @@ fn main() -> anyhow::Result<()> {
         Box::new(BufWriter::new(stdout.lock()))
     };
 
-    let tokenization_results = tokenizer::tokenize(&mut src);
-
-    tokenization_results
-        .iter()
-        .filter_map(|r| if let Err(ref e) = r { Some(e) } else { None })
-        .for_each(|e| {
-            eprintln!("{}", e);
-        });
-
-    let tokens = tokenization_results
+    let (tokens, errors): (Vec<_>, Vec<_>) = tokenizer::tokenize(&mut src).partition(Result::is_ok);
+    let tokens = tokens.into_iter().map(Result::unwrap).collect::<Vec<_>>();
+    let errors = errors
         .into_iter()
-        .filter_map(|r| r.ok())
+        .map(Result::unwrap_err)
         .collect::<Vec<_>>();
 
     let json = serde_json::to_string_pretty(&tokens)?;
     writeln!(dest, "{}", json)?;
 
-    Ok(())
+    if errors.is_empty() {
+        Ok(())
+    } else {
+        for err in errors.iter() {
+            eprintln!("{}", err);
+        }
+        Err(anyhow!("{} tokenization errors occurred", errors.len()))
+    }
 }

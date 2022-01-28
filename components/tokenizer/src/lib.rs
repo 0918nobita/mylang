@@ -9,6 +9,7 @@ use utf8_chars::BufReadCharsExt;
 
 use iter::WithPosExt;
 
+#[derive(Clone)]
 enum State {
     Initial,
     I32(Pos, String),
@@ -37,13 +38,13 @@ pub enum TokenizeError {
 
 type TokenizeResult = Result<Token, TokenizeError>;
 
-fn tokenize_i32(tokens: &mut Vec<TokenizeResult>, start: &Pos, pos: &Pos, acc: &str) {
+fn tokenize_i32(start: &Pos, pos: &Pos, acc: &str) -> Token {
     let i = acc.parse::<i32>().unwrap();
-    tokens.push(Ok(Token::I32(Range::new(start.clone(), pos.clone()), i)))
+    Token::I32(Range::new(start.clone(), pos.clone()), i)
 }
 
-fn try_tokenize_keyword(tokens: &mut Vec<TokenizeResult>, start: &Pos, pos: &Pos, acc: &str) {
-    tokens.push(if let Some(keyword_kind) = KeywordKind::parse(acc) {
+fn try_tokenize_keyword(start: &Pos, pos: &Pos, acc: &str) -> TokenizeResult {
+    if let Some(keyword_kind) = KeywordKind::parse(acc) {
         Ok(Token::Keyword(
             Range::new(start.clone(), pos.clone()),
             keyword_kind,
@@ -53,79 +54,80 @@ fn try_tokenize_keyword(tokens: &mut Vec<TokenizeResult>, start: &Pos, pos: &Pos
             Range::new(start.clone(), pos.clone()),
             acc.to_string(),
         ))
-    })
+    }
 }
 
-fn emit_add_op(tokens: &mut Vec<TokenizeResult>, pos: &Pos) {
-    tokens.push(Ok(Token::AddOp(pos.clone())))
-}
-
-fn emit_newline_token(tokens: &mut Vec<TokenizeResult>, pos: &Pos) {
-    tokens.push(Ok(Token::Newline(pos.clone())))
-}
-
-pub fn tokenize<T: BufRead>(src: &mut T) -> Vec<TokenizeResult> {
-    let mut tokens = Vec::<TokenizeResult>::new();
-    let mut state = State::Initial;
-
-    for (pos, c) in src.chars().map(|r| r.unwrap()).with_pos() {
-        match (&state, c) {
-            (State::Initial, '\n') => emit_newline_token(&mut tokens, &pos),
+pub fn tokenize<T: BufRead>(src: &mut T) -> impl Iterator<Item = TokenizeResult> + '_ {
+    src.chars()
+        .map(|r| r.unwrap())
+        .with_pos()
+        .scan(State::Initial, |state, (pos, c)| match (state.clone(), c) {
+            (State::Initial, '\n') => Some(vec![Ok(Token::Newline(pos.clone()))]),
             (State::Initial, '"') => {
-                state = State::Str {
+                *state = State::Str {
                     start: pos.clone(),
                     escape: false,
                     acc: String::new(),
-                }
+                };
+                Some(vec![])
             }
-            (State::Initial, '+') => emit_add_op(&mut tokens, &pos),
-            (State::Initial, c) if c.is_ascii_whitespace() => (),
-            (State::Initial, c) if c.is_ascii_digit() => state = State::I32(pos, c.to_string()),
+            (State::Initial, '+') => Some(vec![Ok(Token::AddOp(pos.clone()))]),
+            (State::Initial, c) if c.is_ascii_whitespace() => Some(vec![]),
+            (State::Initial, c) if c.is_ascii_digit() => {
+                *state = State::I32(pos.clone(), c.to_string());
+                Some(vec![])
+            }
             (State::Initial, c) if c.is_ascii_alphabetic() => {
-                state = State::Keyword(pos, c.to_string())
+                *state = State::Keyword(pos.clone(), c.to_string());
+                Some(vec![])
             }
             (State::Initial, _) => {
-                tokens.push(Err(TokenizeError::ForbiddenChar(pos, c)));
-                state = State::Initial
+                *state = State::Initial;
+                Some(vec![Err(TokenizeError::ForbiddenChar(pos, c))])
             }
 
-            (State::I32(_, _), '_') => (),
+            (State::I32(_, _), '_') => Some(vec![]),
             (State::I32(start, acc), '\n') => {
-                tokenize_i32(&mut tokens, start, &pos, acc);
-                emit_newline_token(&mut tokens, &pos);
-                state = State::Initial
+                *state = State::Initial;
+                Some(vec![
+                    Ok(tokenize_i32(&start, &pos, &acc)),
+                    Ok(Token::Newline(pos.clone())),
+                ])
             }
             (State::I32(start, acc), '"') => {
-                tokenize_i32(&mut tokens, start, &pos, acc);
-                state = State::Str {
+                *state = State::Str {
                     start: pos.clone(),
                     escape: false,
                     acc: String::new(),
-                }
+                };
+                Some(vec![Ok(tokenize_i32(&start, &pos, &acc))])
             }
-            (State::I32(start, acc), '+') => {
-                tokenize_i32(&mut tokens, start, &pos, acc);
-                emit_add_op(&mut tokens, &pos)
-            }
+            (State::I32(start, acc), '+') => Some(vec![
+                Ok(tokenize_i32(&start, &pos, &acc)),
+                Ok(Token::AddOp(pos.clone())),
+            ]),
             (State::I32(start, acc), c) if c.is_ascii_digit() => {
-                state = State::I32(start.clone(), format!("{acc}{c}"))
+                *state = State::I32(start.clone(), format!("{acc}{c}"));
+                Some(vec![])
             }
             (State::I32(start, acc), c) if c.is_ascii_alphabetic() => {
-                tokenize_i32(&mut tokens, start, &pos, acc);
-                state = State::Keyword(pos, c.to_string())
+                *state = State::Keyword(pos.clone(), c.to_string());
+                Some(vec![Ok(tokenize_i32(&start, &pos, &acc))])
             }
             (State::I32(start, acc), c) if c.is_ascii_whitespace() => {
-                tokenize_i32(&mut tokens, start, &pos, acc);
-                state = State::Initial
+                *state = State::Initial;
+                Some(vec![Ok(tokenize_i32(&start, &pos, &acc))])
             }
             (State::I32(_, _), _) => {
-                tokens.push(Err(TokenizeError::ForbiddenChar(pos, c)));
-                state = State::Initial
+                *state = State::Initial;
+                Some(vec![Err(TokenizeError::ForbiddenChar(pos, c))])
             }
 
             (State::Str { .. }, '\n') => {
-                tokens.push(Err(TokenizeError::MissingClosingQuoteForStr(pos.clone())));
-                state = State::Initial
+                *state = State::Initial;
+                Some(vec![Err(TokenizeError::MissingClosingQuoteForStr(
+                    pos.clone(),
+                ))])
             }
             (
                 State::Str {
@@ -135,11 +137,12 @@ pub fn tokenize<T: BufRead>(src: &mut T) -> Vec<TokenizeResult> {
                 },
                 '\\',
             ) => {
-                state = State::Str {
+                *state = State::Str {
                     start: start.clone(),
                     escape: true,
                     acc: acc.clone(),
-                }
+                };
+                Some(vec![])
             }
             (
                 State::Str {
@@ -149,11 +152,12 @@ pub fn tokenize<T: BufRead>(src: &mut T) -> Vec<TokenizeResult> {
                 },
                 '"',
             ) => {
-                state = State::Str {
+                *state = State::Str {
                     start: start.clone(),
                     escape: false,
                     acc: format!("{acc}\""),
-                }
+                };
+                Some(vec![])
             }
             (
                 State::Str {
@@ -163,15 +167,19 @@ pub fn tokenize<T: BufRead>(src: &mut T) -> Vec<TokenizeResult> {
                 },
                 'n',
             ) => {
-                state = State::Str {
+                *state = State::Str {
                     start: start.clone(),
                     escape: false,
                     acc: format!("{acc}\n"),
-                }
+                };
+                Some(vec![])
             }
             (State::Str { escape: true, .. }, c) => {
-                tokens.push(Err(TokenizeError::InvalidEscapeSequence(pos.clone(), c)));
-                state = State::Initial
+                *state = State::Initial;
+                Some(vec![Err(TokenizeError::InvalidEscapeSequence(
+                    pos.clone(),
+                    c,
+                ))])
             }
             (
                 State::Str {
@@ -181,11 +189,11 @@ pub fn tokenize<T: BufRead>(src: &mut T) -> Vec<TokenizeResult> {
                 },
                 '"',
             ) => {
-                tokens.push(Ok(Token::Str(
+                *state = State::Initial;
+                Some(vec![Ok(Token::Str(
                     Range::new(start.clone(), pos.clone()),
                     acc.clone(),
-                )));
-                state = State::Initial
+                ))])
             }
             (
                 State::Str {
@@ -195,44 +203,48 @@ pub fn tokenize<T: BufRead>(src: &mut T) -> Vec<TokenizeResult> {
                 },
                 c,
             ) => {
-                state = State::Str {
+                *state = State::Str {
                     start: start.clone(),
                     escape: false,
                     acc: format!("{acc}{c}"),
-                }
+                };
+                Some(vec![])
             }
 
             (State::Keyword(start, acc), '\n') => {
-                try_tokenize_keyword(&mut tokens, start, &pos, acc);
-                emit_newline_token(&mut tokens, &pos);
-                state = State::Initial
+                *state = State::Initial;
+                Some(vec![
+                    try_tokenize_keyword(&start, &pos, &acc),
+                    Ok(Token::Newline(pos.clone())),
+                ])
             }
             (State::Keyword(start, acc), '"') => {
-                try_tokenize_keyword(&mut tokens, start, &pos, acc);
-                state = State::Str {
+                *state = State::Str {
                     start: pos.clone(),
                     escape: false,
                     acc: String::new(),
-                }
+                };
+                Some(vec![try_tokenize_keyword(&start, &pos, &acc)])
             }
             (State::Keyword(start, acc), '+') => {
-                try_tokenize_keyword(&mut tokens, start, &pos, acc);
-                emit_add_op(&mut tokens, &pos);
-                state = State::Initial
+                *state = State::Initial;
+                Some(vec![
+                    try_tokenize_keyword(&start, &pos, &acc),
+                    Ok(Token::AddOp(pos.clone())),
+                ])
             }
             (State::Keyword(start, acc), c) if c.is_ascii_whitespace() => {
-                try_tokenize_keyword(&mut tokens, start, &pos, acc);
-                state = State::Initial
+                *state = State::Initial;
+                Some(vec![try_tokenize_keyword(&start, &pos, &acc)])
             }
             (State::Keyword(start, acc), c) if c.is_ascii() => {
-                state = State::Keyword(start.clone(), format!("{acc}{c}"))
+                *state = State::Keyword(start.clone(), format!("{acc}{c}"));
+                Some(vec![])
             }
             (State::Keyword(_, _), _) => {
-                tokens.push(Err(TokenizeError::ForbiddenChar(pos, c)));
-                state = State::Initial
+                *state = State::Initial;
+                Some(vec![Err(TokenizeError::ForbiddenChar(pos, c))])
             }
-        }
-    }
-
-    tokens
+        })
+        .flatten()
 }

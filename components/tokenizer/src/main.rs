@@ -29,7 +29,19 @@ fn main() -> anyhow::Result<()> {
 
     let src = File::open(&input)?;
     let mut src = BufReader::new(src);
-    let tokens = tokenizer::tokenize(&mut src);
+    let tokenize_results = tokenizer::tokenize(&mut src);
+
+    tokenize_results
+        .iter()
+        .filter_map(|r| if let Err(ref e) = r { Some(e) } else { None })
+        .for_each(|e| {
+            eprintln!("{}", e);
+        });
+
+    let tokens = tokenize_results
+        .into_iter()
+        .filter_map(|r| r.ok())
+        .collect::<Vec<_>>();
 
     let json = serde_json::to_string_pretty(&tokens)?;
     let mut file = File::create(output)?;

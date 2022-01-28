@@ -12,17 +12,6 @@ on:
       - "rust-toolchain.toml"
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-      - uses: actions-rs/cargo@v1
-        with:
-          command: check
-
   clippy:
     runs-on: ubuntu-latest
     steps:
@@ -45,8 +34,6 @@ jobs:
       - uses: actions-rs/install@v0.1
         with:
           crate: cargo-udeps
-          version: latest
-          use-tool-cache: true
       - run: cargo udeps
 
   format:

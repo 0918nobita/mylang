@@ -13,3 +13,9 @@ impl fmt::Debug for Pos {
         write!(f, "{}:{}", self.line, self.column)
     }
 }
+
+impl fmt::Display for Pos {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}:{}", self.line, self.column)
+    }
+}

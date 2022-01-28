@@ -8,7 +8,8 @@
 
 ```bash
 cd examples
-ninja hello.ast.json
+cargo run --bin tokenizer -- hello.mylang
+cargo run --bin parser -- hello.tok.json
 cargo run --bin ast_interp -- hello.ast.json
 ```
 
@@ -16,6 +17,5 @@ cargo run --bin ast_interp -- hello.ast.json
 
 ```bash
 cd examples
-ninja
 ./hello
 ```

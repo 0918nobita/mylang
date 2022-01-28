@@ -10,7 +10,19 @@ pub struct Range {
     pub end: Pos,
 }
 
+impl Range {
+    pub fn new(start: Pos, end: Pos) -> Self {
+        Range { start, end }
+    }
+}
+
 impl fmt::Debug for Range {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{:?}-{:?}", self.start, self.end)
+    }
+}
+
+impl fmt::Display for Range {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{:?}-{:?}", self.start, self.end)
     }

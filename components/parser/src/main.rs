@@ -2,14 +2,17 @@
 
 extern crate parser;
 
-use std::{fs::File, io::Write, path::PathBuf};
+use std::{
+    fs::File,
+    io::{self, BufRead, BufReader, BufWriter, Write},
+};
 
 use clap::Parser;
 use token::Token;
 
 #[derive(Parser)]
 struct Opts {
-    input: String,
+    input: Option<String>,
 
     #[clap(short = 'o')]
     output: Option<String>,
@@ -18,21 +21,29 @@ struct Opts {
 fn main() -> anyhow::Result<()> {
     let Opts { input, output } = Opts::parse();
 
-    let output = output.unwrap_or_else(|| {
-        let output = PathBuf::from(&input);
-        format!(
-            "{}.ast.json",
-            output.file_prefix().unwrap().to_str().unwrap()
-        )
-    });
+    let stdin = io::stdin();
+    let stdout = io::stdout();
 
-    let tokens: Vec<Token> = serde_json::from_reader(File::open(&input)?)?;
+    let src: Box<dyn BufRead> = if let Some(input) = input {
+        let file = File::open(&input)?;
+        Box::new(BufReader::new(file))
+    } else {
+        Box::new(stdin.lock())
+    };
+
+    let mut dest: Box<dyn Write> = if let Some(output) = output {
+        let file = File::create(output)?;
+        Box::new(BufWriter::new(file))
+    } else {
+        Box::new(BufWriter::new(stdout.lock()))
+    };
+
+    let tokens: Vec<Token> = serde_json::from_reader(src)?;
 
     let ast = parser::parse(&tokens);
 
     let json = serde_json::to_string_pretty(&ast)?;
-    let mut file = File::create(output)?;
-    writeln!(file, "{}", json)?;
+    writeln!(dest, "{}", json)?;
 
     Ok(())
 }

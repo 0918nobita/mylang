@@ -1,4 +1,7 @@
-use std::fs;
+use std::{
+    fs::File,
+    io::{self, BufRead, BufReader},
+};
 
 use anyhow::{bail, Context};
 use bytecode::Inst;
@@ -7,14 +10,21 @@ use entity::{Entity, I32Entity, StrEntity};
 
 #[derive(Parser)]
 struct Opts {
-    input: String,
+    input: Option<String>,
 }
 
 fn main() -> anyhow::Result<()> {
-    let opts = Opts::parse();
+    let Opts { input } = Opts::parse();
 
-    let byte_code = fs::read(opts.input)?;
-    let insts: Vec<Inst> = bincode::deserialize(&byte_code)?;
+    let stdin = io::stdin();
+    let byte_code: Box<dyn BufRead> = if let Some(input) = input {
+        let file = File::open(&input)?;
+        Box::new(BufReader::new(file))
+    } else {
+        Box::new(stdin.lock())
+    };
+
+    let insts: Vec<Inst> = bincode::deserialize_from(byte_code)?;
 
     let mut stack = Vec::<Entity>::new();
     for inst in insts {

@@ -2,7 +2,10 @@
 
 extern crate ast_to_bytecode;
 
-use std::{fs, path::PathBuf};
+use std::{
+    fs::File,
+    io::{self, BufRead, BufReader, BufWriter, Write},
+};
 
 use anyhow::Context;
 use ast::{expr::Expr, range::Range, stmt::Stmt};
@@ -11,7 +14,7 @@ use clap::Parser;
 
 #[derive(Parser)]
 struct Opts {
-    input: String,
+    input: Option<String>,
 
     #[clap(short = 'o')]
     output: Option<String>,
@@ -20,13 +23,22 @@ struct Opts {
 fn main() -> anyhow::Result<()> {
     let Opts { input, output } = Opts::parse();
 
-    let output = output.unwrap_or_else(|| {
-        let output = PathBuf::from(&input);
-        format!(
-            "{}.bytecode",
-            output.file_prefix().unwrap().to_str().unwrap()
-        )
-    });
+    let stdin = io::stdin();
+    let stdout = io::stdout();
+
+    let _src: Box<dyn BufRead> = if let Some(input) = input {
+        let file = File::open(&input)?;
+        Box::new(BufReader::new(file))
+    } else {
+        Box::new(stdin.lock())
+    };
+
+    let mut dest: Box<dyn Write> = if let Some(output) = output {
+        let file = File::create(output)?;
+        Box::new(BufWriter::new(file))
+    } else {
+        Box::new(BufWriter::new(stdout.lock()))
+    };
 
     let lhs = Expr::I32Lit(Range::default(), 3);
     let rhs = Expr::I32Lit(Range::default(), 4);
@@ -35,5 +47,7 @@ fn main() -> anyhow::Result<()> {
 
     let insts = ast_to_bytecode(&[stmt]);
     let encoded = bincode::serialize(&insts)?;
-    fs::write(output, encoded).context("Failed to output bytecode")
+
+    dest.write_all(&encoded)
+        .context("Failed to output bytecode")
 }

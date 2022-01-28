@@ -1,6 +1,23 @@
 #!/bin/sh -ex
 
-cargo run --bin tokenizer -- hello.mylang
-cargo run --bin parser -- hello.tok.json
-cargo run --bin ast_to_bytecode -- hello.ast.json
-cargo run --bin bytecode_interp -- hello.bytecode
+cargo build
+
+parent_dir="$(realpath $(dirname "$0"))"
+
+tokenize() {
+    "${parent_dir}/../target/debug/tokenizer"
+}
+
+parse() {
+    "${parent_dir}/../target/debug/parser"
+}
+
+to_bytecode() {
+    "${parent_dir}/../target/debug/ast_to_bytecode"
+}
+
+execute() {
+    "${parent_dir}/../target/debug/bytecode_interp"
+}
+
+cat hello.mylang | tokenize | parse | to_bytecode | execute

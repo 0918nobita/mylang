@@ -39,7 +39,7 @@ type TokenizeResult = Result<Token, TokenizeError>;
 
 fn tokenize_i32(tokens: &mut Vec<TokenizeResult>, start: &Pos, pos: &Pos, acc: &str) {
     let i = acc.parse::<i32>().unwrap();
-    tokens.push(Ok(Token::I32(Range::new(start.clone(), pos.clone()), i)));
+    tokens.push(Ok(Token::I32(Range::new(start.clone(), pos.clone()), i)))
 }
 
 fn try_tokenize_keyword(tokens: &mut Vec<TokenizeResult>, start: &Pos, pos: &Pos, acc: &str) {
@@ -53,16 +53,24 @@ fn try_tokenize_keyword(tokens: &mut Vec<TokenizeResult>, start: &Pos, pos: &Pos
             Range::new(start.clone(), pos.clone()),
             acc.to_string(),
         ))
-    });
+    })
+}
+
+fn emit_add_op(tokens: &mut Vec<TokenizeResult>, pos: &Pos) {
+    tokens.push(Ok(Token::AddOp(pos.clone())))
+}
+
+fn emit_newline_token(tokens: &mut Vec<TokenizeResult>, pos: &Pos) {
+    tokens.push(Ok(Token::Newline(pos.clone())))
 }
 
 pub fn tokenize<T: BufRead>(src: &mut T) -> Vec<TokenizeResult> {
-    let mut tokens = Vec::<Result<Token, TokenizeError>>::new();
+    let mut tokens = Vec::<TokenizeResult>::new();
     let mut state = State::Initial;
 
     for (pos, c) in src.chars().map(|r| r.unwrap()).with_pos() {
         match (&state, c) {
-            (State::Initial, '\n') => tokens.push(Ok(Token::Newline(pos.clone()))),
+            (State::Initial, '\n') => emit_newline_token(&mut tokens, &pos),
             (State::Initial, '"') => {
                 state = State::Str {
                     start: pos.clone(),
@@ -70,7 +78,7 @@ pub fn tokenize<T: BufRead>(src: &mut T) -> Vec<TokenizeResult> {
                     acc: String::new(),
                 }
             }
-            (State::Initial, '+') => tokens.push(Ok(Token::AddOp(pos.clone()))),
+            (State::Initial, '+') => emit_add_op(&mut tokens, &pos),
             (State::Initial, c) if c.is_ascii_whitespace() => (),
             (State::Initial, c) if c.is_ascii_digit() => state = State::I32(pos, c.to_string()),
             (State::Initial, c) if c.is_ascii_alphabetic() => {
@@ -84,7 +92,7 @@ pub fn tokenize<T: BufRead>(src: &mut T) -> Vec<TokenizeResult> {
             (State::I32(_, _), '_') => (),
             (State::I32(start, acc), '\n') => {
                 tokenize_i32(&mut tokens, start, &pos, acc);
-                tokens.push(Ok(Token::Newline(pos.clone())));
+                emit_newline_token(&mut tokens, &pos);
                 state = State::Initial
             }
             (State::I32(start, acc), '"') => {
@@ -97,7 +105,7 @@ pub fn tokenize<T: BufRead>(src: &mut T) -> Vec<TokenizeResult> {
             }
             (State::I32(start, acc), '+') => {
                 tokenize_i32(&mut tokens, start, &pos, acc);
-                tokens.push(Ok(Token::AddOp(pos.clone())))
+                emit_add_op(&mut tokens, &pos)
             }
             (State::I32(start, acc), c) if c.is_ascii_digit() => {
                 state = State::I32(start.clone(), format!("{acc}{c}"))
@@ -196,7 +204,7 @@ pub fn tokenize<T: BufRead>(src: &mut T) -> Vec<TokenizeResult> {
 
             (State::Keyword(start, acc), '\n') => {
                 try_tokenize_keyword(&mut tokens, start, &pos, acc);
-                tokens.push(Ok(Token::Newline(pos.clone())));
+                emit_newline_token(&mut tokens, &pos);
                 state = State::Initial
             }
             (State::Keyword(start, acc), '"') => {
@@ -209,7 +217,7 @@ pub fn tokenize<T: BufRead>(src: &mut T) -> Vec<TokenizeResult> {
             }
             (State::Keyword(start, acc), '+') => {
                 try_tokenize_keyword(&mut tokens, start, &pos, acc);
-                tokens.push(Ok(Token::AddOp(pos.clone())));
+                emit_add_op(&mut tokens, &pos);
                 state = State::Initial
             }
             (State::Keyword(start, acc), c) if c.is_ascii_whitespace() => {

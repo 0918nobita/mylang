@@ -2,4 +2,3 @@
 *.ast.json
 *.bytecode
 *.tok.json
-.ninja_*

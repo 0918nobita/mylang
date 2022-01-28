@@ -1,22 +1,17 @@
 use ast::pos::Pos;
 
-pub struct CharsWithPos<'a> {
+pub struct WithPos<I>
+where
+    I: Iterator<Item = char>,
+{
     pos: Pos,
-    chars: Box<dyn Iterator<Item = char> + 'a>,
+    chars: I,
 }
 
-pub trait CharsWithPosExt<'a>: Iterator<Item = char> + 'a {
-    fn with_pos(&'a mut self) -> CharsWithPos<'a> {
-        CharsWithPos {
-            pos: Pos::default(),
-            chars: Box::new(self),
-        }
-    }
-}
-
-impl<'a, I> CharsWithPosExt<'a> for I where I: Iterator<Item = char> + 'a {}
-
-impl Iterator for CharsWithPos<'_> {
+impl<I> Iterator for WithPos<I>
+where
+    I: Iterator<Item = char>,
+{
     type Item = (Pos, char);
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -32,5 +27,21 @@ impl Iterator for CharsWithPos<'_> {
 
             (prev_pos, c)
         })
+    }
+}
+
+pub trait WithPosExt: Iterator<Item = char> + Sized {
+    fn with_pos(self) -> WithPos<Self>;
+}
+
+impl<I> WithPosExt for I
+where
+    I: Iterator<Item = char> + Sized,
+{
+    fn with_pos(self) -> WithPos<Self> {
+        WithPos {
+            pos: Pos::default(),
+            chars: self,
+        }
     }
 }

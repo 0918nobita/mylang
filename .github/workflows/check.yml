@@ -80,8 +80,5 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: nightly
-      - uses: seanmiddleditch/gha-setup-ninja@v3
-      - run: ninja
-        working-directory: examples
       - run: ./hello
         working-directory: examples

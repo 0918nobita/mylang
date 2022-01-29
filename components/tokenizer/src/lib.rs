@@ -7,7 +7,7 @@ use thiserror::Error;
 use token::{KeywordKind, Token};
 use utf8_chars::BufReadCharsExt;
 
-use iter::WithPosExt;
+use iter::{map_with_state::MapWithStateExt, with_pos::WithPosExt};
 
 #[derive(Clone)]
 enum State {
@@ -61,38 +61,38 @@ pub fn tokenize<T: BufRead>(src: &mut T) -> impl Iterator<Item = TokenizeResult>
     src.chars()
         .map(|r| r.unwrap())
         .with_pos()
-        .scan(State::Initial, |state, (pos, c)| match (state.clone(), c) {
-            (State::Initial, '\n') => Some(vec![Ok(Token::Newline(pos))]),
+        .map_with_state(State::Initial, |state, (pos, c)| match (state.clone(), c) {
+            (State::Initial, '\n') => vec![Ok(Token::Newline(pos))],
             (State::Initial, '"') => {
                 *state = State::Str {
                     start: pos,
                     escape: false,
                     acc: String::new(),
                 };
-                Some(vec![])
+                vec![]
             }
-            (State::Initial, '+') => Some(vec![Ok(Token::AddOp(pos))]),
-            (State::Initial, c) if c.is_ascii_whitespace() => Some(vec![]),
+            (State::Initial, '+') => vec![Ok(Token::AddOp(pos))],
+            (State::Initial, c) if c.is_ascii_whitespace() => vec![],
             (State::Initial, c) if c.is_ascii_digit() => {
                 *state = State::I32(pos, c.to_string());
-                Some(vec![])
+                vec![]
             }
             (State::Initial, c) if c.is_ascii_alphabetic() => {
                 *state = State::Keyword(pos, c.to_string());
-                Some(vec![])
+                vec![]
             }
             (State::Initial, _) => {
                 *state = State::Initial;
-                Some(vec![Err(TokenizeError::ForbiddenChar(pos, c))])
+                vec![Err(TokenizeError::ForbiddenChar(pos, c))]
             }
 
-            (State::I32(_, _), '_') => Some(vec![]),
+            (State::I32(_, _), '_') => vec![],
             (State::I32(start, acc), '\n') => {
                 *state = State::Initial;
-                Some(vec![
+                vec![
                     Ok(tokenize_i32(&start, &pos, &acc)),
                     Ok(Token::Newline(pos.clone())),
-                ])
+                ]
             }
             (State::I32(start, acc), '"') => {
                 *state = State::Str {
@@ -100,32 +100,32 @@ pub fn tokenize<T: BufRead>(src: &mut T) -> impl Iterator<Item = TokenizeResult>
                     escape: false,
                     acc: String::new(),
                 };
-                Some(vec![Ok(tokenize_i32(&start, &pos, &acc))])
+                vec![Ok(tokenize_i32(&start, &pos, &acc))]
             }
-            (State::I32(start, acc), '+') => Some(vec![
+            (State::I32(start, acc), '+') => vec![
                 Ok(tokenize_i32(&start, &pos, &acc)),
                 Ok(Token::AddOp(pos.clone())),
-            ]),
+            ],
             (State::I32(start, acc), c) if c.is_ascii_digit() => {
                 *state = State::I32(start, format!("{acc}{c}"));
-                Some(vec![])
+                vec![]
             }
             (State::I32(start, acc), c) if c.is_ascii_alphabetic() => {
                 *state = State::Keyword(pos.clone(), c.to_string());
-                Some(vec![Ok(tokenize_i32(&start, &pos, &acc))])
+                vec![Ok(tokenize_i32(&start, &pos, &acc))]
             }
             (State::I32(start, acc), c) if c.is_ascii_whitespace() => {
                 *state = State::Initial;
-                Some(vec![Ok(tokenize_i32(&start, &pos, &acc))])
+                vec![Ok(tokenize_i32(&start, &pos, &acc))]
             }
             (State::I32(_, _), _) => {
                 *state = State::Initial;
-                Some(vec![Err(TokenizeError::ForbiddenChar(pos, c))])
+                vec![Err(TokenizeError::ForbiddenChar(pos, c))]
             }
 
             (State::Str { .. }, '\n') => {
                 *state = State::Initial;
-                Some(vec![Err(TokenizeError::MissingClosingQuoteForStr(pos))])
+                vec![Err(TokenizeError::MissingClosingQuoteForStr(pos))]
             }
             (
                 State::Str {
@@ -140,7 +140,7 @@ pub fn tokenize<T: BufRead>(src: &mut T) -> impl Iterator<Item = TokenizeResult>
                     escape: true,
                     acc,
                 };
-                Some(vec![])
+                vec![]
             }
             (
                 State::Str {
@@ -155,7 +155,7 @@ pub fn tokenize<T: BufRead>(src: &mut T) -> impl Iterator<Item = TokenizeResult>
                     escape: false,
                     acc: format!("{acc}\""),
                 };
-                Some(vec![])
+                vec![]
             }
             (
                 State::Str {
@@ -170,11 +170,11 @@ pub fn tokenize<T: BufRead>(src: &mut T) -> impl Iterator<Item = TokenizeResult>
                     escape: false,
                     acc: format!("{acc}\n"),
                 };
-                Some(vec![])
+                vec![]
             }
             (State::Str { escape: true, .. }, c) => {
                 *state = State::Initial;
-                Some(vec![Err(TokenizeError::InvalidEscapeSequence(pos, c))])
+                vec![Err(TokenizeError::InvalidEscapeSequence(pos, c))]
             }
             (
                 State::Str {
@@ -185,7 +185,7 @@ pub fn tokenize<T: BufRead>(src: &mut T) -> impl Iterator<Item = TokenizeResult>
                 '"',
             ) => {
                 *state = State::Initial;
-                Some(vec![Ok(Token::Str(Range::new(start, pos), acc))])
+                vec![Ok(Token::Str(Range::new(start, pos), acc))]
             }
             (
                 State::Str {
@@ -200,15 +200,15 @@ pub fn tokenize<T: BufRead>(src: &mut T) -> impl Iterator<Item = TokenizeResult>
                     escape: false,
                     acc: format!("{acc}{c}"),
                 };
-                Some(vec![])
+                vec![]
             }
 
             (State::Keyword(start, acc), '\n') => {
                 *state = State::Initial;
-                Some(vec![
+                vec![
                     try_tokenize_keyword(&start, &pos, &acc),
                     Ok(Token::Newline(pos.clone())),
-                ])
+                ]
             }
             (State::Keyword(start, acc), '"') => {
                 *state = State::Str {
@@ -216,26 +216,26 @@ pub fn tokenize<T: BufRead>(src: &mut T) -> impl Iterator<Item = TokenizeResult>
                     escape: false,
                     acc: String::new(),
                 };
-                Some(vec![try_tokenize_keyword(&start, &pos, &acc)])
+                vec![try_tokenize_keyword(&start, &pos, &acc)]
             }
             (State::Keyword(start, acc), '+') => {
                 *state = State::Initial;
-                Some(vec![
+                vec![
                     try_tokenize_keyword(&start, &pos, &acc),
                     Ok(Token::AddOp(pos.clone())),
-                ])
+                ]
             }
             (State::Keyword(start, acc), c) if c.is_ascii_whitespace() => {
                 *state = State::Initial;
-                Some(vec![try_tokenize_keyword(&start, &pos, &acc)])
+                vec![try_tokenize_keyword(&start, &pos, &acc)]
             }
             (State::Keyword(start, acc), c) if c.is_ascii() => {
                 *state = State::Keyword(start, format!("{acc}{c}"));
-                Some(vec![])
+                vec![]
             }
             (State::Keyword(_, _), _) => {
                 *state = State::Initial;
-                Some(vec![Err(TokenizeError::ForbiddenChar(pos, c))])
+                vec![Err(TokenizeError::ForbiddenChar(pos, c))]
             }
         })
         .flatten()

@@ -1,5 +1,6 @@
 use ast::{pos::Pos, range::Range};
 use thiserror::Error;
+use token::Token;
 
 #[derive(Debug, Error)]
 pub enum TokenizeError {
@@ -15,3 +16,5 @@ pub enum TokenizeError {
     #[error("({0}) Missing a closing quote for string literal")]
     MissingClosingQuoteForStr(Pos),
 }
+
+pub type TokenizeResult = Result<Token, TokenizeError>;

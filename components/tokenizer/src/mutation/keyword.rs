@@ -1,67 +1,42 @@
-use ast::{pos::Pos, range::Range};
-use token::{KeywordKind, Token};
+use ast::pos::Pos;
+use token::Token;
 
+use super::keyword_state::KeywordState;
 use crate::{
-    mutation::{str::StrState, State},
+    mutation::{str_state::StrState, State},
     result::{TokenizeError, TokenizeResult},
 };
 
-#[derive(Clone)]
-pub struct KeywordState {
-    start: Pos,
-    acc: String,
-}
-
-impl KeywordState {
-    pub fn new(start: Pos, acc: String) -> Self {
-        Self { start, acc }
-    }
-}
-
-fn try_tokenize_keyword(start: &Pos, pos: &Pos, acc: &str) -> TokenizeResult {
-    if let Some(keyword_kind) = KeywordKind::parse(acc) {
-        Ok(Token::Keyword(
-            Range::new(start.clone(), pos.clone()),
-            keyword_kind,
-        ))
-    } else {
-        Err(TokenizeError::InvalidKeyword(
-            Range::new(start.clone(), pos.clone()),
-            acc.to_string(),
-        ))
-    }
-}
-
 pub fn mapping_for_keyword_state(
     state: &mut State,
-    KeywordState { start, acc }: KeywordState,
+    keyword_state: KeywordState,
     (pos, c): (Pos, char),
 ) -> Vec<TokenizeResult> {
     match c {
         '\n' => {
             *state = State::Initial;
             vec![
-                try_tokenize_keyword(&start, &pos, &acc),
+                keyword_state.try_tokenize(&pos),
                 Ok(Token::Newline(pos.clone())),
             ]
         }
         '"' => {
             *state = State::Str(StrState::new(pos.clone(), false, String::new()));
-            vec![try_tokenize_keyword(&start, &pos, &acc)]
+            vec![keyword_state.try_tokenize(&pos)]
         }
         '+' => {
             *state = State::Initial;
             vec![
-                try_tokenize_keyword(&start, &pos, &acc),
+                keyword_state.try_tokenize(&pos),
                 Ok(Token::AddOp(pos.clone())),
             ]
         }
         c if c.is_ascii_whitespace() => {
             *state = State::Initial;
-            vec![try_tokenize_keyword(&start, &pos, &acc)]
+            vec![keyword_state.try_tokenize(&pos)]
         }
         c if c.is_ascii() => {
-            *state = State::Keyword(KeywordState::new(start, format!("{acc}{c}")));
+            *state = State::Keyword(keyword_state.append_char(c));
             vec![]
         }
         _ => {

@@ -2,7 +2,7 @@ use ast::pos::Pos;
 use token::Token;
 
 use crate::{
-    mutation::{i32::I32State, keyword::KeywordState, str::StrState, State},
+    mutation::{i32_state::I32State, keyword_state::KeywordState, str_state::StrState, State},
     result::{TokenizeError, TokenizeResult},
 };
 

@@ -1,25 +1,19 @@
 mod i32;
+mod i32_state;
 mod initial;
 mod keyword;
+mod keyword_state;
+pub mod state;
 mod str;
+mod str_state;
 
 use ast::pos::Pos;
 
 use self::{
-    i32::{mapping_for_i32_state, I32State},
-    initial::mapping_for_initial_state,
-    keyword::{mapping_for_keyword_state, KeywordState},
-    str::{mapping_for_str_state, StrState},
+    i32::mapping_for_i32_state, initial::mapping_for_initial_state,
+    keyword::mapping_for_keyword_state, state::State, str::mapping_for_str_state,
 };
 use crate::result::TokenizeResult;
-
-#[derive(Clone)]
-pub enum State {
-    Initial,
-    I32(I32State),
-    Str(StrState),
-    Keyword(KeywordState),
-}
 
 pub fn mapping(state: &mut State, pos_c: (Pos, char)) -> Vec<TokenizeResult> {
     match state.clone() {

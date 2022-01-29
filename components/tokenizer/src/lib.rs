@@ -4,7 +4,7 @@ mod result;
 
 use std::io::BufRead;
 
-use mutation::{mapping, State};
+use mutation::{mapping, state::State};
 use result::TokenizeResult;
 use utf8_chars::BufReadCharsExt;
 

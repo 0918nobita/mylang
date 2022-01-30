@@ -16,11 +16,13 @@ pub fn mapping_for_str_state(
             *state = State::Initial;
             vec![Err(LexErr::MissingClosingQuoteForStr(pos))]
         }
+
         (false, '"') => {
             *state = State::Initial;
             vec![Ok(str_state.tokenize(&pos))]
         }
-        (_, c) => match str_state.append_char(&pos, c) {
+
+        (_, c) => match str_state.try_append_char(&pos, c) {
             Ok(str_state) => {
                 *state = State::Str(str_state);
                 vec![]

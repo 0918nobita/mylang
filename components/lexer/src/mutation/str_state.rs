@@ -19,33 +19,27 @@ impl StrState {
         }
     }
 
-    pub fn append_char(&self, pos: &Pos, c: char) -> Result<Self, LexErr> {
-        if self.escape {
-            match c {
-                '\\' => Ok(Self {
-                    start: self.start.clone(),
-                    escape: false,
-                    acc: format!("{}\\", self.acc),
-                }),
-                'n' => Ok(Self {
-                    start: self.start.clone(),
-                    escape: false,
-                    acc: format!("{}\n", self.acc),
-                }),
-                _ => Err(LexErr::InvalidEscapeSequence(pos.clone(), c)),
-            }
-        } else if c == '\\' {
-            Ok(Self {
+    pub fn try_append_char(&self, pos: &Pos, c: char) -> Result<Self, LexErr> {
+        match (self.escape, c) {
+            (true, c @ ('\\' | 'n')) => Ok(Self {
+                start: self.start.clone(),
+                escape: false,
+                acc: format!("{}{c}", self.acc),
+            }),
+
+            (true, _) => Err(LexErr::InvalidEscapeSequence(pos.clone(), c)),
+
+            (false, '\\') => Ok(Self {
                 start: self.start.clone(),
                 escape: true,
                 acc: self.acc.clone(),
-            })
-        } else {
-            Ok(Self {
+            }),
+
+            (false, c) => Ok(Self {
                 start: self.start.clone(),
-                escape: self.escape,
+                escape: false,
                 acc: format!("{}{c}", self.acc),
-            })
+            }),
         }
     }
 

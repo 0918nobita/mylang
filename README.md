@@ -8,8 +8,8 @@
 
 ```bash
 cd examples
-cargo run --bin tokenizer  -- hello.mylang   -o hello.tok.json
-cargo run --bin parser     -- hello.tok.json -o hello.ast.json
+cargo run --bin lexer -- hello.mylang -o hello.tok.json
+cargo run --bin parser -- hello.tok.json -o hello.ast.json
 cargo run --bin ast_interp -- hello.ast.json
 ```
 

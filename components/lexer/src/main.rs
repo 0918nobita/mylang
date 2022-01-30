@@ -34,7 +34,7 @@ fn main() -> anyhow::Result<()> {
         Box::new(BufWriter::new(stdout.lock()))
     };
 
-    let (tokens, errors): (Vec<_>, Vec<_>) = tokenizer::tokenize(&mut src).partition(Result::is_ok);
+    let (tokens, errors): (Vec<_>, Vec<_>) = lexer::lex(&mut src).partition(Result::is_ok);
     let tokens = tokens.into_iter().map(Result::unwrap).collect::<Vec<_>>();
     let errors = errors
         .into_iter()

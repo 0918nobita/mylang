@@ -4,14 +4,14 @@ use token::Token;
 use super::keyword_state::KeywordState;
 use crate::{
     mutation::{str_state::StrState, State},
-    result::{TokenizeError, TokenizeResult},
+    result::{LexErr, LexResult},
 };
 
 pub fn mapping_for_keyword_state(
     state: &mut State,
     keyword_state: KeywordState,
     (pos, c): (Pos, char),
-) -> Vec<TokenizeResult> {
+) -> Vec<LexResult> {
     match c {
         '\n' => {
             *state = State::Initial;
@@ -41,7 +41,7 @@ pub fn mapping_for_keyword_state(
         }
         _ => {
             *state = State::Initial;
-            vec![Err(TokenizeError::ForbiddenChar(pos, c))]
+            vec![Err(LexErr::ForbiddenChar(pos, c))]
         }
     }
 }

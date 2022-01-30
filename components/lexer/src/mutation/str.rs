@@ -3,18 +3,18 @@ use ast::pos::Pos;
 use super::str_state::StrState;
 use crate::{
     mutation::State,
-    result::{TokenizeError, TokenizeResult},
+    result::{LexErr, LexResult},
 };
 
 pub fn mapping_for_str_state(
     state: &mut State,
     str_state: StrState,
     (pos, c): (Pos, char),
-) -> Vec<TokenizeResult> {
+) -> Vec<LexResult> {
     match (str_state.escape, c) {
         (_, '\n') => {
             *state = State::Initial;
-            vec![Err(TokenizeError::MissingClosingQuoteForStr(pos))]
+            vec![Err(LexErr::MissingClosingQuoteForStr(pos))]
         }
         (false, '"') => {
             *state = State::Initial;

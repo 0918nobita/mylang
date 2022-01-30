@@ -1,7 +1,7 @@
 use ast::{pos::Pos, range::Range};
 use token::Token;
 
-use crate::result::TokenizeError;
+use crate::result::LexErr;
 
 #[derive(Clone)]
 pub struct StrState {
@@ -15,7 +15,7 @@ impl StrState {
         Self { start, escape, acc }
     }
 
-    pub fn append_char(&self, pos: &Pos, c: char) -> Result<Self, TokenizeError> {
+    pub fn append_char(&self, pos: &Pos, c: char) -> Result<Self, LexErr> {
         if self.escape {
             match c {
                 '\\' => Ok(Self {
@@ -28,7 +28,7 @@ impl StrState {
                     escape: false,
                     acc: format!("{}\n", self.acc),
                 }),
-                _ => Err(TokenizeError::InvalidEscapeSequence(pos.clone(), c)),
+                _ => Err(LexErr::InvalidEscapeSequence(pos.clone(), c)),
             }
         } else if c == '\\' {
             Ok(Self {

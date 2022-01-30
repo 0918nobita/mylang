@@ -1,7 +1,7 @@
 use ast::{pos::Pos, range::Range};
 use token::{KeywordKind, Token};
 
-use crate::result::{TokenizeError, TokenizeResult};
+use crate::result::{LexErr, LexResult};
 
 #[derive(Clone)]
 pub struct KeywordState {
@@ -21,14 +21,14 @@ impl KeywordState {
         }
     }
 
-    pub fn try_tokenize(&self, pos: &Pos) -> TokenizeResult {
+    pub fn try_tokenize(&self, pos: &Pos) -> LexResult {
         if let Some(keyword_kind) = KeywordKind::parse(&self.acc) {
             Ok(Token::Keyword(
                 Range::new(self.start.clone(), pos.clone()),
                 keyword_kind,
             ))
         } else {
-            Err(TokenizeError::InvalidKeyword(
+            Err(LexErr::InvalidKeyword(
                 Range::new(self.start.clone(), pos.clone()),
                 self.acc.to_string(),
             ))

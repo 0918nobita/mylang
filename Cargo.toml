@@ -6,7 +6,7 @@ members = [
     "components/bytecode",
     "components/bytecode_interp",
     "components/entity",
+    "components/lexer",
     "components/parser",
     "components/token",
-    "components/tokenizer",
 ]

@@ -3,10 +3,10 @@ use token::Token;
 
 use crate::{
     mutation::{i32_state::I32State, keyword_state::KeywordState, str_state::StrState, State},
-    result::{TokenizeError, TokenizeResult},
+    result::{LexErr, LexResult},
 };
 
-pub fn mapping_for_initial_state(state: &mut State, (pos, c): (Pos, char)) -> Vec<TokenizeResult> {
+pub fn mapping_for_initial_state(state: &mut State, (pos, c): (Pos, char)) -> Vec<LexResult> {
     match c {
         '\n' => vec![Ok(Token::Newline(pos))],
         '"' => {
@@ -25,7 +25,7 @@ pub fn mapping_for_initial_state(state: &mut State, (pos, c): (Pos, char)) -> Ve
         }
         _ => {
             *state = State::Initial;
-            vec![Err(TokenizeError::ForbiddenChar(pos, c))]
+            vec![Err(LexErr::ForbiddenChar(pos, c))]
         }
     }
 }

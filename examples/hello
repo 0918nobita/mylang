@@ -4,8 +4,8 @@ cargo build
 
 parent_dir="$(realpath $(dirname "$0"))"
 
-tokenize() {
-    "${parent_dir}/../target/debug/tokenizer"
+lex() {
+    "${parent_dir}/../target/debug/lexer"
 }
 
 parse() {
@@ -20,4 +20,4 @@ execute() {
     "${parent_dir}/../target/debug/bytecode_interp"
 }
 
-cat hello.mylang | tokenize | parse | to_bytecode | execute
+cat hello.mylang | lex | parse | to_bytecode | execute

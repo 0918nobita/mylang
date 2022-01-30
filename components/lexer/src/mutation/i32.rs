@@ -3,7 +3,7 @@ use token::Token;
 
 use crate::{
     mutation::{keyword_state::KeywordState, state::State, str_state::StrState},
-    result::{TokenizeError, TokenizeResult},
+    result::{LexErr, LexResult},
 };
 
 use super::i32_state::I32State;
@@ -12,7 +12,7 @@ pub fn mapping_for_i32_state(
     state: &mut State,
     i32_state: I32State,
     (pos, c): (Pos, char),
-) -> Vec<TokenizeResult> {
+) -> Vec<LexResult> {
     match c {
         '_' => vec![],
         '\n' => {
@@ -41,7 +41,7 @@ pub fn mapping_for_i32_state(
         }
         _ => {
             *state = State::Initial;
-            vec![Err(TokenizeError::ForbiddenChar(pos, c))]
+            vec![Err(LexErr::ForbiddenChar(pos, c))]
         }
     }
 }

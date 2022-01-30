@@ -3,7 +3,7 @@ use thiserror::Error;
 use token::Token;
 
 #[derive(Debug, Error)]
-pub enum TokenizeError {
+pub enum LexErr {
     #[error("({0}) Forbidden character: '{1}'")]
     ForbiddenChar(Pos, char),
 
@@ -17,4 +17,4 @@ pub enum TokenizeError {
     MissingClosingQuoteForStr(Pos),
 }
 
-pub type TokenizeResult = Result<Token, TokenizeError>;
+pub type LexResult = Result<Token, LexErr>;

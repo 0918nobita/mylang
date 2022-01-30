@@ -21,7 +21,7 @@ pub fn mapping_for_keyword_state(
             ]
         }
         '"' => {
-            *state = State::Str(StrState::new(pos.clone(), false, String::new()));
+            *state = State::Str(StrState::new(pos.clone()));
             vec![keyword_state.try_tokenize(&pos)]
         }
         '+' => {

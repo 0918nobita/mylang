@@ -11,8 +11,12 @@ pub struct StrState {
 }
 
 impl StrState {
-    pub fn new(start: Pos, escape: bool, acc: String) -> Self {
-        Self { start, escape, acc }
+    pub fn new(start: Pos) -> Self {
+        Self {
+            start,
+            escape: false,
+            acc: String::new(),
+        }
     }
 
     pub fn append_char(&self, pos: &Pos, c: char) -> Result<Self, LexErr> {

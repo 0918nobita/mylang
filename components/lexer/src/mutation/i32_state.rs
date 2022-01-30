@@ -15,7 +15,7 @@ impl I32State {
     pub fn append_digit_char(&self, c: char) -> Self {
         Self {
             start: self.start.clone(),
-            acc: format!("{}{}", self.acc, c),
+            acc: format!("{}{c}", self.acc),
         }
     }
 

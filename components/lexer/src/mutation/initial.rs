@@ -10,7 +10,7 @@ pub fn mapping_for_initial_state(state: &mut State, (pos, c): (Pos, char)) -> Ve
     match c {
         '\n' => vec![Ok(Token::Newline(pos))],
         '"' => {
-            *state = State::Str(StrState::new(pos, false, String::new()));
+            *state = State::Str(StrState::new(pos));
             vec![]
         }
         '+' => vec![Ok(Token::AddOp(pos))],

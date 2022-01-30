@@ -23,7 +23,7 @@ pub fn mapping_for_i32_state(
             ]
         }
         '"' => {
-            *state = State::Str(StrState::new(pos.clone(), false, String::new()));
+            *state = State::Str(StrState::new(pos.clone()));
             vec![Ok(i32_state.tokenize(&pos))]
         }
         '+' => vec![Ok(i32_state.tokenize(&pos)), Ok(Token::AddOp(pos.clone()))],

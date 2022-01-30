@@ -17,7 +17,7 @@ impl KeywordState {
     pub fn append_char(&self, c: char) -> Self {
         Self {
             start: self.start.clone(),
-            acc: format!("{}{}", self.acc, c),
+            acc: format!("{}{c}", self.acc),
         }
     }
 

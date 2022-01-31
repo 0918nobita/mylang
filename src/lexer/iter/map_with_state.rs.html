@@ -45,12 +45,19 @@
 <span id="44">44</span>
 <span id="45">45</span>
 <span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
 </pre><pre class="rust"><code><span class="doccomment">//! 状態を持ち回りながら各要素をマッピングするアダプタ</span>
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MapWithState</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">S</span>, <span class="ident">F</span>, <span class="ident">B</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">I</span>: <span class="ident">Iterator</span> <span class="op">+</span> <span class="ident">Sized</span>,
-    <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;mut</span> <span class="ident">S</span>, <span class="ident">I::Item</span>) -&gt; <span class="ident">B</span>,
+    <span class="ident">S</span>: <span class="ident">Clone</span>,
+    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">S</span>, <span class="ident">I::Item</span>) -&gt; (<span class="ident">S</span>, <span class="ident">B</span>),
 {
     <span class="ident">state</span>: <span class="ident">S</span>,
     <span class="ident">iter</span>: <span class="ident">I</span>,
@@ -60,20 +67,24 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">S</span>, <span class="ident">F</span>, <span class="ident">B</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">MapWithState</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">S</span>, <span class="ident">F</span>, <span class="ident">B</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">I</span>: <span class="ident">Iterator</span>,
-    <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;mut</span> <span class="ident">S</span>, <span class="ident">I::Item</span>) -&gt; <span class="ident">B</span>,
+    <span class="ident">S</span>: <span class="ident">Clone</span>,
+    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">S</span>, <span class="ident">I::Item</span>) -&gt; (<span class="ident">S</span>, <span class="ident">B</span>),
 {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">B</span>;
+    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> (<span class="ident">S</span>, <span class="ident">B</span>);
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next</span>()<span class="question-mark">?</span>;
-        <span class="prelude-val">Some</span>((<span class="self">self</span>.<span class="ident">f</span>)(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">state</span>, <span class="ident">a</span>))
+        <span class="kw">let</span> (<span class="ident">next_state</span>, <span class="ident">res</span>) <span class="op">=</span> (<span class="self">self</span>.<span class="ident">f</span>)(<span class="self">self</span>.<span class="ident">state</span>.<span class="ident">clone</span>(), <span class="ident">a</span>);
+        <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">next_state</span>.<span class="ident">clone</span>();
+        <span class="prelude-val">Some</span>((<span class="ident">next_state</span>, <span class="ident">res</span>))
     }
 }
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">MapWithStateExt</span>: <span class="ident">Iterator</span> <span class="op">+</span> <span class="ident">Sized</span> {
     <span class="kw">fn</span> <span class="ident">map_with_state</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">F</span>, <span class="ident">B</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">initial_state</span>: <span class="ident">S</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">MapWithState</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">S</span>, <span class="ident">F</span>, <span class="ident">B</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;mut</span> <span class="ident">S</span>, <span class="ident"><span class="self">Self</span>::Item</span>) -&gt; <span class="ident">B</span>;
+        <span class="ident">S</span>: <span class="ident">Clone</span>,
+        <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">S</span>, <span class="ident"><span class="self">Self</span>::Item</span>) -&gt; (<span class="ident">S</span>, <span class="ident">B</span>);
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span> <span class="ident">MapWithStateExt</span> <span class="kw">for</span> <span class="ident">I</span>
@@ -82,7 +93,8 @@
 {
     <span class="kw">fn</span> <span class="ident">map_with_state</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">F</span>, <span class="ident">B</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">initial_state</span>: <span class="ident">S</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">MapWithState</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">S</span>, <span class="ident">F</span>, <span class="ident">B</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;mut</span> <span class="ident">S</span>, <span class="ident"><span class="self">Self</span>::Item</span>) -&gt; <span class="ident">B</span>,
+        <span class="ident">S</span>: <span class="ident">Clone</span>,
+        <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">S</span>, <span class="ident"><span class="self">Self</span>::Item</span>) -&gt; (<span class="ident">S</span>, <span class="ident">B</span>),
     {
         <span class="ident">MapWithState</span> {
             <span class="ident">state</span>: <span class="ident">initial_state</span>,

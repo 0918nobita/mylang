@@ -1,5 +1,3 @@
-extern crate ast_interp;
-
 use std::{fs::File, io::BufReader};
 
 use ast::stmt::Stmt;

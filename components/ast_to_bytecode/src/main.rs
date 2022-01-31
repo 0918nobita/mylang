@@ -1,5 +1,3 @@
-extern crate ast_to_bytecode;
-
 use std::{
     fs::File,
     io::{self, BufRead, BufReader, BufWriter, Write},

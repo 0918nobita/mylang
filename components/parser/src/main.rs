@@ -1,5 +1,3 @@
-extern crate parser;
-
 use std::{
     fs::File,
     io::{self, BufRead, BufReader, BufWriter, Write},

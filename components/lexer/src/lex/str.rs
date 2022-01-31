@@ -1,19 +1,25 @@
 use ast::pos::Pos;
+use token::Token;
 
-use crate::{result::LexResult, state::str::StrState};
+use crate::{result::LexErr, state::str::StrState};
 
 pub enum StrLexResult {
     Continued(StrState),
-    Interrupted(LexResult),
+    Completed(Token),
+    Err(StrState, LexErr),
 }
 
 pub fn str_lex(str_state: &StrState, (pos, c): &(Pos, char)) -> StrLexResult {
     match (str_state.escape, c) {
-        (false, '"') => StrLexResult::Interrupted(Ok(str_state.tokenize(pos))),
+        (false, '"') => StrLexResult::Completed(str_state.tokenize(pos)),
 
         (_, c) => match str_state.try_append_char(pos, *c) {
             Ok(str_state) => StrLexResult::Continued(str_state),
-            Err(e) => StrLexResult::Interrupted(Err(e)),
+            Err(e) => {
+                let mut str_state = str_state.clone();
+                str_state.escape = false;
+                StrLexResult::Err(str_state, e)
+            }
         },
     }
 }

@@ -43,9 +43,14 @@ fn mapping(state: &mut State, pos_c: (Pos, char)) -> Vec<LexResult> {
                 vec![]
             }
 
-            StrLexResult::Interrupted(result) => {
+            StrLexResult::Completed(token) => {
                 *state = State::Initial;
-                vec![result]
+                vec![Ok(token)]
+            }
+
+            StrLexResult::Err(str_state, err) => {
+                *state = State::Str(str_state);
+                vec![Err(err)]
             }
         },
 

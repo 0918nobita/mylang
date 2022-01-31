@@ -1,7 +1,7 @@
 use ast::{pos::Pos, range::Range};
 use token::Token;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct I32State {
     start: Pos,
     acc: String,

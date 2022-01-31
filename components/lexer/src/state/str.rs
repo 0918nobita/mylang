@@ -3,7 +3,7 @@ use token::Token;
 
 use crate::result::LexErr;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct StrState {
     start: Pos,
     pub escape: bool,
@@ -21,6 +21,8 @@ impl StrState {
 
     pub fn try_append_char(&self, pos: &Pos, c: char) -> Result<Self, LexErr> {
         match (self.escape, c) {
+            (_, '\n') => Err(LexErr::ForbiddenChar(pos.clone(), c)),
+
             (true, c @ ('\\' | 'n')) => Ok(Self {
                 start: self.start.clone(),
                 escape: false,

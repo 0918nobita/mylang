@@ -3,7 +3,7 @@ use token::{KeywordKind, Token};
 
 use crate::result::{LexErr, LexResult};
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct KeywordState {
     start: Pos,
     acc: String,

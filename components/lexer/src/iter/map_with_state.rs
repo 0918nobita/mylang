@@ -3,7 +3,8 @@
 pub struct MapWithState<I, S, F, B>
 where
     I: Iterator + Sized,
-    F: FnMut(&mut S, I::Item) -> B,
+    S: Clone,
+    F: Fn(S, I::Item) -> (S, B),
 {
     state: S,
     iter: I,
@@ -13,20 +14,24 @@ where
 impl<I, S, F, B> Iterator for MapWithState<I, S, F, B>
 where
     I: Iterator,
-    F: FnMut(&mut S, I::Item) -> B,
+    S: Clone,
+    F: Fn(S, I::Item) -> (S, B),
 {
-    type Item = B;
+    type Item = (S, B);
 
-    fn next(&mut self) -> Option<B> {
+    fn next(&mut self) -> Option<Self::Item> {
         let a = self.iter.next()?;
-        Some((self.f)(&mut self.state, a))
+        let (next_state, res) = (self.f)(self.state.clone(), a);
+        self.state = next_state.clone();
+        Some((next_state, res))
     }
 }
 
 pub trait MapWithStateExt: Iterator + Sized {
     fn map_with_state<S, F, B>(self, initial_state: S, f: F) -> MapWithState<Self, S, F, B>
     where
-        F: FnMut(&mut S, Self::Item) -> B;
+        S: Clone,
+        F: Fn(S, Self::Item) -> (S, B);
 }
 
 impl<I> MapWithStateExt for I
@@ -35,7 +40,8 @@ where
 {
     fn map_with_state<S, F, B>(self, initial_state: S, f: F) -> MapWithState<Self, S, F, B>
     where
-        F: FnMut(&mut S, Self::Item) -> B,
+        S: Clone,
+        F: Fn(S, Self::Item) -> (S, B),
     {
         MapWithState {
             state: initial_state,

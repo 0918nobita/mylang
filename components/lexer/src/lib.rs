@@ -22,50 +22,37 @@ use crate::{
     state::State,
 };
 
-fn mapping(state: &mut State, pos_c: (Pos, char)) -> Vec<LexResult> {
+fn mapping(state: State, pos_c: (Pos, char)) -> (State, Vec<LexResult>) {
     match &state {
-        State::Initial => default_lex(state, &pos_c),
+        State::Initial => default_lex(&pos_c),
 
         State::I32(i32_state) => match i32_lex(i32_state, &pos_c) {
-            I32LexResult::Continued(i32_state) => {
-                *state = State::I32(i32_state);
-                vec![]
-            }
+            I32LexResult::Continued(i32_state) => (State::I32(i32_state), vec![]),
 
             I32LexResult::Interrupted(token) => {
-                let mut result = vec![Ok(token)];
-                result.extend(default_lex(state, &pos_c));
-                result
+                let mut results = vec![Ok(token)];
+                let (next_state, next_results) = default_lex(&pos_c);
+                results.extend(next_results);
+                (next_state, results)
             }
         },
 
         State::Str(str_state) => match str_lex(str_state, &pos_c) {
-            StrLexResult::Continued(str_state) => {
-                *state = State::Str(str_state);
-                vec![]
-            }
+            StrLexResult::Continued(str_state) => (State::Str(str_state), vec![]),
 
-            StrLexResult::Completed(token) => {
-                *state = State::Initial;
-                vec![Ok(token)]
-            }
+            StrLexResult::Completed(token) => (State::Initial, vec![Ok(token)]),
 
-            StrLexResult::Err(str_state, err) => {
-                *state = State::Str(str_state);
-                vec![Err(err)]
-            }
+            StrLexResult::Err(str_state, err) => (State::Str(str_state), vec![Err(err)]),
         },
 
         State::Keyword(keyword_state) => match keyword_lex(keyword_state, &pos_c) {
-            KeywordLexResult::Continued(keyword_state) => {
-                *state = State::Keyword(keyword_state);
-                vec![]
-            }
+            KeywordLexResult::Continued(keyword_state) => (State::Keyword(keyword_state), vec![]),
 
             KeywordLexResult::Interrupted(prev_result) => {
-                let mut result = vec![prev_result];
-                result.extend(default_lex(state, &pos_c));
-                result
+                let mut results = vec![prev_result];
+                let (next_state, next_results) = default_lex(&pos_c);
+                results.extend(next_results);
+                (next_state, results)
             }
         },
     }
@@ -82,6 +69,9 @@ pub fn lex<T: BufRead>(src: &mut T) -> impl Iterator<Item = LexResult> + '_ {
     src.chars()
         .map(|r| r.unwrap())
         .with_pos()
+        // FIXME: 途中でも毎回 State をクローンして流すのは無駄にコストがデカいのでやめたい
         .map_with_state(State::Initial, mapping)
+        // TODO: 最終状態を確認して、必要があれば追加で結果を流したい (そのためのアダプタを実装する)
+        .map(|(_state, results)| results)
         .flatten()
 }

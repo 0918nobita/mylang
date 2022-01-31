@@ -1,3 +1,5 @@
+//! 字句解析器の状態
+
 pub mod i32;
 pub mod keyword;
 pub mod str;

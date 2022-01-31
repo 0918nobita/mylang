@@ -2,6 +2,7 @@ use ast::{pos::Pos, range::Range};
 use thiserror::Error;
 use token::Token;
 
+/// 字句解析中に発生するエラー
 #[derive(Debug, Error)]
 pub enum LexErr {
     #[error("({0}) Forbidden character: '{1}'")]
@@ -17,4 +18,5 @@ pub enum LexErr {
     MissingClosingQuoteForStr(Pos),
 }
 
+/// 字句解析中に得られたトークン、または発生したエラー
 pub type LexResult = Result<Token, LexErr>;

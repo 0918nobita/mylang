@@ -1,3 +1,5 @@
+//! 状態を持ち回りながら各要素をマッピングするアダプタ
+
 pub struct MapWithState<I, S, F, B>
 where
     I: Iterator + Sized,

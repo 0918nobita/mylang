@@ -1,3 +1,5 @@
+//! 字句解析器
+
 mod iter;
 mod lex;
 mod result;
@@ -69,6 +71,13 @@ fn mapping(state: &mut State, pos_c: (Pos, char)) -> Vec<LexResult> {
     }
 }
 
+/// 字句解析を実行する
+///
+/// UTF-8 文字列から順番に文字を取り出し、字句解析器としての状態を持ち回りながら flatMap を行い、結果を順次流す。
+///
+/// ## Panics
+///
+/// UTF-8 文字列として不正な入力を得た場合には panic する。
 pub fn lex<T: BufRead>(src: &mut T) -> impl Iterator<Item = LexResult> + '_ {
     src.chars()
         .map(|r| r.unwrap())

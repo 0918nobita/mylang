@@ -1,3 +1,5 @@
+//! 構文解析器
+
 use token::Token;
 
 use ast::{expr::Expr, range::Range, stmt::Stmt};

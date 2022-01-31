@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["WithPos",""]],"trait":[["WithPosExt",""]]});

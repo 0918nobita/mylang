@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["ast"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.58.1/core/convert/trait.From.html\" title=\"trait core::convert::From\">From</a>&lt;<a class=\"struct\" href=\"ast/pos/struct.Pos.html\" title=\"struct ast::pos::Pos\">Pos</a>&gt; for <a class=\"struct\" href=\"ast/range/struct.Range.html\" title=\"struct ast::range::Range\">Range</a>","synthetic":false,"types":["ast::range::Range"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

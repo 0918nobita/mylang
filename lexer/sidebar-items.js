@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["lex",""]],"mod":[["lex","字句解析器内部の状態遷移の実装"],["result","字句解析の結果"],["state","字句解析器の状態"],["with_pos","文字のイテレータを「位置・文字ペア」のイテレータに変換するアダプタ"]],"struct":[["Lex","字句解析を実行する"]],"trait":[["LexExt",""]]});
+initSidebarItems({"fn":[["lex","字句解析を実行する"],["transition",""]],"mod":[["result","字句解析の結果"],["state","字句解析器の状態"],["transition","字句解析器内部の状態遷移の実装"],["with_pos","文字のイテレータを「位置・文字ペア」のイテレータに変換するアダプタ"]],"struct":[["Lex",""]],"trait":[["LexExt",""]]});

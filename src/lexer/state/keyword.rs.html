@@ -36,6 +36,12 @@
 <span id="35">35</span>
 <span id="36">36</span>
 <span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">ast</span>::{<span class="ident">pos::Pos</span>, <span class="ident">range::Range</span>};
 <span class="kw">use</span> <span class="ident">token</span>::{<span class="ident">KeywordKind</span>, <span class="ident">Token</span>};
 
@@ -44,30 +50,36 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">KeywordState</span> {
     <span class="ident">start</span>: <span class="ident">Pos</span>,
+    <span class="ident">end</span>: <span class="ident">Pos</span>,
     <span class="ident">acc</span>: <span class="ident">String</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">KeywordState</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">start</span>: <span class="ident">Pos</span>, <span class="ident">acc</span>: <span class="ident">String</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> { <span class="ident">start</span>, <span class="ident">acc</span> }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">pos</span>: <span class="ident">Pos</span>, <span class="ident">acc</span>: <span class="ident">String</span>) -&gt; <span class="self">Self</span> {
+        <span class="self">Self</span> {
+            <span class="ident">start</span>: <span class="ident">pos</span>.<span class="ident">clone</span>(),
+            <span class="ident">end</span>: <span class="ident">pos</span>,
+            <span class="ident">acc</span>,
+        }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">append_char</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">c</span>: <span class="ident">char</span>) -&gt; <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">append_char</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">pos</span>: <span class="ident">Pos</span>, <span class="ident">c</span>: <span class="ident">char</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">start</span>: <span class="self">self</span>.<span class="ident">start</span>.<span class="ident">clone</span>(),
+            <span class="ident">end</span>: <span class="ident">pos</span>,
             <span class="ident">acc</span>: <span class="macro">format!</span>(<span class="string">&quot;{}{c}&quot;</span>, <span class="self">self</span>.<span class="ident">acc</span>),
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_tokenize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">pos</span>: <span class="kw-2">&amp;</span><span class="ident">Pos</span>) -&gt; <span class="ident">LexResult</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_tokenize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">LexResult</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">keyword_kind</span>) <span class="op">=</span> <span class="ident">KeywordKind::parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">acc</span>) {
             <span class="prelude-val">Ok</span>(<span class="ident">Token::Keyword</span>(
-                <span class="ident">Range::new</span>(<span class="self">self</span>.<span class="ident">start</span>.<span class="ident">clone</span>(), <span class="ident">pos</span>.<span class="ident">clone</span>()),
+                <span class="ident">Range::new</span>(<span class="self">self</span>.<span class="ident">start</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">end</span>.<span class="ident">clone</span>()),
                 <span class="ident">keyword_kind</span>,
             ))
         } <span class="kw">else</span> {
             <span class="prelude-val">Err</span>(<span class="ident">LexErr::InvalidKeyword</span>(
-                <span class="ident">Range::new</span>(<span class="self">self</span>.<span class="ident">start</span>.<span class="ident">clone</span>(), <span class="ident">pos</span>.<span class="ident">clone</span>()),
+                <span class="ident">Range::new</span>(<span class="self">self</span>.<span class="ident">start</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">end</span>.<span class="ident">clone</span>()),
                 <span class="self">self</span>.<span class="ident">acc</span>.<span class="ident">to_string</span>(),
             ))
         }

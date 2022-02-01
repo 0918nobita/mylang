@@ -5,7 +5,7 @@ sourcesIndex["ast_to_bytecode"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["bytecode"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["bytecode_interp"] = {"name":"","files":["main.rs"]};
 sourcesIndex["entity"] = {"name":"","files":["lib.rs"]};
-sourcesIndex["lexer"] = {"name":"","dirs":[{"name":"iter","files":["map_with_state.rs","with_pos.rs"]},{"name":"lex","files":["default.rs","i32.rs","keyword.rs","str.rs"]},{"name":"state","files":["i32.rs","keyword.rs","str.rs"]}],"files":["iter.rs","lex.rs","lib.rs","result.rs","state.rs"]};
+sourcesIndex["lexer"] = {"name":"","dirs":[{"name":"lex","files":["default.rs","i32.rs","keyword.rs","str.rs"]},{"name":"state","files":["i32.rs","keyword.rs","str.rs"]}],"files":["lex.rs","lib.rs","result.rs","state.rs","with_pos.rs"]};
 sourcesIndex["parser"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["token"] = {"name":"","files":["lib.rs"]};
 createSourceSidebar();

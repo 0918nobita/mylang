@@ -26,13 +26,13 @@
     <span class="ident">Interrupted</span>(<span class="ident">LexResult</span>),
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">keyword_lex</span>(<span class="ident">keyword_state</span>: <span class="kw-2">&amp;</span><span class="ident">KeywordState</span>, (<span class="ident">pos</span>, <span class="ident">c</span>): <span class="kw-2">&amp;</span>(<span class="ident">Pos</span>, <span class="ident">char</span>)) -&gt; <span class="ident">KeywordLexResult</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">keyword_lex</span>(<span class="ident">keyword_state</span>: <span class="kw-2">&amp;</span><span class="ident">KeywordState</span>, (<span class="ident">pos</span>, <span class="ident">c</span>): (<span class="ident">Pos</span>, <span class="ident">char</span>)) -&gt; <span class="ident">KeywordLexResult</span> {
     <span class="kw">match</span> <span class="ident">c</span> {
         <span class="ident">c</span> <span class="kw">if</span> <span class="ident">c</span>.<span class="ident">is_ascii</span>() <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">c</span>.<span class="ident">is_ascii_whitespace</span>() =&gt; {
-            <span class="ident">KeywordLexResult::Continued</span>(<span class="ident">keyword_state</span>.<span class="ident">append_char</span>(<span class="kw-2">*</span><span class="ident">c</span>))
+            <span class="ident">KeywordLexResult::Continued</span>(<span class="ident">keyword_state</span>.<span class="ident">append_char</span>(<span class="ident">pos</span>, <span class="ident">c</span>))
         }
 
-        <span class="kw">_</span> =&gt; <span class="ident">KeywordLexResult::Interrupted</span>(<span class="ident">keyword_state</span>.<span class="ident">try_tokenize</span>(<span class="ident">pos</span>)),
+        <span class="kw">_</span> =&gt; <span class="ident">KeywordLexResult::Interrupted</span>(<span class="ident">keyword_state</span>.<span class="ident">try_tokenize</span>()),
     }
 }
 </code></pre></div>

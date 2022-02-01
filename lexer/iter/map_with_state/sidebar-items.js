@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["MapWithState",""]],"trait":[["MapWithStateExt",""]]});

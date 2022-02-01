@@ -28,13 +28,13 @@
     <span class="ident">Interrupted</span>(<span class="ident">Token</span>),
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">i32_lex</span>(<span class="ident">i32_state</span>: <span class="kw-2">&amp;</span><span class="ident">I32State</span>, (<span class="ident">pos</span>, <span class="ident">c</span>): <span class="kw-2">&amp;</span>(<span class="ident">Pos</span>, <span class="ident">char</span>)) -&gt; <span class="ident">I32LexResult</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">i32_lex</span>(<span class="ident">i32_state</span>: <span class="kw-2">&amp;</span><span class="ident">I32State</span>, (<span class="ident">pos</span>, <span class="ident">c</span>): (<span class="ident">Pos</span>, <span class="ident">char</span>)) -&gt; <span class="ident">I32LexResult</span> {
     <span class="kw">match</span> <span class="ident">c</span> {
         <span class="string">&#39;_&#39;</span> =&gt; <span class="ident">I32LexResult::Continued</span>(<span class="ident">i32_state</span>.<span class="ident">clone</span>()),
 
-        <span class="ident">c</span> <span class="kw">if</span> <span class="ident">c</span>.<span class="ident">is_ascii_digit</span>() =&gt; <span class="ident">I32LexResult::Continued</span>(<span class="ident">i32_state</span>.<span class="ident">append_digit_char</span>(<span class="kw-2">*</span><span class="ident">c</span>)),
+        <span class="ident">c</span> <span class="kw">if</span> <span class="ident">c</span>.<span class="ident">is_ascii_digit</span>() =&gt; <span class="ident">I32LexResult::Continued</span>(<span class="ident">i32_state</span>.<span class="ident">append_digit_char</span>(<span class="ident">pos</span>, <span class="ident">c</span>)),
 
-        <span class="kw">_</span> =&gt; <span class="ident">I32LexResult::Interrupted</span>(<span class="ident">i32_state</span>.<span class="ident">tokenize</span>(<span class="ident">pos</span>)),
+        <span class="kw">_</span> =&gt; <span class="ident">I32LexResult::Interrupted</span>(<span class="ident">i32_state</span>.<span class="ident">tokenize</span>()),
     }
 }
 </code></pre></div>

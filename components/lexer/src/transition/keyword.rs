@@ -7,12 +7,12 @@ pub enum KeywordLexResult {
     Interrupted(LexResult),
 }
 
-pub fn keyword_lex(keyword_state: &KeywordState, (pos, c): &(Pos, char)) -> KeywordLexResult {
+pub fn keyword_lex(keyword_state: &KeywordState, (pos, c): (Pos, char)) -> KeywordLexResult {
     match c {
         c if c.is_ascii() && !c.is_ascii_whitespace() => {
-            KeywordLexResult::Continued(keyword_state.append_char(*c))
+            KeywordLexResult::Continued(keyword_state.append_char(pos, c))
         }
 
-        _ => KeywordLexResult::Interrupted(keyword_state.try_tokenize(pos)),
+        _ => KeywordLexResult::Interrupted(keyword_state.try_tokenize()),
     }
 }

@@ -1,3 +1,5 @@
+//! 字句解析の結果
+
 use ast::{pos::Pos, range::Range};
 use thiserror::Error;
 use token::Token;

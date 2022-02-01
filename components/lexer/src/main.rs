@@ -35,7 +35,9 @@ fn main() -> anyhow::Result<()> {
     };
 
     let (tokens, errors): (Vec<_>, Vec<_>) = lexer::lex(&mut src).partition(Result::is_ok);
+
     let tokens = tokens.into_iter().map(Result::unwrap).collect::<Vec<_>>();
+
     let errors = errors
         .into_iter()
         .map(Result::unwrap_err)

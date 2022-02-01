@@ -9,11 +9,11 @@ pub enum StrLexResult {
     Err(StrState, LexErr),
 }
 
-pub fn str_lex(str_state: &StrState, (pos, c): &(Pos, char)) -> StrLexResult {
+pub fn str_lex(str_state: &StrState, (pos, c): (Pos, char)) -> StrLexResult {
     match (str_state.escape, c) {
-        (false, '"') => StrLexResult::Completed(str_state.tokenize(pos)),
+        (false, '"') => StrLexResult::Completed(str_state.tokenize()),
 
-        (_, c) => match str_state.try_append_char(pos, *c) {
+        (_, c) => match str_state.try_append_char(pos, c) {
             Ok(str_state) => StrLexResult::Continued(str_state),
             Err(e) => {
                 let mut str_state = str_state.clone();

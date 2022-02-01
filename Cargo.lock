@@ -212,6 +212,7 @@ dependencies = [
  "ast",
  "clap",
  "serde_json",
+ "thiserror",
  "token",
 ]
 

@@ -4,7 +4,7 @@ use std::{
 };
 
 use anyhow::Context;
-use ast::{expr::Expr, range::Range, stmt::Stmt};
+use ast::stmt::Stmt;
 use ast_to_bytecode::ast_to_bytecode;
 use clap::Parser;
 
@@ -22,7 +22,7 @@ fn main() -> anyhow::Result<()> {
     let stdin = io::stdin();
     let stdout = io::stdout();
 
-    let _src: Box<dyn BufRead> = if let Some(input) = input {
+    let src: Box<dyn BufRead> = if let Some(input) = input {
         let file = File::open(&input)?;
         Box::new(BufReader::new(file))
     } else {
@@ -36,12 +36,10 @@ fn main() -> anyhow::Result<()> {
         Box::new(BufWriter::new(stdout.lock()))
     };
 
-    let lhs = Expr::I32Lit(Range::default(), 3);
-    let rhs = Expr::I32Lit(Range::default(), 4);
-    let add_expr = Expr::Add(Box::new(lhs), Box::new(rhs));
-    let stmt = Stmt::PrintI32(Range::default(), add_expr);
+    let stmts: Vec<Stmt> = serde_json::from_reader(src)?;
 
-    let insts = ast_to_bytecode(&[stmt]);
+    let insts = ast_to_bytecode(&stmts);
+
     let encoded = bincode::serialize(&insts)?;
 
     dest.write_all(&encoded)

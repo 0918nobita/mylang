@@ -2,22 +2,7 @@
 
 cargo build
 
-parent_dir="$(realpath $(dirname "$0"))"
-
-lex() {
-    "${parent_dir}/../target/debug/lexer"
-}
-
-parse() {
-    "${parent_dir}/../target/debug/parser"
-}
-
-to_bytecode() {
-    "${parent_dir}/../target/debug/ast_to_bytecode"
-}
-
-execute() {
-    "${parent_dir}/../target/debug/bytecode_interp"
-}
-
-cat hello.mylang | lex | parse | to_bytecode | execute
+../target/debug/lexer hello.mylang -o hello.tok.json
+../target/debug/parser hello.tok.json -o hello.ast.json
+../target/debug/ast_to_bytecode hello.ast.json -o hello.bytecode
+../target/debug/bytecode_interp hello.bytecode

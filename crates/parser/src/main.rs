@@ -36,7 +36,7 @@ fn main() -> anyhow::Result<()> {
 
     let tokens: Vec<Token> = serde_json::from_reader(src)?;
 
-    let ast = parser::parse(&tokens);
+    let ast = parser::parse(tokens.into_iter())?;
 
     let json = serde_json::to_string_pretty(&ast)?;
     writeln!(dest, "{}", json)?;

@@ -1,12 +1,12 @@
 [workspace]
 members = [
-    "components/ast",
-    "components/ast_interp",
-    "components/ast_to_bytecode",
-    "components/bytecode",
-    "components/bytecode_interp",
-    "components/entity",
-    "components/lexer",
-    "components/parser",
-    "components/token",
+    "crates/ast",
+    "crates/ast_interp",
+    "crates/ast_to_bytecode",
+    "crates/bytecode",
+    "crates/bytecode_interp",
+    "crates/entity",
+    "crates/lexer",
+    "crates/parser",
+    "crates/token",
 ]

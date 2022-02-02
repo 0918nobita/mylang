@@ -75,18 +75,14 @@ fn stmt(tokens: &mut PutBack<impl Iterator<Item = Token>>) -> Result<Stmt, Parse
 fn program(tokens: &mut PutBack<impl Iterator<Item = Token>>) -> Result<Vec<Stmt>, ParseErr> {
     let mut stmts = Vec::<Stmt>::new();
 
-    loop {
-        if let Some(tok) = tokens.next() {
-            match tok {
-                Token::Newline(_) => (),
-                _ => {
-                    tokens.put_back(tok);
-                    let stmt = stmt(tokens)?;
-                    stmts.push(stmt);
-                }
+    while let Some(tok) = tokens.next() {
+        match tok {
+            Token::Newline(_) => (),
+            _ => {
+                tokens.put_back(tok);
+                let stmt = stmt(tokens)?;
+                stmts.push(stmt);
             }
-        } else {
-            break;
         }
     }
 

@@ -1,0 +1,29 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "dependsOn": ["build-mylang", "build-vscode-ext"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "build-mylang",
+      "type": "shell",
+      "command": "cargo build",
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "build-vscode-ext",
+      "type": "shell",
+      "command": "pnpm build",
+      "options": {
+        "cwd": "${workspaceFolder}/language-server"
+      },
+      "group": "build"
+    }
+  ]
+}

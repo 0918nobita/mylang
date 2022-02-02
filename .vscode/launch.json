@@ -6,7 +6,6 @@
       "type": "extensionHost",
       "request": "launch",
       "runtimeExecutable": "${execPath}",
-      "outputCapture": "std",
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}/language-server"
       ]

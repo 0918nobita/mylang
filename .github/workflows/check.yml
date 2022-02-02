@@ -4,8 +4,8 @@ on:
   push:
     paths:
       - ".github/workflows/check.yml"
-      - "components/**/*.rs"
-      - "components/**/Cargo.toml"
+      - "crates/**/*.rs"
+      - "crates/**/Cargo.toml"
       - "examples/**/*.mylang"
       - "Cargo.toml"
       - "Cargo.lock"

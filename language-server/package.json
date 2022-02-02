@@ -1,0 +1,29 @@
+{
+  "private": true,
+  "name": "vscode-mylang-mode",
+  "version": "0.1.0",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.63.2"
+  },
+  "main": "./build/bundle.js",
+  "devDependencies": {
+    "esbuild": "^0.14.16"
+  },
+  "activationEvents": [
+    "onLanguage:mylang"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "mylang",
+        "extensions": [
+          ".mylang"
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "build": "dotnet fable src -o build && esbuild --platform=node --bundle --minify --external:vscode build/Program.js --outfile=build/bundle.js"
+  }
+}

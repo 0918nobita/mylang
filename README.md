@@ -4,7 +4,14 @@
 
 趣味で少しずつ作っている自作プログラミング言語処理系です。
 
-## AST を解釈実行する場合
+## 必要なもの
+
+- rustup
+- .NET 6.0 SDK
+
+## 実行方法
+
+### AST を解釈実行する場合
 
 ```bash
 cd examples
@@ -13,7 +20,7 @@ cargo run --bin parser -- hello.tok.json -o hello.ast.json
 cargo run --bin ast_interp -- hello.ast.json
 ```
 
-## AST をバイトコードに変換してから VM で実行する場合
+### AST をバイトコードに変換してから VM で実行する場合
 
 ```bash
 cd examples

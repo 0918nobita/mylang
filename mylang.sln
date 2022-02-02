@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "language-server", "language-server", "{B2EAD8D3-8BC4-4115-8E14-B18D8B46120C}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "language-server", "language-server\src\language-server.fsproj", "{67372C70-3C3F-47C2-925B-4D6CE7C0D47B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{67372C70-3C3F-47C2-925B-4D6CE7C0D47B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67372C70-3C3F-47C2-925B-4D6CE7C0D47B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67372C70-3C3F-47C2-925B-4D6CE7C0D47B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67372C70-3C3F-47C2-925B-4D6CE7C0D47B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{67372C70-3C3F-47C2-925B-4D6CE7C0D47B} = {B2EAD8D3-8BC4-4115-8E14-B18D8B46120C}
+	EndGlobalSection
+EndGlobal

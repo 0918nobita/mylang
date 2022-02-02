@@ -1,0 +1,9 @@
+STORAGE: NONE
+RESTRICTION: == netstandard2.0
+NUGET
+  remote: https://api.nuget.org/v3/index.json
+    Fable.Core (3.6.1)
+    FSharp.Core (6.0.1)
+GITHUB
+  remote: ionide/ionide-vscode-helpers
+    src/Fable.Import.VSCode.fs (16eceef34bcee50f441f6727eed94c8bb9a136f5)

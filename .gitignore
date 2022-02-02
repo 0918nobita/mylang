@@ -1,4 +1,14 @@
+.ionide/
+.paket/
+bin/
+obj/
+paket-files/
+
+build/
+node_modules/
+
 /target/
+
 *.ast.json
 *.bytecode
 *.tok.json

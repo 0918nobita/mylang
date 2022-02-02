@@ -47,10 +47,9 @@ fn main() -> anyhow::Result<()> {
         .map(Result::unwrap_err)
         .collect::<Vec<_>>();
 
-    let json = serde_json::to_string_pretty(&stmts)?;
-    writeln!(dest, "{}", json)?;
-
     if errors.is_empty() {
+        let json = serde_json::to_string_pretty(&stmts)?;
+        writeln!(dest, "{}", json)?;
         Ok(())
     } else {
         for err in errors.iter() {

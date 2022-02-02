@@ -6,6 +6,7 @@ members = [
     "crates/bytecode",
     "crates/bytecode_interp",
     "crates/entity",
+    "crates/language_server",
     "crates/lexer",
     "crates/parser",
     "crates/token",

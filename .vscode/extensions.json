@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "matklad.rust-analyzer",
+    "ionide.ionide-fsharp",
+    "editorconfig.editorconfig"
+  ]
+}

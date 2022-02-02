@@ -1,7 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
-  esbuild: ^0.14.16
+  esbuild: 0.14.16
 
 devDependencies:
   esbuild: 0.14.16

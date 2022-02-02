@@ -5,6 +5,7 @@ sourcesIndex["ast_to_bytecode"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["bytecode"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["bytecode_interp"] = {"name":"","files":["main.rs"]};
 sourcesIndex["entity"] = {"name":"","files":["lib.rs"]};
+sourcesIndex["language_server"] = {"name":"","files":["main.rs"]};
 sourcesIndex["lexer"] = {"name":"","dirs":[{"name":"state","files":["i32.rs","keyword.rs","str.rs"]},{"name":"transition","files":["default.rs","i32.rs","keyword.rs","str.rs"]}],"files":["lib.rs","result.rs","state.rs","transition.rs","with_pos.rs"]};
 sourcesIndex["parser"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["token"] = {"name":"","files":["lib.rs"]};

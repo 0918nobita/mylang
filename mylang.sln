@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "language-server", "language-server", "{B2EAD8D3-8BC4-4115-8E14-B18D8B46120C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "vscode-ext", "vscode-ext", "{9DBEC6CC-2542-40F6-B08D-FFA58D12AD73}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "language-server", "language-server\src\language-server.fsproj", "{67372C70-3C3F-47C2-925B-4D6CE7C0D47B}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "VsCodeExt", "vscode-ext\src\VsCodeExt.fsproj", "{C38F4768-0A4C-48F9-A62C-A56C0D74A54F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,12 +16,12 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{67372C70-3C3F-47C2-925B-4D6CE7C0D47B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67372C70-3C3F-47C2-925B-4D6CE7C0D47B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67372C70-3C3F-47C2-925B-4D6CE7C0D47B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67372C70-3C3F-47C2-925B-4D6CE7C0D47B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C38F4768-0A4C-48F9-A62C-A56C0D74A54F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C38F4768-0A4C-48F9-A62C-A56C0D74A54F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C38F4768-0A4C-48F9-A62C-A56C0D74A54F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C38F4768-0A4C-48F9-A62C-A56C0D74A54F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{67372C70-3C3F-47C2-925B-4D6CE7C0D47B} = {B2EAD8D3-8BC4-4115-8E14-B18D8B46120C}
+		{C38F4768-0A4C-48F9-A62C-A56C0D74A54F} = {9DBEC6CC-2542-40F6-B08D-FFA58D12AD73}
 	EndGlobalSection
 EndGlobal

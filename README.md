@@ -33,14 +33,14 @@ Fable (F#) を用いて開発しているため、ビルドには .NET SDK が�
 ```bash
 dotnet tool restore
 dotnet paket restore
-cd language-server
+cd vscode-ext
 pnpm i
 ```
 
 ### ビルド方法
 
 ```bash
-cd language-server
+cd vscode-ext
 pnpm build
 ```
 

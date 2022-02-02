@@ -3,7 +3,7 @@ name: Check
 on:
   push:
     paths:
-      - ".github/**/*.yml"
+      - ".github/workflows/check.yml"
       - "components/**/*.rs"
       - "components/**/Cargo.toml"
       - "examples/**/*.mylang"

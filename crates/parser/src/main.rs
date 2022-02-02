@@ -3,6 +3,7 @@ use std::{
     io::{self, BufRead, BufReader, BufWriter, Write},
 };
 
+use anyhow::anyhow;
 use clap::Parser;
 use token::Token;
 
@@ -36,10 +37,25 @@ fn main() -> anyhow::Result<()> {
 
     let tokens: Vec<Token> = serde_json::from_reader(src)?;
 
-    let ast = parser::parse(tokens.into_iter())?;
+    let (stmts, errors): (Vec<_>, Vec<_>) = parser::parse(tokens.into_iter())
+        .into_iter()
+        .partition(Result::is_ok);
 
-    let json = serde_json::to_string_pretty(&ast)?;
+    let stmts = stmts.into_iter().map(Result::unwrap).collect::<Vec<_>>();
+    let errors = errors
+        .into_iter()
+        .map(Result::unwrap_err)
+        .collect::<Vec<_>>();
+
+    let json = serde_json::to_string_pretty(&stmts)?;
     writeln!(dest, "{}", json)?;
 
-    Ok(())
+    if errors.is_empty() {
+        Ok(())
+    } else {
+        for err in errors.iter() {
+            eprintln!("{}", err);
+        }
+        Err(anyhow!("{} syntax errors occurred", errors.len()))
+    }
 }

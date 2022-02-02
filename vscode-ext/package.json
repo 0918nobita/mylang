@@ -25,5 +25,8 @@
   },
   "scripts": {
     "build": "dotnet fable src -o build && esbuild --platform=node --bundle --minify --external:vscode build/Program.js --outfile=build/bundle.js"
+  },
+  "dependencies": {
+    "vscode-languageclient": "7.0.0"
   }
 }

@@ -29,7 +29,7 @@ pub enum ParseErr {
     KeywordExpected,
 }
 
-fn term(tokens: &mut PutBack<impl Iterator<Item = Token>>) -> Result<Expr, ParseErr> {
+fn term(tokens: &mut impl Iterator<Item = Token>) -> Result<Expr, ParseErr> {
     let tok = tokens.next().ok_or(ParseErr::TermExpected)?;
 
     match tok {
@@ -45,7 +45,10 @@ fn expr(tokens: &mut PutBack<impl Iterator<Item = Token>>) -> Result<Expr, Parse
     match tokens.next() {
         Some(Token::AddOp(_)) => {
             let rhs = expr(tokens)?;
-            Ok(Expr::Add(Box::new(lhs), Box::new(rhs)))
+            Ok(match rhs {
+                Expr::Add(b, c) => Expr::Add(Box::new(Expr::Add(Box::new(lhs), b)), c),
+                _ => Expr::Add(Box::new(lhs), Box::new(rhs)),
+            })
         }
         Some(tok) => {
             tokens.put_back(tok);
@@ -69,6 +72,27 @@ fn stmt(tokens: &mut PutBack<impl Iterator<Item = Token>>) -> Result<Stmt, Parse
     }
 }
 
+fn program(tokens: &mut PutBack<impl Iterator<Item = Token>>) -> Result<Vec<Stmt>, ParseErr> {
+    let mut stmts = Vec::<Stmt>::new();
+
+    loop {
+        if let Some(tok) = tokens.next() {
+            match tok {
+                Token::Newline(_) => (),
+                _ => {
+                    tokens.put_back(tok);
+                    let stmt = stmt(tokens)?;
+                    stmts.push(stmt);
+                }
+            }
+        } else {
+            break;
+        }
+    }
+
+    Ok(stmts)
+}
+
 pub fn parse(tokens: impl Iterator<Item = Token>) -> Result<Vec<Stmt>, ParseErr> {
-    stmt(&mut put_back(tokens)).map(|stmt| vec![stmt])
+    program(&mut put_back(tokens))
 }

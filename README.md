@@ -26,13 +26,9 @@ cd examples
 
 シンタックスハイライト、字句/構文解析エラーの表示機能を提供することを目指しています。
 
-Fable (F#) を用いて開発しているため、ビルドには .NET SDK が必要です。
-
 ### 依存ツール・パッケージのインストール
 
 ```bash
-dotnet tool restore
-dotnet paket restore
 cd vscode-ext
 pnpm i
 ```

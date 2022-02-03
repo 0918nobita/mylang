@@ -8,7 +8,7 @@
   },
   "main": "./build/bundle.js",
   "devDependencies": {
-    "esbuild": "0.14.17"
+    "esbuild": "0.14.18"
   },
   "activationEvents": [
     "onLanguage:mylang"

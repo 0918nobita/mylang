@@ -1,0 +1,101 @@
+{
+  "compilerOptions": {
+    /* このファイルの詳細については、https://aka.ms/tsconfig.json をご覧ください */
+
+    /* プロジェクト */
+    // "incremental": true,                              /* インクリメンタル コンパイルを有効にする */
+    // "composite": true,                                /* プロジェクト参照での TypeScript プロジェクトの使用を許可する制約を有効にします。 */
+    // "tsBuildInfoFile": "./",                          /* .tsbuildinfo 増分コンパイル ファイルのフォルダーを指定します。 */
+    // "disableSourceOfProjectReferenceRedirect": true,  /* 複合プロジェクトを参照するときに宣言ファイルではなくソース ファイルを優先することを無効にします */
+    // "disableSolutionSearching": true,                 /* 編集時に複数プロジェクト参照のチェックからプロジェクトをオプトアウトします。 */
+    // "disableReferencedProjectLoad": true,             /* TypeScript によって自動的に読み込まれるプロジェクトの数を減らします。 */
+
+    /* 言語と環境 */
+    "target": "es2016",                                  /* 生成された JavaScript の JavaScript 言語バージョンを設定し、互換性のあるライブラリ宣言を含めます。 */
+    // "lib": [],                                        /* ターゲットのランタイム環境を記述する、バンドルされたライブラリ宣言ファイルのセットを指定します。 */
+    // "jsx": "preserve",                                /* 生成済みの JSX コードを指定します。 */
+    // "experimentalDecorators": true,                   /* TC39 ステージ 2 ドラフト デコレーター用の実験的なサポートを有効にします。 */
+    // "emitDecoratorMetadata": true,                    /* ソース ファイル内の修飾された宣言に対してデザイン型メタデータを生成します。 */
+    // "jsxFactory": "",                                 /* React JSX 発行を対象とするときに使用される JSX ファクトリ関数を指定します ('React.createElement' や 'h' など)。 */
+    // "jsxFragmentFactory": "",                         /* React JSX 発行を対象とするときにフラグメントに使用される JSX フラグメント参照を指定します ('React.Fragment' や 'Fragment' など)。 */
+    // "jsxImportSource": "",                            /* 'jsx: react-jsx*' を使用するときに JSX ファクトリ関数のインポートに使用するモジュール指定子を指定します。 */
+    // "reactNamespace": "",                             /* 'createElement' に対して呼び出されたオブジェクトを指定します。これは、'react' JSX 発行を対象とする場合にのみ適用されます。 */
+    // "noLib": true,                                    /* 既定の lib.d.ts を含むすべてのライブラリ ファイルを含めることを無効にします。 */
+    // "useDefineForClassFields": true,                  /* ECMAScript 標準準拠クラス フィールドを生成します。 */
+
+    /* モジュール */
+    "module": "commonjs",                                /* 生成済みのモジュール コードを指定します。 */
+    // "rootDir": "./",                                  /* ソース ファイル内のルート フォルダーを指定します。 */
+    // "moduleResolution": "node",                       /* TypeScript を使用して、指定されたモジュール指定子でファイルを検索する方法を指定します。 */
+    // "baseUrl": "./",                                  /* 非相対モジュール名を解決するための基本ディレクトリを指定します。 */
+    // "paths": {},                                      /* 追加の検索場所にインポートを再マップするエントリのセットを指定します。 */
+    // "rootDirs": [],                                   /* モジュールを解決するときに複数のフォルダーを 1 つのフォルダーとして処理することを許可します。 */
+    // "typeRoots": [],                                  /* './node_modules/@types' のように動作する複数のフォルダーを指定します。 */
+    // "types": [],                                      /* ソース ファイルに参照されずに含める型のパッケージ名を指定します。 */
+    // "allowUmdGlobalAccess": true,                     /* モジュールから UMD グローバルへのアクセスを許可します。 */
+    // "resolveJsonModule": true,                        /* .json ファイルのインポートを有効にする */
+    // "noResolve": true,                                /* 'import'、'require'、'<reference>' を使用して TypeScript がプロジェクトに追加するファイルの数を増やすことを無効にします。 */
+
+    /* JavaScript サポート */
+    // "allowJs": true,                                  /* JavaScript ファイルをプログラムの一部として使用することを許可します。'checkJS' オプションを使用して、これらのファイルからエラーを取得してください。 */
+    // "checkJs": true,                                  /* 型チェックされた JavaScript ファイルでのエラー報告を有効にします。 */
+    // "maxNodeModuleJsDepth": 1,                        /* 'node_modules' で JavaScript ファイルを確認するために使用するフォルダーの深さの最大値を指定します。'allowJs' にのみ適用可能です。 */
+
+    /* 生成 */
+    // "declaration": true,                              /* プロジェクト内の TypeScript ファイルおよび JavaScript ファイルから、.d.ts ファイルを生成します。 */
+    // "declarationMap": true,                           /* d.ts ファイルのソースマップを作成します。 */
+    // "emitDeclarationOnly": true,                      /* 出力の d.ts ファイルのみで、JavaScript ファイルは対象ではありません。 */
+    // "sourceMap": true,                                /* 生成された JavaScript ファイルのソース マップ ファイルを作成します。 */
+    // "outFile": "./",                                  /* 1 つの JavaScript ファイルにすべての出力をバンドルするファイルを指定します。'declaration' が true の場合は、すべての .d.ts 出力をバンドルするファイルも指定します。 */
+    // "outDir": "./",                                   /* すべての生成されたファイルに対して出力フォルダーを指定します。 */
+    // "removeComments": true,                           /* コメントの生成を無効にします。 */
+    "noEmit": true,                                      /* コンパイルからのファイルの出力を無効にします。 */
+    // "importHelpers": true,                            /* tslib からヘルパー関数をファイルごとに含めるのではなく、プロジェクトごとに 1 回インポートすることを許可します。 */
+    // "importsNotUsedAsValues": "remove",               /* 型にのみ使用されるインポートの生成または確認動作を指定する */
+    // "downlevelIteration": true,                       /* イテレーションのために、準拠性が高いものの、冗長でパフォーマンスが低い JavaScript を生成します。 */
+    // "sourceRoot": "",                                 /* デバッガーのルート パスを指定して、参照ソース コードを検索します。 */
+    // "mapRoot": "",                                    /* デバッガーが、生成された場所の代わりにマップ ファイルを検索する必要のある場所を指定します。 */
+    // "inlineSourceMap": true,                          /* 出力された JavaScript 内にソースマップ ファイルを含めます。 */
+    // "inlineSources": true,                            /* 生成された JavaScript 内のソースマップにソース コードを含めます。 */
+    // "emitBOM": true,                                  /* 出力ファイルの最初に UTF-8 バイト順マーク(BOM) を生成します。 */
+    // "newLine": "crlf",                                /* ファイルを生成するための改行文字を設定します。 */
+    // "stripInternal": true,                            /* JSDoc コメントに '@internal' を含む宣言の生成を無効にします。 */
+    // "noEmitHelpers": true,                            /* コンパイルされた出力での '__extends' などのカスタム ヘルパー関数の生成を無効にします。 */
+    // "noEmitOnError": true,                            /* 型チェック エラーが報告された場合は、ファイルの生成を無効にします。 */
+    // "preserveConstEnums": true,                       /* 生成されたコード内で 'const 列挙型' 宣言の消去を無効にします。 */
+    // "declarationDir": "./",                           /* 生成された宣言ファイルの出力ディレクトリを指定します。 */
+    // "preserveValueImports": true,                     /* さもなければ削除されてしまう JavaScript のアウトプット中の使われていないインポートされた値を保持します。 */
+
+    /* 制約の相互運用 */
+    // "isolatedModules": true,                          /* 各ファイルが他のインポートに依存しないで安全にトランスパイルできることを確認します。 */
+    // "allowSyntheticDefaultImports": true,             /* モジュールに既定のエクスポートがない場合は、'import x from y' を許可します。 */
+    "esModuleInterop": true,                             /* CommonJS モジュールのインポートをサポートしやすくするために追加の JavaScript を生成します。これにより、互換性のある型に対して 'allowSyntheticDefaultImports' を使用できるようになります。 */
+    // "preserveSymlinks": true,                         /* symlink を realpath に解決できないようにします。これは、ノードの同じフラグに関連しています。 */
+    "forceConsistentCasingInFileNames": true,            /* インポートの大文字と小文字の指定が正しいことを確認します。 */
+
+    /* 種類を確認中 */
+    "strict": true,                                      /* 厳密な型チェックのオプションをすべて有効にします。 */
+    // "noImplicitAny": true,                            /* 暗黙的な 'any' 型を含む式と宣言に関するエラー報告を有効にします。 */
+    // "strictNullChecks": true,                         /* 型チェックを行うときは、'null' と 'undefined' が考慮されます。 */
+    // "strictFunctionTypes": true,                      /* 関数を割り当てる際、パラメーターと戻り値が互換性のあるサブタイプであることを確認します。 */
+    // "strictBindCallApply": true,                      /* 'bind'、'call'、'apply' のメソッドの引数が元の関数と一致することを確認します。 */
+    // "strictPropertyInitialization": true,             /* 宣言されているものの、コンストラクターで設定されていないクラス プロパティを確認します。 */
+    // "noImplicitThis": true,                           /* 'this' に 'any' 型が指定されている場合は、エラー報告を有効にします。 */
+    // "useUnknownInCatchVariables": true,               /* catch 句の変数を '任意' ではなく '不明' として入力してください。 */
+    // "alwaysStrict": true,                             /* 'use strict' が常に生成されることを確認します。 */
+    // "noUnusedLocals": true,                           /* ローカル変数が読み取られていない場合にエラー報告を有効にします。 */
+    // "noUnusedParameters": true,                       /* 関数パラメーターが読み取られていないときに、エラーを発生させる */
+    // "exactOptionalPropertyTypes": true,               /* 'undefined' を追加するのではなく、省略可能なプロパティ型を記述済みとして解釈します。 */
+    // "noImplicitReturns": true,                        /* 関数で明示的に返されないコードパスのエラー報告を有効にします。 */
+    // "noFallthroughCasesInSwitch": true,               /* switch ステートメントに case のフォールスルーがある場合のエラー報告を有効にします。 */
+    // "noUncheckedIndexedAccess": true,                 /* インデックス署名の結果に '未定義' を含めます */
+    // "noImplicitOverride": true,                       /* 派生クラスのオーバーライドするメンバーが override 修飾子でマークされていることを確認します。 */
+    // "noPropertyAccessFromIndexSignature": true,       /* インデックス付きの型を使用して宣言されたキーに対してインデックス付きアクセサーの使用を強制する */
+    // "allowUnusedLabels": true,                        /* 未使用のラベルのエラー報告を無効にします。 */
+    // "allowUnreachableCode": true,                     /* 到達できないコードのエラー報告を無効にします。 */
+
+    /* 完全 */
+    // "skipDefaultLibCheck": true,                      /* TypeScript に含まれている .d.ts ファイルの型チェックをスキップします。 */
+    "skipLibCheck": true                                 /* すべての .d.ts ファイルについて型チェックをスキップします。 */
+  }
+}

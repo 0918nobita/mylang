@@ -7,8 +7,17 @@
     "vscode": "^1.63.2"
   },
   "main": "./build/bundle.js",
+  "scripts": {
+    "build": "esbuild --platform=node --bundle --minify --external:vscode src/main.ts --outfile=build/bundle.js"
+  },
+  "dependencies": {
+    "vscode-languageclient": "7.0.0"
+  },
   "devDependencies": {
-    "esbuild": "0.14.18"
+    "@types/node": "17.0.14",
+    "@types/vscode": "1.63.2",
+    "esbuild": "0.14.18",
+    "typescript": "4.5.5"
   },
   "activationEvents": [
     "onLanguage:mylang"
@@ -22,11 +31,5 @@
         ]
       }
     ]
-  },
-  "scripts": {
-    "build": "dotnet fable src -o build && esbuild --platform=node --bundle --minify --external:vscode build/Program.js --outfile=build/bundle.js"
-  },
-  "dependencies": {
-    "vscode-languageclient": "7.0.0"
   }
 }

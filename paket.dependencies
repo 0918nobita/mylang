@@ -1,7 +1,0 @@
-source https://api.nuget.org/v3/index.json
-storage: none
-framework: netstandard2.0
-
-nuget FSharp.Core ~> 6.0.1
-nuget Fable.Core ~> 3.6.1
-github ionide/ionide-vscode-helpers src/Fable.Import.VSCode.fs

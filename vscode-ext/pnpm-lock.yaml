@@ -2,7 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@types/node': 17.0.14
-  '@types/vscode': 1.63.2
+  '@types/vscode': 1.64.0
   esbuild: 0.14.18
   typescript: 4.5.5
   vscode-languageclient: 7.0.0
@@ -12,7 +12,7 @@ dependencies:
 
 devDependencies:
   '@types/node': 17.0.14
-  '@types/vscode': 1.63.2
+  '@types/vscode': 1.64.0
   esbuild: 0.14.18
   typescript: 4.5.5
 
@@ -22,8 +22,8 @@ packages:
     resolution: {integrity: sha512-SbjLmERksKOGzWzPNuW7fJM7fk3YXVTFiZWB/Hs99gwhk+/dnrQRPBQjPW9aO+fi1tAffi9PrwFvsmOKmDTyng==}
     dev: true
 
-  /@types/vscode/1.63.2:
-    resolution: {integrity: sha512-awvdx4vX7SkMKyvWIlRjycjb4blYRSQI3Bav0YMn+lJLGN6gJgb20urN/dQCv/2ejDu5S6ADEBt6O15DOpIAkg==}
+  /@types/vscode/1.64.0:
+    resolution: {integrity: sha512-bSlAWz5WtcSL3cO9tAT/KpEH9rv5OBnm93OIIFwdCshaAiqr2bp1AUyEwW9MWeCvZBHEXc3V0fTYVdVyzDNwHA==}
     dev: true
 
   /balanced-match/1.0.2:

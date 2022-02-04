@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["main",""]]});
+initSidebarItems({"fn":[["main",""]],"struct":[["Message","JSON-RPC メッセージ"]]});

@@ -1,8 +1,12 @@
-use std::io::{self, BufRead, Read};
+use std::{
+    io::{self, BufRead, Read},
+    time::Duration,
+};
 
 use anyhow::Context;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
+use serde_json::json;
 
 /// JSON-RPC メッセージ
 #[derive(Debug, Serialize, Deserialize)]
@@ -10,21 +14,14 @@ struct Message {
     #[serde(rename = "jsonrpc")]
     version: String,
 
-    id: usize,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    id: Option<usize>,
 
     method: String,
-
     params: serde_json::Value,
 }
 
-fn main() -> anyhow::Result<()> {
-    tokio::runtime::Builder::new_current_thread()
-        .enable_all()
-        .build()?
-        .block_on(async {
-            eprintln!("Mylang language server");
-        });
-
+async fn wait_for_initialize_msg() -> anyhow::Result<()> {
     let stdin = io::stdin();
     let mut stdin = stdin.lock();
 
@@ -59,4 +56,31 @@ fn main() -> anyhow::Result<()> {
             eprintln!("Deserialized: {:?}", msg);
         }
     }
+}
+
+async fn send_message() -> anyhow::Result<()> {
+    tokio::time::sleep(Duration::from_secs(2)).await;
+
+    let msg = Message {
+        version: "2.0".to_owned(),
+        id: None,
+        method: "window/logMessage".to_owned(),
+        params: json!({
+            "type": 3,
+            "message": "Hello from mylang LSP server!",
+        }),
+    };
+
+    let content = serde_json::to_string(&msg)?;
+    let len = content.as_bytes().len();
+    println!("Content-Length: {}\r\n\r\n{}", len, content);
+
+    Ok(())
+}
+
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    let handle = tokio::spawn(async { wait_for_initialize_msg().await });
+    send_message().await?;
+    handle.await?
 }

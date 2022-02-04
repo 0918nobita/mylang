@@ -18,6 +18,13 @@ struct Message {
 }
 
 fn main() -> anyhow::Result<()> {
+    tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()?
+        .block_on(async {
+            eprintln!("Mylang language server");
+        });
+
     let stdin = io::stdin();
     let mut stdin = stdin.lock();
 

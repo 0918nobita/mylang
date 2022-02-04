@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["main",""],["send_message",""],["wait_for_initialize_msg",""]],"struct":[["Message","JSON-RPC メッセージ"]]});
+initSidebarItems({"fn":[["send_notification",""],["wait_for_initialize_request",""]],"mod":[["message",""],["notification",""],["request",""]]});

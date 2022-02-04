@@ -13,6 +13,8 @@ struct Message {
     id: usize,
 
     method: String,
+
+    params: serde_json::Value,
 }
 
 fn main() -> anyhow::Result<()> {

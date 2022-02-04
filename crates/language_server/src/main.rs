@@ -31,9 +31,12 @@ fn main() -> anyhow::Result<()> {
         if let Some(caps) = re.captures(&buf) {
             let len = caps
                 .get(1)
-                .context("Failed to parse header")?
+                .context("Failed to extract the number of bytes from the received header")?
                 .as_str()
-                .parse::<usize>()?;
+                .parse::<usize>()
+                .context(
+                    "Failed to parse the number of bytes extracted from the received header",
+                )?;
             eprintln!("Length: {}", len);
 
             let mut content_buf = vec![0u8; len];

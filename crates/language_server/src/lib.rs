@@ -8,6 +8,7 @@ use std::{
 };
 
 use anyhow::Context;
+use log::info;
 use regex::Regex;
 use serde_json::json;
 
@@ -35,17 +36,17 @@ pub async fn wait_for_initialize_request() -> anyhow::Result<()> {
                 .context(
                     "Failed to parse the number of bytes extracted from the received header",
                 )?;
-            eprintln!("Length: {}", len);
+            info!("Length: {}", len);
 
             let mut content_buf = vec![0u8; len];
             stdin.read_exact(&mut content_buf)?;
             stdin.consume(len);
 
             let content = String::from_utf8(content_buf)?;
-            eprintln!("Content: {}", content);
+            info!("Content: {}", content);
 
             let req: Request = serde_json::from_str(&content)?;
-            eprintln!("Deserialized: {:?}", req);
+            info!("Deserialized: {:?}", req);
         }
     }
 }

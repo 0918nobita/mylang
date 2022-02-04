@@ -14,6 +14,9 @@ export const activate = (context: ExtensionContext) => {
             context.extensionPath,
             "../target/debug/language_server"
         ),
+        options: {
+            env: { RUST_LOG: "info" },
+        },
     };
     const clientOptions: LanguageClientOptions = {
         documentSelector: [{ scheme: "file", language: "mylang" }],

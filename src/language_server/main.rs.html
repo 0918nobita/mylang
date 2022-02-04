@@ -49,6 +49,9 @@
 <span id="48">48</span>
 <span id="49">49</span>
 <span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::io</span>::{<span class="self">self</span>, <span class="ident">BufRead</span>, <span class="ident">Read</span>};
 
 <span class="kw">use</span> <span class="ident">anyhow::Context</span>;
@@ -82,9 +85,12 @@
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">caps</span>) <span class="op">=</span> <span class="ident">re</span>.<span class="ident">captures</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>) {
             <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">caps</span>
                 .<span class="ident">get</span>(<span class="number">1</span>)
-                .<span class="ident">context</span>(<span class="string">&quot;Failed to parse header&quot;</span>)<span class="question-mark">?</span>
+                .<span class="ident">context</span>(<span class="string">&quot;Failed to extract the number of bytes from the received header&quot;</span>)<span class="question-mark">?</span>
                 .<span class="ident">as_str</span>()
-                .<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+                .<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>()
+                .<span class="ident">context</span>(
+                    <span class="string">&quot;Failed to parse the number of bytes extracted from the received header&quot;</span>,
+                )<span class="question-mark">?</span>;
             <span class="macro">eprintln!</span>(<span class="string">&quot;Length: {}&quot;</span>, <span class="ident">len</span>);
 
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">content_buf</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0u8</span>; <span class="ident">len</span>];

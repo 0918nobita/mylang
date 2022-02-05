@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 pub trait Message: Serialize {
     fn raw_message(&self) -> String {
@@ -18,3 +18,28 @@ pub trait Message: Serialize {
         )
     }
 }
+
+/// JSON-RPC リクエスト
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Request {
+    id: usize,
+    method: String,
+    params: serde_json::Value,
+}
+
+impl Message for Request {}
+
+/// JSON-RPC 通知
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Notification {
+    method: String,
+    params: serde_json::Value,
+}
+
+impl Notification {
+    pub fn new(method: String, params: serde_json::Value) -> Self {
+        Self { method, params }
+    }
+}
+
+impl Message for Notification {}

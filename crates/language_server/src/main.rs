@@ -1,12 +1,19 @@
-use language_server::{send_notification, wait_for_initialize_request};
+use log::info;
+use tokio::sync::watch;
+
+use language_server::{receive_rpc_msg, send_notification, TaskMsg};
 
 #[tokio::main]
-async fn main() -> anyhow::Result<()> {
+async fn main() {
     env_logger::init();
 
-    let handle = tokio::spawn(async { wait_for_initialize_request().await });
+    let (tx, mut rx) = watch::channel(TaskMsg::Initial);
 
-    send_notification().await;
+    tokio::spawn(async move { receive_rpc_msg(&tx).await });
 
-    handle.await?
+    tokio::spawn(async { send_notification().await });
+
+    while rx.changed().await.is_ok() {
+        info!("Received: {:?}", *rx.borrow());
+    }
 }

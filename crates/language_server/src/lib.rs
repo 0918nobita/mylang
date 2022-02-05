@@ -1,6 +1,4 @@
 mod message;
-mod notification;
-mod request;
 
 use std::{
     io::{self, BufRead, Read},
@@ -8,19 +6,26 @@ use std::{
 };
 
 use anyhow::Context;
-use log::info;
+use log::{info, warn};
 use regex::Regex;
-use serde_json::json;
+use serde_json::{json, Value as JsonValue};
+use tokio::sync::watch::Sender;
 
-use crate::{message::Message, notification::Notification, request::Request};
+use crate::message::{Message, Notification};
 
-pub async fn wait_for_initialize_request() -> anyhow::Result<()> {
+#[derive(Debug)]
+pub enum TaskMsg {
+    Initial,
+    Received(JsonValue),
+}
+
+pub async fn receive_rpc_msg(task_msg_sender: &Sender<TaskMsg>) -> anyhow::Result<()> {
     let stdin = io::stdin();
     let mut stdin = stdin.lock();
 
     let mut buf = String::new();
 
-    let re = Regex::new("Content-Length: (\\d+)")?;
+    let re = Regex::new(r"Content-Length: (\d+)")?;
 
     loop {
         let num_bytes = stdin.read_line(&mut buf)?;
@@ -28,14 +33,9 @@ pub async fn wait_for_initialize_request() -> anyhow::Result<()> {
         stdin.consume(num_bytes);
 
         if let Some(caps) = re.captures(&buf) {
-            let len = caps
-                .get(1)
-                .context("Failed to extract the number of bytes from the received header")?
-                .as_str()
-                .parse::<usize>()
-                .context(
-                    "Failed to parse the number of bytes extracted from the received header",
-                )?;
+            let len = caps[1].parse::<usize>().context(
+                "Failed to parse the number of bytes extracted from the received header",
+            )?;
             info!("Length: {}", len);
 
             let mut content_buf = vec![0u8; len];
@@ -43,10 +43,11 @@ pub async fn wait_for_initialize_request() -> anyhow::Result<()> {
             stdin.consume(len);
 
             let content = String::from_utf8(content_buf)?;
-            info!("Content: {}", content);
+            let content: JsonValue = serde_json::from_str(&content)?;
 
-            let req: Request = serde_json::from_str(&content)?;
-            info!("Deserialized: {:?}", req);
+            task_msg_sender.send(TaskMsg::Received(content))?;
+        } else {
+            warn!("Skiped: {}", buf);
         }
     }
 }

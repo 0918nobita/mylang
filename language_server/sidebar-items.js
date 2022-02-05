@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["TaskMsg",""]],"fn":[["receive_rpc_msg",""],["send_notification",""]],"mod":[["message",""]]});
+initSidebarItems({"enum":[["TaskMsg",""]],"fn":[["receive_msgs",""],["send_notification",""]],"mod":[["message",""]]});

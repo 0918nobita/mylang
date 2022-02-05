@@ -75,18 +75,18 @@
 <span class="kw">use</span> <span class="ident">anyhow::Context</span>;
 <span class="kw">use</span> <span class="ident">log</span>::{<span class="ident">info</span>, <span class="ident">warn</span>};
 <span class="kw">use</span> <span class="ident">regex::Regex</span>;
-<span class="kw">use</span> <span class="ident">serde_json</span>::{<span class="ident">json</span>, <span class="ident">Value</span> <span class="kw">as</span> <span class="ident">JsonValue</span>};
+<span class="kw">use</span> <span class="ident">serde_json::json</span>;
 <span class="kw">use</span> <span class="ident">tokio::sync::watch::Sender</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::message</span>::{<span class="ident">Message</span>, <span class="ident">Notification</span>};
+<span class="kw">use</span> <span class="ident">message::Message</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TaskMsg</span> {
     <span class="ident">Initial</span>,
-    <span class="ident">Received</span>(<span class="ident">JsonValue</span>),
+    <span class="ident">Received</span>(<span class="ident">Message</span>),
 }
 
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">receive_rpc_msg</span>(<span class="ident">task_msg_sender</span>: <span class="kw-2">&amp;</span><span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">TaskMsg</span><span class="op">&gt;</span>) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">receive_msgs</span>(<span class="ident">task_msg_sender</span>: <span class="kw-2">&amp;</span><span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">TaskMsg</span><span class="op">&gt;</span>) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">stdin</span> <span class="op">=</span> <span class="ident">io::stdin</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stdin</span> <span class="op">=</span> <span class="ident">stdin</span>.<span class="ident">lock</span>();
 
@@ -105,14 +105,14 @@
             )<span class="question-mark">?</span>;
             <span class="macro">info!</span>(<span class="string">&quot;Length: {}&quot;</span>, <span class="ident">len</span>);
 
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">content_buf</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0u8</span>; <span class="ident">len</span>];
-            <span class="ident">stdin</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;mut</span> <span class="ident">content_buf</span>)<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msg_buf</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0u8</span>; <span class="ident">len</span>];
+            <span class="ident">stdin</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;mut</span> <span class="ident">msg_buf</span>)<span class="question-mark">?</span>;
             <span class="ident">stdin</span>.<span class="ident">consume</span>(<span class="ident">len</span>);
 
-            <span class="kw">let</span> <span class="ident">content</span> <span class="op">=</span> <span class="ident">String::from_utf8</span>(<span class="ident">content_buf</span>)<span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="ident">content</span>: <span class="ident">JsonValue</span> <span class="op">=</span> <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">content</span>)<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">String::from_utf8</span>(<span class="ident">msg_buf</span>)<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">msg</span>: <span class="ident">Message</span> <span class="op">=</span> <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>)<span class="question-mark">?</span>;
 
-            <span class="ident">task_msg_sender</span>.<span class="ident">send</span>(<span class="ident">TaskMsg::Received</span>(<span class="ident">content</span>))<span class="question-mark">?</span>;
+            <span class="ident">task_msg_sender</span>.<span class="ident">send</span>(<span class="ident">TaskMsg::Received</span>(<span class="ident">msg</span>))<span class="question-mark">?</span>;
         } <span class="kw">else</span> {
             <span class="macro">warn!</span>(<span class="string">&quot;Skiped: {}&quot;</span>, <span class="ident">buf</span>);
         }
@@ -122,13 +122,13 @@
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">send_notification</span>() {
     <span class="ident">tokio::time::sleep</span>(<span class="ident">Duration::from_secs</span>(<span class="number">2</span>)).<span class="kw">await</span>;
 
-    <span class="kw">let</span> <span class="ident">notification</span> <span class="op">=</span> <span class="ident">Notification::new</span>(
-        <span class="string">&quot;window/logMessage&quot;</span>.<span class="ident">to_owned</span>(),
-        <span class="macro">json!</span>({
+    <span class="kw">let</span> <span class="ident">notification</span> <span class="op">=</span> <span class="ident">Message::Notification</span> {
+        <span class="ident">method</span>: <span class="string">&quot;window/logMessage&quot;</span>.<span class="ident">to_owned</span>(),
+        <span class="ident">params</span>: <span class="macro">json!</span>({
             <span class="string">&quot;type&quot;</span>: <span class="number">3</span>,
             <span class="string">&quot;message&quot;</span>: <span class="string">&quot;Hello from mylang LSP server!&quot;</span>,
         }),
-    );
+    };
     <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">notification</span>.<span class="ident">raw_message</span>());
 }
 </code></pre></div>

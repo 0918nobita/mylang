@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["Message",""]]});
+initSidebarItems({"struct":[["Notification","JSON-RPC 通知"],["Request","JSON-RPC リクエスト"]],"trait":[["Message",""]]});

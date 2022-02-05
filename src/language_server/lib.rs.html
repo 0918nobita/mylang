@@ -64,9 +64,8 @@
 <span id="63">63</span>
 <span id="64">64</span>
 <span id="65">65</span>
+<span id="66">66</span>
 </pre><pre class="rust"><code><span class="kw">mod</span> <span class="ident">message</span>;
-<span class="kw">mod</span> <span class="ident">notification</span>;
-<span class="kw">mod</span> <span class="ident">request</span>;
 
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">io</span>::{<span class="self">self</span>, <span class="ident">BufRead</span>, <span class="ident">Read</span>},
@@ -74,19 +73,26 @@
 };
 
 <span class="kw">use</span> <span class="ident">anyhow::Context</span>;
-<span class="kw">use</span> <span class="ident">log::info</span>;
+<span class="kw">use</span> <span class="ident">log</span>::{<span class="ident">info</span>, <span class="ident">warn</span>};
 <span class="kw">use</span> <span class="ident">regex::Regex</span>;
-<span class="kw">use</span> <span class="ident">serde_json::json</span>;
+<span class="kw">use</span> <span class="ident">serde_json</span>::{<span class="ident">json</span>, <span class="ident">Value</span> <span class="kw">as</span> <span class="ident">JsonValue</span>};
+<span class="kw">use</span> <span class="ident">tokio::sync::watch::Sender</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">message::Message</span>, <span class="ident">notification::Notification</span>, <span class="ident">request::Request</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::message</span>::{<span class="ident">Message</span>, <span class="ident">Notification</span>};
 
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">wait_for_initialize_request</span>() -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TaskMsg</span> {
+    <span class="ident">Initial</span>,
+    <span class="ident">Received</span>(<span class="ident">JsonValue</span>),
+}
+
+<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">receive_rpc_msg</span>(<span class="ident">task_msg_sender</span>: <span class="kw-2">&amp;</span><span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">TaskMsg</span><span class="op">&gt;</span>) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">stdin</span> <span class="op">=</span> <span class="ident">io::stdin</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stdin</span> <span class="op">=</span> <span class="ident">stdin</span>.<span class="ident">lock</span>();
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String::new</span>();
 
-    <span class="kw">let</span> <span class="ident">re</span> <span class="op">=</span> <span class="ident">Regex::new</span>(<span class="string">&quot;Content-Length: (\\d+)&quot;</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">re</span> <span class="op">=</span> <span class="ident">Regex::new</span>(<span class="string">r&quot;Content-Length: (\d+)&quot;</span>)<span class="question-mark">?</span>;
 
     <span class="kw">loop</span> {
         <span class="kw">let</span> <span class="ident">num_bytes</span> <span class="op">=</span> <span class="ident">stdin</span>.<span class="ident">read_line</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>)<span class="question-mark">?</span>;
@@ -94,14 +100,9 @@
         <span class="ident">stdin</span>.<span class="ident">consume</span>(<span class="ident">num_bytes</span>);
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">caps</span>) <span class="op">=</span> <span class="ident">re</span>.<span class="ident">captures</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>) {
-            <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">caps</span>
-                .<span class="ident">get</span>(<span class="number">1</span>)
-                .<span class="ident">context</span>(<span class="string">&quot;Failed to extract the number of bytes from the received header&quot;</span>)<span class="question-mark">?</span>
-                .<span class="ident">as_str</span>()
-                .<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>()
-                .<span class="ident">context</span>(
-                    <span class="string">&quot;Failed to parse the number of bytes extracted from the received header&quot;</span>,
-                )<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">caps</span>[<span class="number">1</span>].<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>().<span class="ident">context</span>(
+                <span class="string">&quot;Failed to parse the number of bytes extracted from the received header&quot;</span>,
+            )<span class="question-mark">?</span>;
             <span class="macro">info!</span>(<span class="string">&quot;Length: {}&quot;</span>, <span class="ident">len</span>);
 
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">content_buf</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0u8</span>; <span class="ident">len</span>];
@@ -109,10 +110,11 @@
             <span class="ident">stdin</span>.<span class="ident">consume</span>(<span class="ident">len</span>);
 
             <span class="kw">let</span> <span class="ident">content</span> <span class="op">=</span> <span class="ident">String::from_utf8</span>(<span class="ident">content_buf</span>)<span class="question-mark">?</span>;
-            <span class="macro">info!</span>(<span class="string">&quot;Content: {}&quot;</span>, <span class="ident">content</span>);
+            <span class="kw">let</span> <span class="ident">content</span>: <span class="ident">JsonValue</span> <span class="op">=</span> <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">content</span>)<span class="question-mark">?</span>;
 
-            <span class="kw">let</span> <span class="ident">req</span>: <span class="ident">Request</span> <span class="op">=</span> <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">content</span>)<span class="question-mark">?</span>;
-            <span class="macro">info!</span>(<span class="string">&quot;Deserialized: {:?}&quot;</span>, <span class="ident">req</span>);
+            <span class="ident">task_msg_sender</span>.<span class="ident">send</span>(<span class="ident">TaskMsg::Received</span>(<span class="ident">content</span>))<span class="question-mark">?</span>;
+        } <span class="kw">else</span> {
+            <span class="macro">warn!</span>(<span class="string">&quot;Skiped: {}&quot;</span>, <span class="ident">buf</span>);
         }
     }
 }

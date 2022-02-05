@@ -1,15 +1,50 @@
 use serde::{Deserialize, Serialize};
+use serde_json::{Map, Value as JsonValue};
 
-pub trait Message: Serialize {
-    fn raw_message(&self) -> String {
-        let mut content = serde_json::to_value(self).unwrap();
-        let content_map = content.as_object_mut().unwrap();
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum Message {
+    Request {
+        id: String,
+        method: String,
+        params: JsonValue,
+    },
+    Response {
+        id: String,
+        result: JsonValue,
+    },
+    Notification {
+        method: String,
+        params: JsonValue,
+    },
+}
+
+impl Message {
+    pub fn raw_message(&self) -> String {
+        let mut content_map = Map::new();
+
+        match self {
+            Message::Request { id, method, params } => {
+                content_map.insert("id".to_owned(), JsonValue::String(id.clone()));
+                content_map.insert("method".to_owned(), JsonValue::String(method.clone()));
+                content_map.insert("params".to_owned(), params.clone());
+            }
+            Message::Response { id, result } => {
+                content_map.insert("id".to_owned(), JsonValue::String(id.clone()));
+                content_map.insert("result".to_owned(), result.clone());
+            }
+            Message::Notification { method, params } => {
+                content_map.insert("method".to_owned(), JsonValue::String(method.clone()));
+                content_map.insert("params".to_owned(), params.clone());
+            }
+        }
+
         content_map.insert(
             "jsonrpc".to_owned(),
             serde_json::Value::String("2.0".to_owned()),
         );
 
-        let content = serde_json::to_string(&content).unwrap();
+        let content = serde_json::to_string(&JsonValue::Object(content_map)).unwrap();
 
         format!(
             "Content-Length: {}\r\n\r\n{}",
@@ -18,28 +53,3 @@ pub trait Message: Serialize {
         )
     }
 }
-
-/// JSON-RPC リクエスト
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Request {
-    id: usize,
-    method: String,
-    params: serde_json::Value,
-}
-
-impl Message for Request {}
-
-/// JSON-RPC 通知
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Notification {
-    method: String,
-    params: serde_json::Value,
-}
-
-impl Notification {
-    pub fn new(method: String, params: serde_json::Value) -> Self {
-        Self { method, params }
-    }
-}
-
-impl Message for Notification {}

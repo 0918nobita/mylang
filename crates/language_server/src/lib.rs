@@ -8,18 +8,18 @@ use std::{
 use anyhow::Context;
 use log::{info, warn};
 use regex::Regex;
-use serde_json::{json, Value as JsonValue};
+use serde_json::json;
 use tokio::sync::watch::Sender;
 
-use crate::message::{Message, Notification};
+use message::Message;
 
 #[derive(Debug)]
 pub enum TaskMsg {
     Initial,
-    Received(JsonValue),
+    Received(Message),
 }
 
-pub async fn receive_rpc_msg(task_msg_sender: &Sender<TaskMsg>) -> anyhow::Result<()> {
+pub async fn receive_msgs(task_msg_sender: &Sender<TaskMsg>) -> anyhow::Result<()> {
     let stdin = io::stdin();
     let mut stdin = stdin.lock();
 
@@ -38,14 +38,14 @@ pub async fn receive_rpc_msg(task_msg_sender: &Sender<TaskMsg>) -> anyhow::Resul
             )?;
             info!("Length: {}", len);
 
-            let mut content_buf = vec![0u8; len];
-            stdin.read_exact(&mut content_buf)?;
+            let mut msg_buf = vec![0u8; len];
+            stdin.read_exact(&mut msg_buf)?;
             stdin.consume(len);
 
-            let content = String::from_utf8(content_buf)?;
-            let content: JsonValue = serde_json::from_str(&content)?;
+            let msg = String::from_utf8(msg_buf)?;
+            let msg: Message = serde_json::from_str(&msg)?;
 
-            task_msg_sender.send(TaskMsg::Received(content))?;
+            task_msg_sender.send(TaskMsg::Received(msg))?;
         } else {
             warn!("Skiped: {}", buf);
         }
@@ -55,12 +55,12 @@ pub async fn receive_rpc_msg(task_msg_sender: &Sender<TaskMsg>) -> anyhow::Resul
 pub async fn send_notification() {
     tokio::time::sleep(Duration::from_secs(2)).await;
 
-    let notification = Notification::new(
-        "window/logMessage".to_owned(),
-        json!({
+    let notification = Message::Notification {
+        method: "window/logMessage".to_owned(),
+        params: json!({
             "type": 3,
             "message": "Hello from mylang LSP server!",
         }),
-    );
+    };
     println!("{}", notification.raw_message());
 }

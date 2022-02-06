@@ -8,6 +8,7 @@ use ast::range::Locatable;
 use lexer::{result::LexErr, with_pos::WithPosExt, LexExt};
 use log::warn;
 use lsp::LspMessage;
+use parser::ParseErr;
 use serde_json::{json, Value as JsonValue};
 use token::Token;
 use valq::query_value;
@@ -54,14 +55,32 @@ fn lex_err_to_diagnostic(err: &LexErr) -> JsonValue {
     json!({ "range": range, "message": message })
 }
 
-async fn lex_and_report_errs(
+fn parse_err_to_diagnostic(err: ParseErr) -> JsonValue {
+    let range = locatable_to_json_range(&err);
+    let message = err.to_string();
+    json!({ "range": range, "message": message })
+}
+
+async fn analyze_src_and_report_errs(
     sender: Addr<Sender>,
     uri: &JsonValue,
     text: &str,
 ) -> anyhow::Result<()> {
-    let (_tokens, errors) = lex(text);
+    let (tokens, errors) = lex(text);
 
-    let diagnostics: Vec<_> = errors.iter().map(lex_err_to_diagnostic).collect();
+    let mut diagnostics: Vec<_> = errors.iter().map(lex_err_to_diagnostic).collect();
+
+    let (_stmts, errors): (Vec<_>, Vec<_>) = parser::parse(tokens.into_iter())
+        .into_iter()
+        .partition(Result::is_ok);
+
+    let diagnostics_from_parser = errors
+        .into_iter()
+        .map(Result::unwrap_err)
+        .map(parse_err_to_diagnostic)
+        .collect::<Vec<_>>();
+
+    diagnostics.extend(diagnostics_from_parser);
 
     sender
         .send(SendMsg(LspMessage::Notification {
@@ -132,7 +151,9 @@ impl Handler<ReceivedMsg> for Responder {
                         text_document_uri(&params),
                         query_value!(params.textDocument.text -> str),
                     ) {
-                        lex_and_report_errs(sender, uri, text).await.unwrap()
+                        analyze_src_and_report_errs(sender, uri, text)
+                            .await
+                            .unwrap()
                     } else {
                         warn!("Skipped: ({:?}) {:?}", method, params)
                     }
@@ -145,7 +166,9 @@ impl Handler<ReceivedMsg> for Responder {
                         text_document_uri(&params),
                         query_value!(params.contentChanges[0].text -> str),
                     ) {
-                        lex_and_report_errs(sender, uri, text).await.unwrap()
+                        analyze_src_and_report_errs(sender, uri, text)
+                            .await
+                            .unwrap()
                     } else {
                         warn!("Skipped: ({:?}) {:?}", method, params)
                     }

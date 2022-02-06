@@ -386,6 +386,7 @@ dependencies = [
  "lexer",
  "log",
  "lsp",
+ "parser",
  "regex",
  "serde_json",
  "token",

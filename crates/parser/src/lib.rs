@@ -7,7 +7,11 @@
 //! term ::= INT_LIT | STRING_LIT ;
 //! ```
 
-use ast::{expr::Expr, stmt::Stmt};
+use ast::{
+    expr::Expr,
+    range::{Locatable, Range},
+    stmt::Stmt,
+};
 use itertools::{put_back, PutBack};
 use thiserror::Error;
 use token::{KeywordKind, Token};
@@ -27,6 +31,13 @@ pub enum ParseErr {
 
     #[error("Either print_int or print_str expected, but not found")]
     KeywordExpected,
+}
+
+impl Locatable for ParseErr {
+    fn locate(&self) -> ast::range::Range {
+        // TODO: 正確な範囲を返す
+        Range::default()
+    }
 }
 
 fn term(tokens: &mut impl Iterator<Item = Token>) -> Result<Expr, ParseErr> {

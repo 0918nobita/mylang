@@ -36,7 +36,7 @@ pnpm i
 ### ビルド方法
 
 ```bash
-cargo build # 言語サーバ (crates/language_server) をビルドする
+cargo build # 言語サーバ (crates/lsp_server) をビルドする
 cd vscode-ext
 pnpm build
 ```

@@ -131,7 +131,7 @@
 <span id="130">130</span>
 </pre><pre class="rust"><code><span class="doccomment">//! 字句解析器</span>
 
-<span class="kw">mod</span> <span class="ident">result</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">result</span>;
 <span class="kw">mod</span> <span class="ident">state</span>;
 <span class="kw">mod</span> <span class="ident">transition</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">with_pos</span>;
@@ -233,7 +233,7 @@
     }
 }
 
-<span class="kw">trait</span> <span class="ident">LexExt</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="ident">Pos</span>, <span class="ident">char</span>)<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span> {
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">LexExt</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="ident">Pos</span>, <span class="ident">char</span>)<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span> {
     <span class="kw">fn</span> <span class="ident">lex</span>(<span class="self">self</span>) -&gt; <span class="ident">Lex</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
 }
 

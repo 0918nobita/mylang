@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["handle_msg",""],["publish_diagnostics",""],["text_document_uri",""]],"mod":[["message",""],["receive",""],["send",""]]});
+initSidebarItems({"fn":[["changed_text",""],["handle_msg",""],["lex",""],["lex_and_report_errs",""],["lex_err_to_diagnostic",""],["locatable_to_json_range",""],["publish_diagnostics",""],["text_document_text",""],["text_document_uri",""]],"mod":[["message",""],["receive",""],["send",""]]});

@@ -39,10 +39,7 @@ impl Message {
             }
         }
 
-        content_map.insert(
-            "jsonrpc".to_owned(),
-            serde_json::Value::String("2.0".to_owned()),
-        );
+        content_map.insert("jsonrpc".to_owned(), json!("2.0"));
 
         let content = serde_json::to_string(&JsonValue::Object(content_map)).unwrap();
 

@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["lsp_server"] = [{"text":"impl Message for <a class=\"struct\" href=\"lsp_server/struct.Msg.html\" title=\"struct lsp_server::Msg\">Msg</a>","synthetic":false,"types":["lsp_server::Msg"]},{"text":"impl Message for <a class=\"struct\" href=\"lsp_server/struct.JsonRpcSendMsg.html\" title=\"struct lsp_server::JsonRpcSendMsg\">JsonRpcSendMsg</a>","synthetic":false,"types":["lsp_server::JsonRpcSendMsg"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

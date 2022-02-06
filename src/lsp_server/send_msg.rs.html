@@ -10,9 +10,9 @@
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">actix::Message</span>;
 <span class="kw">use</span> <span class="ident">lsp::LspMessage</span>;
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LspSendMsg</span>(<span class="kw">pub</span> <span class="ident">LspMessage</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SendMsg</span>(<span class="kw">pub</span> <span class="ident">LspMessage</span>);
 
-<span class="kw">impl</span> <span class="ident">Message</span> <span class="kw">for</span> <span class="ident">LspSendMsg</span> {
+<span class="kw">impl</span> <span class="ident">Message</span> <span class="kw">for</span> <span class="ident">SendMsg</span> {
     <span class="kw">type</span> <span class="prelude-ty">Result</span> <span class="op">=</span> ();
 }
 </code></pre></div>

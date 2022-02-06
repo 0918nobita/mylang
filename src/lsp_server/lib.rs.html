@@ -30,7 +30,6 @@
 <span id="29">29</span>
 <span id="30">30</span>
 <span id="31">31</span>
-<span id="32">32</span>
 </pre><pre class="rust"><code><span class="kw">mod</span> <span class="ident">received_msg</span>;
 <span class="kw">mod</span> <span class="ident">receiver</span>;
 <span class="kw">mod</span> <span class="ident">responder</span>;
@@ -39,20 +38,19 @@
 
 <span class="kw">use</span> <span class="ident">actix::Actor</span>;
 <span class="kw">use</span> <span class="ident">lsp::LspMessage</span>;
-<span class="kw">use</span> <span class="ident">send_msg::LspSendMsg</span>;
 <span class="kw">use</span> <span class="ident">serde_json::json</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">receiver::LspReceiveActor</span>, <span class="ident">responder::Responder</span>, <span class="ident">sender::LspSendActor</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">receiver::Receiver</span>, <span class="ident">responder::Responder</span>, <span class="ident">send_msg::SendMsg</span>, <span class="ident">sender::Sender</span>};
 
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">launch_lsp_server</span>() -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="ident">LspSendActor</span>.<span class="ident">start</span>();
+    <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="ident">Sender</span>.<span class="ident">start</span>();
 
     <span class="kw">let</span> <span class="ident">responder</span> <span class="op">=</span> <span class="ident">Responder::new</span>(<span class="ident">sender</span>.<span class="ident">clone</span>()).<span class="ident">start</span>();
 
-    <span class="ident">LspReceiveActor</span> { <span class="ident">responder</span> }.<span class="ident">start</span>();
+    <span class="ident">Receiver</span> { <span class="ident">responder</span> }.<span class="ident">start</span>();
 
     <span class="ident">sender</span>
-        .<span class="ident">send</span>(<span class="ident">LspSendMsg</span>(<span class="ident">LspMessage::Notification</span> {
+        .<span class="ident">send</span>(<span class="ident">SendMsg</span>(<span class="ident">LspMessage::Notification</span> {
             <span class="ident">method</span>: <span class="string">&quot;window/showMessage&quot;</span>.<span class="ident">to_owned</span>(),
             <span class="ident">params</span>: <span class="macro">json!</span>({
                 <span class="string">&quot;type&quot;</span>: <span class="string">&quot;info&quot;</span>,

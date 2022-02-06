@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["LspReceiveMsg",""]]});
+initSidebarItems({"struct":[["ReceivedMsg",""]]});

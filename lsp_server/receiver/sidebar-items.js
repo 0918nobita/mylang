@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["LspReceiveActor",""]]});
+initSidebarItems({"struct":[["Receiver",""]]});

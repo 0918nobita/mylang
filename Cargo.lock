@@ -234,6 +234,7 @@ dependencies = [
  "serde_json",
  "token",
  "tokio",
+ "valq",
 ]
 
 [[package]]
@@ -508,6 +509,12 @@ checksum = "c1348d8face79d019be7cbc0198e36bf93e160ddbfaa7bb54c9592627b9ec841"
 dependencies = [
  "arrayvec",
 ]
+
+[[package]]
+name = "valq"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b00553ca0379ad4e062258b433e83448a26d29ab2b80c6b541cde1c7c1ab2b15"
 
 [[package]]
 name = "version_check"

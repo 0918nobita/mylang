@@ -8,37 +8,12 @@ use log::warn;
 use serde_json::{json, Value as JsonValue};
 use token::Token;
 use tokio::sync::mpsc;
+use valq::query_value;
 
 use crate::message::Message;
 
-fn publish_diagnostics(params_obj: &JsonValue) -> Option<&JsonValue> {
-    let params_obj = params_obj.as_object()?;
-    let capabilities = params_obj.get("capabilities")?.as_object()?;
-    let text_document = capabilities.get("textDocument")?.as_object()?;
-    text_document.get("publishDiagnostics")
-}
-
 fn text_document_uri(params_obj: &JsonValue) -> Option<&JsonValue> {
-    let params_obj = params_obj.as_object()?;
-    let text_document = params_obj.get("textDocument")?.as_object()?;
-    text_document.get("uri")
-}
-
-fn text_document_text(params_obj: &JsonValue) -> Option<&str> {
-    let params_obj = params_obj.as_object()?;
-    let text_document = params_obj.get("textDocument")?.as_object()?;
-    text_document.get("text")?.as_str()
-}
-
-fn changed_text(params_obj: &JsonValue) -> Option<&str> {
-    let params_obj = params_obj.as_object()?;
-    params_obj
-        .get("contentChanges")?
-        .as_array()?
-        .get(0)?
-        .as_object()?
-        .get("text")?
-        .as_str()
+    query_value!(params_obj.textDocument.uri)
 }
 
 fn lex(text: &str) -> (Vec<Token>, Vec<LexErr>) {
@@ -106,7 +81,8 @@ pub async fn handle_msg(
 ) -> anyhow::Result<()> {
     match msg {
         Message::Request { id, method, params } if method == "initialize" => {
-            *publish_diagnostics_supported = publish_diagnostics(&params).is_some();
+            *publish_diagnostics_supported =
+                query_value!(params.capabilities.textDocument.publishDiagnostics).is_some();
 
             responder
                 .send(Message::Response {
@@ -123,9 +99,10 @@ pub async fn handle_msg(
         Message::Notification { method, params }
             if *publish_diagnostics_supported && (method == "textDocument/didOpen") =>
         {
-            if let (Some(uri), Some(text)) =
-                (text_document_uri(&params), text_document_text(&params))
-            {
+            if let (Some(uri), Some(text)) = (
+                text_document_uri(&params),
+                query_value!(params.textDocument.text -> str),
+            ) {
                 lex_and_report_errs(responder, uri, text).await?
             } else {
                 warn!("Skipped: ({:?}) {:?}", method, params)
@@ -135,7 +112,10 @@ pub async fn handle_msg(
         Message::Notification { method, params }
             if *publish_diagnostics_supported && (method == "textDocument/didChange") =>
         {
-            if let (Some(uri), Some(text)) = (text_document_uri(&params), changed_text(&params)) {
+            if let (Some(uri), Some(text)) = (
+                text_document_uri(&params),
+                query_value!(params.contentChanges[0].text -> str),
+            ) {
                 lex_and_report_errs(responder, uri, text).await?
             } else {
                 warn!("Skipped: ({:?}) {:?}", method, params)

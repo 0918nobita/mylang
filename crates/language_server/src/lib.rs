@@ -1,16 +1,14 @@
-pub mod message;
 pub mod receive;
 pub mod send;
 
 use ast::range::Locatable;
 use lexer::{result::LexErr, with_pos::WithPosExt, LexExt};
 use log::warn;
+use lsp::LspMessage;
 use serde_json::{json, Value as JsonValue};
 use token::Token;
 use tokio::sync::mpsc;
 use valq::query_value;
-
-use crate::message::Message;
 
 fn text_document_uri(params_obj: &JsonValue) -> Option<&JsonValue> {
     query_value!(params_obj.textDocument.uri)
@@ -53,7 +51,7 @@ fn lex_err_to_diagnostic(err: &LexErr) -> JsonValue {
 }
 
 async fn lex_and_report_errs(
-    responder: &mpsc::Sender<Message>,
+    responder: &mpsc::Sender<LspMessage>,
     uri: &JsonValue,
     text: &str,
 ) -> anyhow::Result<()> {
@@ -62,7 +60,7 @@ async fn lex_and_report_errs(
     let diagnostics: Vec<_> = errors.iter().map(lex_err_to_diagnostic).collect();
 
     responder
-        .send(Message::Notification {
+        .send(LspMessage::Notification {
             method: "textDocument/publishDiagnostics".to_owned(),
             params: json!({
                 "uri": uri,
@@ -75,17 +73,17 @@ async fn lex_and_report_errs(
 }
 
 pub async fn handle_msg(
-    responder: &mpsc::Sender<Message>,
+    responder: &mpsc::Sender<LspMessage>,
     publish_diagnostics_supported: &mut bool,
-    msg: Message,
+    msg: LspMessage,
 ) -> anyhow::Result<()> {
     match msg {
-        Message::Request { id, method, params } if method == "initialize" => {
+        LspMessage::Request { id, method, params } if method == "initialize" => {
             *publish_diagnostics_supported =
                 query_value!(params.capabilities.textDocument.publishDiagnostics).is_some();
 
             responder
-                .send(Message::Response {
+                .send(LspMessage::Response {
                     id,
                     result: json!({
                         "capabilities": {
@@ -96,7 +94,7 @@ pub async fn handle_msg(
                 .await?
         }
 
-        Message::Notification { method, params }
+        LspMessage::Notification { method, params }
             if *publish_diagnostics_supported && (method == "textDocument/didOpen") =>
         {
             if let (Some(uri), Some(text)) = (
@@ -109,7 +107,7 @@ pub async fn handle_msg(
             }
         }
 
-        Message::Notification { method, params }
+        LspMessage::Notification { method, params }
             if *publish_diagnostics_supported && (method == "textDocument/didChange") =>
         {
             if let (Some(uri), Some(text)) = (
@@ -122,12 +120,12 @@ pub async fn handle_msg(
             }
         }
 
-        Message::Notification { method, params }
+        LspMessage::Notification { method, params }
             if *publish_diagnostics_supported && method == "textDocument/didClose" =>
         {
             if let Some(uri) = text_document_uri(&params) {
                 responder
-                    .send(Message::Notification {
+                    .send(LspMessage::Notification {
                         method: "textDocument/publishDiagnostics".to_owned(),
                         params: json!({ "uri": uri, "diagnostics": [] }),
                     })

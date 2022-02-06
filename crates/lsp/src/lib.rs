@@ -3,7 +3,7 @@ use serde_json::{json, Map, Value as JsonValue};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum Message {
+pub enum LspMessage {
     Request {
         id: usize,
         method: String,
@@ -19,21 +19,23 @@ pub enum Message {
     },
 }
 
-impl Message {
+impl LspMessage {
     pub fn raw_message(&self) -> String {
         let mut content_map = Map::new();
 
         match self {
-            Message::Request { id, method, params } => {
+            LspMessage::Request { id, method, params } => {
                 content_map.insert("id".to_owned(), json!(id));
                 content_map.insert("method".to_owned(), json!(method));
                 content_map.insert("params".to_owned(), params.clone());
             }
-            Message::Response { id, result } => {
+
+            LspMessage::Response { id, result } => {
                 content_map.insert("id".to_owned(), json!(id));
                 content_map.insert("result".to_owned(), result.clone());
             }
-            Message::Notification { method, params } => {
+
+            LspMessage::Notification { method, params } => {
                 content_map.insert("method".to_owned(), json!(method));
                 content_map.insert("params".to_owned(), params.clone());
             }

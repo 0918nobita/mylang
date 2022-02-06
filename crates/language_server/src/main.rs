@@ -1,5 +1,6 @@
 use std::time::Duration;
 
+use lsp::LspMessage;
 use serde_json::json;
 use tokio::{
     io::{self, BufReader, BufWriter},
@@ -7,7 +8,7 @@ use tokio::{
     time,
 };
 
-use language_server::{handle_msg, message::Message, receive::receive_msgs, send::send_msgs};
+use language_server::{handle_msg, receive::receive_msgs, send::send_msgs};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -33,7 +34,7 @@ async fn main() -> anyhow::Result<()> {
         time::sleep(Duration::from_secs(2)).await;
 
         rpc_send_tx_cloned
-            .send(Message::Notification {
+            .send(LspMessage::Notification {
                 method: "window/showMessage".to_owned(),
                 params: json!({
                     "type": "info",

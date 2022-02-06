@@ -8,6 +8,8 @@ members = [
     "crates/entity",
     "crates/language_server",
     "crates/lexer",
+    "crates/lsp",
+    "crates/lsp_server",
     "crates/parser",
     "crates/token",
 ]

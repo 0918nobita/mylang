@@ -1,14 +1,13 @@
 use log::info;
+use lsp::LspMessage;
 use tokio::{
     io::{AsyncWrite, AsyncWriteExt},
     sync::mpsc,
 };
 
-use crate::message::Message;
-
 pub async fn send_msgs<W>(
     writer: &mut W,
-    rpc_send_rx: &mut mpsc::Receiver<Message>,
+    rpc_send_rx: &mut mpsc::Receiver<LspMessage>,
 ) -> anyhow::Result<()>
 where
     W: AsyncWrite + Unpin,

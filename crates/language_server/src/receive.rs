@@ -1,14 +1,16 @@
 use anyhow::Context;
 use log::{info, warn};
+use lsp::LspMessage;
 use regex::Regex;
 use tokio::{
     io::{AsyncBufRead, AsyncBufReadExt, AsyncReadExt},
     sync::mpsc,
 };
 
-use crate::message::Message;
-
-pub async fn receive_msgs<R>(reader: R, rpc_recv_tx: &mpsc::Sender<Message>) -> anyhow::Result<()>
+pub async fn receive_msgs<R>(
+    reader: R,
+    rpc_recv_tx: &mpsc::Sender<LspMessage>,
+) -> anyhow::Result<()>
 where
     R: AsyncBufRead + Unpin,
 {
@@ -27,7 +29,7 @@ where
             reader.consume(len);
 
             let msg = String::from_utf8(msg_buf)?;
-            let msg: Message = serde_json::from_str(&msg)?;
+            let msg: LspMessage = serde_json::from_str(&msg)?;
             info!("<-- {:?}", msg);
 
             rpc_recv_tx.send(msg).await?;

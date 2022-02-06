@@ -59,7 +59,9 @@ async fn main() -> anyhow::Result<()> {
                         rpc_send_tx
                             .send(RpcSendMsg::Send(Message::Response {
                                 id,
-                                result: json!({ "capabilities": {} }),
+                                result: json!({ "capabilities": {
+                                    "textDocumentSync": 1,
+                                } }),
                             }))
                             .await?
                     }

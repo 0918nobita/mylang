@@ -4,7 +4,7 @@ use log::info;
 use serde_json::json;
 use tokio::{
     io::{self, BufReader, BufWriter},
-    sync::{mpsc, watch},
+    sync::mpsc,
     time,
 };
 
@@ -15,10 +15,10 @@ use language_server::{
 };
 
 #[tokio::main]
-async fn main() {
+async fn main() -> anyhow::Result<()> {
     env_logger::init();
 
-    let (rpc_recv_tx, mut rpc_recv_rx) = watch::channel(RpcRecvMsg::Initial);
+    let (rpc_recv_tx, mut rpc_recv_rx) = mpsc::channel(100);
 
     tokio::spawn(async move {
         let mut stdin = BufReader::new(io::stdin());
@@ -32,10 +32,11 @@ async fn main() {
         send_msgs(&mut stdout, &mut rpc_send_rx).await
     });
 
+    let rpc_send_tx_cloned = rpc_send_tx.clone();
     tokio::spawn(async move {
         time::sleep(Duration::from_secs(2)).await;
 
-        rpc_send_tx
+        rpc_send_tx_cloned
             .send(RpcSendMsg::Send(Message::Notification {
                 method: "window/showMessage".to_owned(),
                 params: json!({
@@ -46,20 +47,27 @@ async fn main() {
             .await
     });
 
-    while rpc_recv_rx.changed().await.is_ok() {
-        match &*rpc_recv_rx.borrow() {
+    while let Some(msg) = rpc_recv_rx.recv().await {
+        match msg {
             RpcRecvMsg::Initial => (),
 
             RpcRecvMsg::Received(rpc_msg) => {
                 info!("<-- {:?}", rpc_msg);
 
                 match rpc_msg {
-                    Message::Request { method, .. } if method == "initialize" => {
-                        info!("Initialize request received");
+                    Message::Request { id, method, .. } if method == "initialize" => {
+                        rpc_send_tx
+                            .send(RpcSendMsg::Send(Message::Response {
+                                id,
+                                result: json!({ "capabilities": {} }),
+                            }))
+                            .await?
                     }
                     _ => (),
                 }
             }
         }
     }
+
+    Ok(())
 }

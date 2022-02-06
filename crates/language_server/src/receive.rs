@@ -1,9 +1,9 @@
 use anyhow::Context;
-use log::{info, warn};
+use log::warn;
 use regex::Regex;
 use tokio::{
     io::{AsyncBufRead, AsyncBufReadExt, AsyncReadExt},
-    sync::watch,
+    sync::mpsc,
 };
 
 use crate::message::Message;
@@ -15,37 +15,34 @@ pub enum RpcRecvMsg {
 }
 
 pub async fn receive_msgs<R>(
-    reader: &mut R,
-    rpc_recv_tx: &watch::Sender<RpcRecvMsg>,
+    reader: R,
+    rpc_recv_tx: &mpsc::Sender<RpcRecvMsg>,
 ) -> anyhow::Result<()>
 where
     R: AsyncBufRead + Unpin,
 {
-    let mut buf = String::new();
-
     let re = Regex::new(r"Content-Length: (\d+)")?;
 
-    loop {
-        let num_bytes = reader.read_line(&mut buf).await?;
-        buf = buf.trim().to_owned();
-        reader.consume(num_bytes);
-
-        if let Some(caps) = re.captures(&buf) {
-            let len = caps[1].parse::<usize>().context(
+    let mut lines = reader.lines();
+    while let Ok(Some(line)) = lines.next_line().await {
+        if let Some(caps) = re.captures(&line) {
+            let len = 2 + caps[1].parse::<usize>().context(
                 "Failed to parse the number of bytes extracted from the received header",
             )?;
-            info!("Length: {}", len);
 
             let mut msg_buf = vec![0u8; len];
+            let reader = lines.get_mut();
             reader.read_exact(&mut msg_buf).await?;
             reader.consume(len);
 
             let msg = String::from_utf8(msg_buf)?;
             let msg: Message = serde_json::from_str(&msg)?;
 
-            rpc_recv_tx.send(RpcRecvMsg::Received(msg))?;
+            rpc_recv_tx.send(RpcRecvMsg::Received(msg)).await?;
         } else {
-            warn!("Skiped: {}", buf);
+            warn!("Skiped: {}", line);
         }
     }
+
+    Ok(())
 }

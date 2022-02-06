@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["lex",""],["lex_and_report_errs",""],["lex_err_to_diagnostic",""],["locatable_to_json_range",""],["text_document_uri",""]],"struct":[["Responder",""]]});
+initSidebarItems({"fn":[["analyze_src_and_report_errs",""],["lex",""],["lex_err_to_diagnostic",""],["locatable_to_json_range",""],["parse_err_to_diagnostic",""],["text_document_uri",""]],"struct":[["Responder",""]]});

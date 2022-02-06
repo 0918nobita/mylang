@@ -172,6 +172,29 @@
 <span id="171">171</span>
 <span id="172">172</span>
 <span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::sync</span>::{
     <span class="ident">atomic</span>::{<span class="ident">AtomicBool</span>, <span class="ident">Ordering</span>},
     <span class="ident">Arc</span>,
@@ -182,6 +205,7 @@
 <span class="kw">use</span> <span class="ident">lexer</span>::{<span class="ident">result::LexErr</span>, <span class="ident">with_pos::WithPosExt</span>, <span class="ident">LexExt</span>};
 <span class="kw">use</span> <span class="ident">log::warn</span>;
 <span class="kw">use</span> <span class="ident">lsp::LspMessage</span>;
+<span class="kw">use</span> <span class="ident">parser::ParseErr</span>;
 <span class="kw">use</span> <span class="ident">serde_json</span>::{<span class="ident">json</span>, <span class="ident">Value</span> <span class="kw">as</span> <span class="ident">JsonValue</span>};
 <span class="kw">use</span> <span class="ident">token::Token</span>;
 <span class="kw">use</span> <span class="ident">valq::query_value</span>;
@@ -228,14 +252,32 @@
     <span class="macro">json!</span>({ <span class="string">&quot;range&quot;</span>: <span class="ident">range</span>, <span class="string">&quot;message&quot;</span>: <span class="ident">message</span> })
 }
 
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">lex_and_report_errs</span>(
+<span class="kw">fn</span> <span class="ident">parse_err_to_diagnostic</span>(<span class="ident">err</span>: <span class="ident">ParseErr</span>) -&gt; <span class="ident">JsonValue</span> {
+    <span class="kw">let</span> <span class="ident">range</span> <span class="op">=</span> <span class="ident">locatable_to_json_range</span>(<span class="kw-2">&amp;</span><span class="ident">err</span>);
+    <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">err</span>.<span class="ident">to_string</span>();
+    <span class="macro">json!</span>({ <span class="string">&quot;range&quot;</span>: <span class="ident">range</span>, <span class="string">&quot;message&quot;</span>: <span class="ident">message</span> })
+}
+
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">analyze_src_and_report_errs</span>(
     <span class="ident">sender</span>: <span class="ident">Addr</span><span class="op">&lt;</span><span class="ident">Sender</span><span class="op">&gt;</span>,
     <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">JsonValue</span>,
     <span class="ident">text</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
 ) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> (<span class="ident">_tokens</span>, <span class="ident">errors</span>) <span class="op">=</span> <span class="ident">lex</span>(<span class="ident">text</span>);
+    <span class="kw">let</span> (<span class="ident">tokens</span>, <span class="ident">errors</span>) <span class="op">=</span> <span class="ident">lex</span>(<span class="ident">text</span>);
 
-    <span class="kw">let</span> <span class="ident">diagnostics</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">errors</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="ident">lex_err_to_diagnostic</span>).<span class="ident">collect</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diagnostics</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">errors</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="ident">lex_err_to_diagnostic</span>).<span class="ident">collect</span>();
+
+    <span class="kw">let</span> (<span class="ident">_stmts</span>, <span class="ident">errors</span>): (<span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>) <span class="op">=</span> <span class="ident">parser::parse</span>(<span class="ident">tokens</span>.<span class="ident">into_iter</span>())
+        .<span class="ident">into_iter</span>()
+        .<span class="ident">partition</span>(<span class="ident">Result::is_ok</span>);
+
+    <span class="kw">let</span> <span class="ident">diagnostics_from_parser</span> <span class="op">=</span> <span class="ident">errors</span>
+        .<span class="ident">into_iter</span>()
+        .<span class="ident">map</span>(<span class="ident">Result::unwrap_err</span>)
+        .<span class="ident">map</span>(<span class="ident">parse_err_to_diagnostic</span>)
+        .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+
+    <span class="ident">diagnostics</span>.<span class="ident">extend</span>(<span class="ident">diagnostics_from_parser</span>);
 
     <span class="ident">sender</span>
         .<span class="ident">send</span>(<span class="ident">SendMsg</span>(<span class="ident">LspMessage::Notification</span> {
@@ -306,7 +348,9 @@
                         <span class="ident">text_document_uri</span>(<span class="kw-2">&amp;</span><span class="ident">params</span>),
                         <span class="macro">query_value!</span>(<span class="ident">params</span>.<span class="ident">textDocument</span>.<span class="ident">text</span> -&gt; <span class="ident">str</span>),
                     ) {
-                        <span class="ident">lex_and_report_errs</span>(<span class="ident">sender</span>, <span class="ident">uri</span>, <span class="ident">text</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>()
+                        <span class="ident">analyze_src_and_report_errs</span>(<span class="ident">sender</span>, <span class="ident">uri</span>, <span class="ident">text</span>)
+                            .<span class="kw">await</span>
+                            .<span class="ident">unwrap</span>()
                     } <span class="kw">else</span> {
                         <span class="macro">warn!</span>(<span class="string">&quot;Skipped: ({:?}) {:?}&quot;</span>, <span class="ident">method</span>, <span class="ident">params</span>)
                     }
@@ -319,7 +363,9 @@
                         <span class="ident">text_document_uri</span>(<span class="kw-2">&amp;</span><span class="ident">params</span>),
                         <span class="macro">query_value!</span>(<span class="ident">params</span>.<span class="ident">contentChanges</span>[<span class="number">0</span>].<span class="ident">text</span> -&gt; <span class="ident">str</span>),
                     ) {
-                        <span class="ident">lex_and_report_errs</span>(<span class="ident">sender</span>, <span class="ident">uri</span>, <span class="ident">text</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>()
+                        <span class="ident">analyze_src_and_report_errs</span>(<span class="ident">sender</span>, <span class="ident">uri</span>, <span class="ident">text</span>)
+                            .<span class="kw">await</span>
+                            .<span class="ident">unwrap</span>()
                     } <span class="kw">else</span> {
                         <span class="macro">warn!</span>(<span class="string">&quot;Skipped: ({:?}) {:?}&quot;</span>, <span class="ident">method</span>, <span class="ident">params</span>)
                     }

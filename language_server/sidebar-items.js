@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["message",""],["receive",""],["send",""]]});
+initSidebarItems({"fn":[["handle_msg",""],["publish_diagnostics",""],["text_document_uri",""]],"mod":[["message",""],["receive",""],["send",""]]});

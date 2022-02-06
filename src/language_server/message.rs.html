@@ -55,18 +55,18 @@
 <span id="54">54</span>
 <span id="55">55</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
-<span class="kw">use</span> <span class="ident">serde_json</span>::{<span class="ident">Map</span>, <span class="ident">Value</span> <span class="kw">as</span> <span class="ident">JsonValue</span>};
+<span class="kw">use</span> <span class="ident">serde_json</span>::{<span class="ident">json</span>, <span class="ident">Map</span>, <span class="ident">Value</span> <span class="kw">as</span> <span class="ident">JsonValue</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">untagged</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Message</span> {
     <span class="ident">Request</span> {
-        <span class="ident">id</span>: <span class="ident">String</span>,
+        <span class="ident">id</span>: <span class="ident">usize</span>,
         <span class="ident">method</span>: <span class="ident">String</span>,
         <span class="ident">params</span>: <span class="ident">JsonValue</span>,
     },
     <span class="ident">Response</span> {
-        <span class="ident">id</span>: <span class="ident">String</span>,
+        <span class="ident">id</span>: <span class="ident">usize</span>,
         <span class="ident">result</span>: <span class="ident">JsonValue</span>,
     },
     <span class="ident">Notification</span> {
@@ -81,16 +81,16 @@
 
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">Message::Request</span> { <span class="ident">id</span>, <span class="ident">method</span>, <span class="ident">params</span> } =&gt; {
-                <span class="ident">content_map</span>.<span class="ident">insert</span>(<span class="string">&quot;id&quot;</span>.<span class="ident">to_owned</span>(), <span class="ident">JsonValue::String</span>(<span class="ident">id</span>.<span class="ident">clone</span>()));
-                <span class="ident">content_map</span>.<span class="ident">insert</span>(<span class="string">&quot;method&quot;</span>.<span class="ident">to_owned</span>(), <span class="ident">JsonValue::String</span>(<span class="ident">method</span>.<span class="ident">clone</span>()));
+                <span class="ident">content_map</span>.<span class="ident">insert</span>(<span class="string">&quot;id&quot;</span>.<span class="ident">to_owned</span>(), <span class="macro">json!</span>(<span class="ident">id</span>));
+                <span class="ident">content_map</span>.<span class="ident">insert</span>(<span class="string">&quot;method&quot;</span>.<span class="ident">to_owned</span>(), <span class="macro">json!</span>(<span class="ident">method</span>));
                 <span class="ident">content_map</span>.<span class="ident">insert</span>(<span class="string">&quot;params&quot;</span>.<span class="ident">to_owned</span>(), <span class="ident">params</span>.<span class="ident">clone</span>());
             }
             <span class="ident">Message::Response</span> { <span class="ident">id</span>, <span class="ident">result</span> } =&gt; {
-                <span class="ident">content_map</span>.<span class="ident">insert</span>(<span class="string">&quot;id&quot;</span>.<span class="ident">to_owned</span>(), <span class="ident">JsonValue::String</span>(<span class="ident">id</span>.<span class="ident">clone</span>()));
+                <span class="ident">content_map</span>.<span class="ident">insert</span>(<span class="string">&quot;id&quot;</span>.<span class="ident">to_owned</span>(), <span class="macro">json!</span>(<span class="ident">id</span>));
                 <span class="ident">content_map</span>.<span class="ident">insert</span>(<span class="string">&quot;result&quot;</span>.<span class="ident">to_owned</span>(), <span class="ident">result</span>.<span class="ident">clone</span>());
             }
             <span class="ident">Message::Notification</span> { <span class="ident">method</span>, <span class="ident">params</span> } =&gt; {
-                <span class="ident">content_map</span>.<span class="ident">insert</span>(<span class="string">&quot;method&quot;</span>.<span class="ident">to_owned</span>(), <span class="ident">JsonValue::String</span>(<span class="ident">method</span>.<span class="ident">clone</span>()));
+                <span class="ident">content_map</span>.<span class="ident">insert</span>(<span class="string">&quot;method&quot;</span>.<span class="ident">to_owned</span>(), <span class="macro">json!</span>(<span class="ident">method</span>));
                 <span class="ident">content_map</span>.<span class="ident">insert</span>(<span class="string">&quot;params&quot;</span>.<span class="ident">to_owned</span>(), <span class="ident">params</span>.<span class="ident">clone</span>());
             }
         }

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["RpcSendMsg",""]],"fn":[["send_msgs",""]]});

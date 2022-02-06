@@ -1,16 +1,16 @@
 use serde::{Deserialize, Serialize};
-use serde_json::{Map, Value as JsonValue};
+use serde_json::{json, Map, Value as JsonValue};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum Message {
     Request {
-        id: String,
+        id: usize,
         method: String,
         params: JsonValue,
     },
     Response {
-        id: String,
+        id: usize,
         result: JsonValue,
     },
     Notification {
@@ -25,16 +25,16 @@ impl Message {
 
         match self {
             Message::Request { id, method, params } => {
-                content_map.insert("id".to_owned(), JsonValue::String(id.clone()));
-                content_map.insert("method".to_owned(), JsonValue::String(method.clone()));
+                content_map.insert("id".to_owned(), json!(id));
+                content_map.insert("method".to_owned(), json!(method));
                 content_map.insert("params".to_owned(), params.clone());
             }
             Message::Response { id, result } => {
-                content_map.insert("id".to_owned(), JsonValue::String(id.clone()));
+                content_map.insert("id".to_owned(), json!(id));
                 content_map.insert("result".to_owned(), result.clone());
             }
             Message::Notification { method, params } => {
-                content_map.insert("method".to_owned(), JsonValue::String(method.clone()));
+                content_map.insert("method".to_owned(), json!(method));
                 content_map.insert("params".to_owned(), params.clone());
             }
         }

@@ -1,4 +1,4 @@
-mod message;
+pub mod message;
 
 use std::time::Duration;
 
@@ -7,7 +7,7 @@ use log::{info, warn};
 use regex::Regex;
 use serde_json::json;
 use tokio::{
-    io::{AsyncBufRead, AsyncBufReadExt, AsyncReadExt},
+    io::{AsyncBufRead, AsyncBufReadExt, AsyncReadExt, AsyncWrite, AsyncWriteExt},
     sync::watch::Sender,
 };
 
@@ -55,7 +55,10 @@ where
     }
 }
 
-pub async fn send_notification() {
+pub async fn send_notification<W>(writer: &mut W) -> anyhow::Result<()>
+where
+    W: AsyncWrite + Unpin,
+{
     tokio::time::sleep(Duration::from_secs(2)).await;
 
     let notification = Message::Notification {
@@ -65,5 +68,11 @@ pub async fn send_notification() {
             "message": "Hello from mylang LSP server!",
         }),
     };
-    println!("{}", notification.raw_message());
+
+    writer
+        .write_all(notification.raw_message().as_bytes())
+        .await?;
+    writer.flush().await?;
+
+    Ok(())
 }

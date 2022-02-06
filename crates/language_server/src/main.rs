@@ -1,10 +1,10 @@
 use log::info;
 use tokio::{
-    io::{self, BufReader},
+    io::{self, BufReader, BufWriter},
     sync::watch,
 };
 
-use language_server::{receive_msgs, send_notification, TaskMsg};
+use language_server::{message::Message, receive_msgs, send_notification, TaskMsg};
 
 #[tokio::main]
 async fn main() {
@@ -12,12 +12,28 @@ async fn main() {
 
     let (tx, mut rx) = watch::channel(TaskMsg::Initial);
 
-    let mut stdin = BufReader::new(io::stdin());
-    tokio::spawn(async move { receive_msgs(&mut stdin, &tx).await });
+    tokio::spawn(async move {
+        let mut stdin = BufReader::new(io::stdin());
+        receive_msgs(&mut stdin, &tx).await
+    });
 
-    tokio::spawn(async { send_notification().await });
+    tokio::spawn(async {
+        let mut stdout = BufWriter::new(io::stdout());
+        send_notification(&mut stdout).await
+    });
 
     while rx.changed().await.is_ok() {
-        info!("Received: {:?}", *rx.borrow());
+        match &*rx.borrow() {
+            TaskMsg::Initial => (),
+            TaskMsg::Received(rpc_msg) => {
+                info!("<-- {:?}", rpc_msg);
+                match rpc_msg {
+                    Message::Request { method, .. } if method == "initialize" => {
+                        info!("Initialize request received");
+                    }
+                    _ => (),
+                }
+            }
+        }
     }
 }

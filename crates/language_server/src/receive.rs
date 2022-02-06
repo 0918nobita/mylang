@@ -8,16 +8,7 @@ use tokio::{
 
 use crate::message::Message;
 
-#[derive(Debug)]
-pub enum RpcRecvMsg {
-    Initial,
-    Received(Message),
-}
-
-pub async fn receive_msgs<R>(
-    reader: R,
-    rpc_recv_tx: &mpsc::Sender<RpcRecvMsg>,
-) -> anyhow::Result<()>
+pub async fn receive_msgs<R>(reader: R, rpc_recv_tx: &mpsc::Sender<Message>) -> anyhow::Result<()>
 where
     R: AsyncBufRead + Unpin,
 {
@@ -38,7 +29,7 @@ where
             let msg = String::from_utf8(msg_buf)?;
             let msg: Message = serde_json::from_str(&msg)?;
 
-            rpc_recv_tx.send(RpcRecvMsg::Received(msg)).await?;
+            rpc_recv_tx.send(msg).await?;
         } else {
             warn!("Skiped: {}", line);
         }

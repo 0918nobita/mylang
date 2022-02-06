@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["main",""]],"struct":[["JsonRpcActor",""],["JsonRpcSendMsg",""],["Msg",""],["MyActor",""]]});
+initSidebarItems({"fn":[["main",""]],"struct":[["JsonRpcActor",""],["LspSendMsg",""],["Msg",""],["MyActor",""]]});

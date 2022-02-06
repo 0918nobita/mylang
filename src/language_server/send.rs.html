@@ -21,18 +21,16 @@
 <span id="20">20</span>
 <span id="21">21</span>
 <span id="22">22</span>
-<span id="23">23</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">log::info</span>;
+<span class="kw">use</span> <span class="ident">lsp::LspMessage</span>;
 <span class="kw">use</span> <span class="ident">tokio</span>::{
     <span class="ident">io</span>::{<span class="ident">AsyncWrite</span>, <span class="ident">AsyncWriteExt</span>},
     <span class="ident">sync::mpsc</span>,
 };
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::message::Message</span>;
-
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">send_msgs</span><span class="op">&lt;</span><span class="ident">W</span><span class="op">&gt;</span>(
     <span class="ident">writer</span>: <span class="kw-2">&amp;mut</span> <span class="ident">W</span>,
-    <span class="ident">rpc_send_rx</span>: <span class="kw-2">&amp;mut</span> <span class="ident">mpsc::Receiver</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&gt;</span>,
+    <span class="ident">rpc_send_rx</span>: <span class="kw-2">&amp;mut</span> <span class="ident">mpsc::Receiver</span><span class="op">&lt;</span><span class="ident">LspMessage</span><span class="op">&gt;</span>,
 ) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">W</span>: <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span>,

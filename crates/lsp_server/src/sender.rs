@@ -2,18 +2,18 @@ use actix::{Actor, Context, ContextFutureSpawner, Handler, WrapFuture};
 use log::info;
 use tokio::io::{self, AsyncWriteExt};
 
-use crate::send_msg::LspSendMsg;
+use crate::send_msg::SendMsg;
 
-pub struct LspSendActor;
+pub struct Sender;
 
-impl Actor for LspSendActor {
+impl Actor for Sender {
     type Context = Context<Self>;
 }
 
-impl Handler<LspSendMsg> for LspSendActor {
+impl Handler<SendMsg> for Sender {
     type Result = ();
 
-    fn handle(&mut self, msg: LspSendMsg, ctx: &mut Context<Self>) -> Self::Result {
+    fn handle(&mut self, msg: SendMsg, ctx: &mut Context<Self>) -> Self::Result {
         info!("--> {:?}", msg.0);
 
         async move {

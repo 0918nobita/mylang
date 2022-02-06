@@ -1,8 +1,8 @@
 use actix::Message;
 use lsp::LspMessage;
 
-pub struct LspSendMsg(pub LspMessage);
+pub struct SendMsg(pub LspMessage);
 
-impl Message for LspSendMsg {
+impl Message for SendMsg {
     type Result = ();
 }

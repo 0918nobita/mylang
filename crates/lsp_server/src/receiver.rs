@@ -4,13 +4,13 @@ use lsp::LspMessage;
 use regex::Regex;
 use tokio::io::{self, AsyncBufReadExt, AsyncReadExt, BufReader};
 
-use crate::{received_msg::LspReceiveMsg, responder::Responder};
+use crate::{received_msg::ReceivedMsg, responder::Responder};
 
-pub struct LspReceiveActor {
+pub struct Receiver {
     pub responder: Addr<Responder>,
 }
 
-impl Actor for LspReceiveActor {
+impl Actor for Receiver {
     type Context = Context<Self>;
 
     fn started(&mut self, ctx: &mut Self::Context) {
@@ -33,7 +33,7 @@ impl Actor for LspReceiveActor {
                     let msg: LspMessage = serde_json::from_str(&msg).unwrap();
                     info!("<-- {:?}", msg);
 
-                    responder.send(LspReceiveMsg(msg)).await.unwrap();
+                    responder.send(ReceivedMsg(msg)).await.unwrap();
                 } else {
                     warn!("Skiped: {}", line);
                 }

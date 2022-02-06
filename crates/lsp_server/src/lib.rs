@@ -6,20 +6,19 @@ mod sender;
 
 use actix::Actor;
 use lsp::LspMessage;
-use send_msg::LspSendMsg;
 use serde_json::json;
 
-use crate::{receiver::LspReceiveActor, responder::Responder, sender::LspSendActor};
+use crate::{receiver::Receiver, responder::Responder, send_msg::SendMsg, sender::Sender};
 
 pub async fn launch_lsp_server() -> anyhow::Result<()> {
-    let sender = LspSendActor.start();
+    let sender = Sender.start();
 
     let responder = Responder::new(sender.clone()).start();
 
-    LspReceiveActor { responder }.start();
+    Receiver { responder }.start();
 
     sender
-        .send(LspSendMsg(LspMessage::Notification {
+        .send(SendMsg(LspMessage::Notification {
             method: "window/showMessage".to_owned(),
             params: json!({
                 "type": "info",

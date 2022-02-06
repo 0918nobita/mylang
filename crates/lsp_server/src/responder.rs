@@ -12,7 +12,7 @@ use serde_json::{json, Value as JsonValue};
 use token::Token;
 use valq::query_value;
 
-use crate::{received_msg::LspReceiveMsg, send_msg::LspSendMsg, sender::LspSendActor};
+use crate::{received_msg::ReceivedMsg, send_msg::SendMsg, sender::Sender};
 
 fn text_document_uri(params_obj: &JsonValue) -> Option<&JsonValue> {
     query_value!(params_obj.textDocument.uri)
@@ -55,7 +55,7 @@ fn lex_err_to_diagnostic(err: &LexErr) -> JsonValue {
 }
 
 async fn lex_and_report_errs(
-    sender: Addr<LspSendActor>,
+    sender: Addr<Sender>,
     uri: &JsonValue,
     text: &str,
 ) -> anyhow::Result<()> {
@@ -64,7 +64,7 @@ async fn lex_and_report_errs(
     let diagnostics: Vec<_> = errors.iter().map(lex_err_to_diagnostic).collect();
 
     sender
-        .send(LspSendMsg(LspMessage::Notification {
+        .send(SendMsg(LspMessage::Notification {
             method: "textDocument/publishDiagnostics".to_owned(),
             params: json!({
                 "uri": uri,
@@ -77,12 +77,12 @@ async fn lex_and_report_errs(
 }
 
 pub struct Responder {
-    pub sender: Addr<LspSendActor>,
+    pub sender: Addr<Sender>,
     diagnostics_supported: Arc<AtomicBool>,
 }
 
 impl Responder {
-    pub fn new(sender: Addr<LspSendActor>) -> Self {
+    pub fn new(sender: Addr<Sender>) -> Self {
         Self {
             sender,
             diagnostics_supported: Arc::new(AtomicBool::new(false)),
@@ -94,10 +94,10 @@ impl Actor for Responder {
     type Context = Context<Self>;
 }
 
-impl Handler<LspReceiveMsg> for Responder {
+impl Handler<ReceivedMsg> for Responder {
     type Result = ();
 
-    fn handle(&mut self, msg: LspReceiveMsg, ctx: &mut Self::Context) {
+    fn handle(&mut self, msg: ReceivedMsg, ctx: &mut Self::Context) {
         let sender = self.sender.clone();
 
         let diagnostics_supported = Arc::clone(&self.diagnostics_supported);
@@ -113,7 +113,7 @@ impl Handler<LspReceiveMsg> for Responder {
                     );
 
                     sender
-                        .send(LspSendMsg(LspMessage::Response {
+                        .send(SendMsg(LspMessage::Response {
                             id,
                             result: json!({
                                 "capabilities": {
@@ -156,7 +156,7 @@ impl Handler<LspReceiveMsg> for Responder {
                 {
                     if let Some(uri) = text_document_uri(&params) {
                         sender
-                            .send(LspSendMsg(LspMessage::Notification {
+                            .send(SendMsg(LspMessage::Notification {
                                 method: "textDocument/publishDiagnostics".to_owned(),
                                 params: json!({ "uri": uri, "diagnostics": [] }),
                             }))

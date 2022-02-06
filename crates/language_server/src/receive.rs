@@ -1,5 +1,5 @@
 use anyhow::Context;
-use log::warn;
+use log::{info, warn};
 use regex::Regex;
 use tokio::{
     io::{AsyncBufRead, AsyncBufReadExt, AsyncReadExt},
@@ -28,6 +28,7 @@ where
 
             let msg = String::from_utf8(msg_buf)?;
             let msg: Message = serde_json::from_str(&msg)?;
+            info!("<-- {:?}", msg);
 
             rpc_recv_tx.send(msg).await?;
         } else {

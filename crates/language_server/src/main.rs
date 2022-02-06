@@ -1,6 +1,5 @@
 use std::time::Duration;
 
-use log::info;
 use serde_json::json;
 use tokio::{
     io::{self, BufReader, BufWriter},
@@ -29,6 +28,7 @@ async fn main() -> anyhow::Result<()> {
     });
 
     let rpc_send_tx_cloned = rpc_send_tx.clone();
+
     tokio::spawn(async move {
         time::sleep(Duration::from_secs(2)).await;
 
@@ -46,7 +46,6 @@ async fn main() -> anyhow::Result<()> {
     let mut publish_diagnostics_supported = false;
 
     while let Some(rpc_msg) = rpc_recv_rx.recv().await {
-        info!("<-- {:?}", rpc_msg);
         handle_msg(&rpc_send_tx, &mut publish_diagnostics_supported, rpc_msg).await?;
     }
 

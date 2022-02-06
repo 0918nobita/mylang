@@ -225,11 +225,14 @@ name = "language_server"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "ast",
  "env_logger",
+ "lexer",
  "log",
  "regex",
  "serde",
  "serde_json",
+ "token",
  "tokio",
 ]
 

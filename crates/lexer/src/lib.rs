@@ -1,6 +1,6 @@
 //! 字句解析器
 
-mod result;
+pub mod result;
 mod state;
 mod transition;
 pub mod with_pos;
@@ -102,7 +102,7 @@ where
     }
 }
 
-trait LexExt: Iterator<Item = (Pos, char)> + Sized {
+pub trait LexExt: Iterator<Item = (Pos, char)> + Sized {
     fn lex(self) -> Lex<Self>;
 }
 

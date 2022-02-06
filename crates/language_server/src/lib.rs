@@ -1,15 +1,15 @@
 mod message;
 
-use std::{
-    io::{self, BufRead, Read},
-    time::Duration,
-};
+use std::time::Duration;
 
 use anyhow::Context;
 use log::{info, warn};
 use regex::Regex;
 use serde_json::json;
-use tokio::sync::watch::Sender;
+use tokio::{
+    io::{AsyncBufRead, AsyncBufReadExt, AsyncReadExt},
+    sync::watch::Sender,
+};
 
 use message::Message;
 
@@ -19,18 +19,21 @@ pub enum TaskMsg {
     Received(Message),
 }
 
-pub async fn receive_msgs(task_msg_sender: &Sender<TaskMsg>) -> anyhow::Result<()> {
-    let stdin = io::stdin();
-    let mut stdin = stdin.lock();
-
+pub async fn receive_msgs<R>(
+    reader: &mut R,
+    task_msg_sender: &Sender<TaskMsg>,
+) -> anyhow::Result<()>
+where
+    R: AsyncBufRead + Unpin,
+{
     let mut buf = String::new();
 
     let re = Regex::new(r"Content-Length: (\d+)")?;
 
     loop {
-        let num_bytes = stdin.read_line(&mut buf)?;
+        let num_bytes = reader.read_line(&mut buf).await?;
         buf = buf.trim().to_owned();
-        stdin.consume(num_bytes);
+        reader.consume(num_bytes);
 
         if let Some(caps) = re.captures(&buf) {
             let len = caps[1].parse::<usize>().context(
@@ -39,8 +42,8 @@ pub async fn receive_msgs(task_msg_sender: &Sender<TaskMsg>) -> anyhow::Result<(
             info!("Length: {}", len);
 
             let mut msg_buf = vec![0u8; len];
-            stdin.read_exact(&mut msg_buf)?;
-            stdin.consume(len);
+            reader.read_exact(&mut msg_buf).await?;
+            reader.consume(len);
 
             let msg = String::from_utf8(msg_buf)?;
             let msg: Message = serde_json::from_str(&msg)?;

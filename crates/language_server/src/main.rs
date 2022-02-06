@@ -1,5 +1,8 @@
 use log::info;
-use tokio::sync::watch;
+use tokio::{
+    io::{self, BufReader},
+    sync::watch,
+};
 
 use language_server::{receive_msgs, send_notification, TaskMsg};
 
@@ -9,7 +12,8 @@ async fn main() {
 
     let (tx, mut rx) = watch::channel(TaskMsg::Initial);
 
-    tokio::spawn(async move { receive_msgs(&tx).await });
+    let mut stdin = BufReader::new(io::stdin());
+    tokio::spawn(async move { receive_msgs(&mut stdin, &tx).await });
 
     tokio::spawn(async { send_notification().await });
 

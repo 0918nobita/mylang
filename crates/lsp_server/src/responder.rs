@@ -4,7 +4,7 @@ use std::sync::{
 };
 
 use actix::{Actor, Addr, Context, ContextFutureSpawner, Handler, WrapFuture};
-use lexer::{result::LexErr, with_pos::WithPosExt, LexExt};
+use lexer::{LexErr, LexExt, WithPosExt};
 use log::warn;
 use parser::ParseErr;
 use serde_json::{json, Value as JsonValue};

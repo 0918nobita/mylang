@@ -1,16 +1,16 @@
 //! 字句解析器
 
-pub mod result;
+mod result;
 mod state;
 mod transition;
-pub mod with_pos;
+mod with_pos;
 
 use std::io::BufRead;
 
-use result::LexErr;
+pub use result::LexErr;
 use token::Pos;
 use utf8_chars::BufReadCharsExt;
-use with_pos::WithPosExt;
+pub use with_pos::WithPosExt;
 
 use crate::{
     result::LexResult,

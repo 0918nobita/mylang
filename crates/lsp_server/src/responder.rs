@@ -44,8 +44,8 @@ where
     let start = range.start;
     let end = range.end;
     json!({
-        "start": { "line": start.line, "character": start.column },
-        "end": { "line": end.line, "character": end.column },
+        "start": { "line": start.line, "character": start.character },
+        "end": { "line": end.line, "character": end.character },
     })
 }
 

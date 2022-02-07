@@ -22,9 +22,9 @@ where
 
             if c == '\n' {
                 self.pos.line += 1;
-                self.pos.column = 0;
+                self.pos.character = 0;
             } else {
-                self.pos.column += 1;
+                self.pos.character += 1;
             }
 
             (prev_pos, c)

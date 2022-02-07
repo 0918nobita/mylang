@@ -1,7 +1,9 @@
+use actix::Message;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Map, Value as JsonValue};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Message)]
+#[rtype(result = "()")]
 #[serde(untagged)]
 pub enum LspMessage {
     Request {

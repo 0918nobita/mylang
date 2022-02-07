@@ -1,10 +1,9 @@
 use actix::{Actor, Addr, Context, ContextFutureSpawner, WrapFuture};
 use log::{info, warn};
-use lsp::LspMessage;
 use regex::Regex;
 use tokio::io::{self, AsyncBufReadExt, AsyncReadExt, BufReader};
 
-use crate::{received_msg::ReceivedMsg, responder::Responder};
+use crate::{message::LspMessage, responder::Responder};
 
 pub struct Receiver {
     pub responder: Addr<Responder>,
@@ -33,7 +32,7 @@ impl Actor for Receiver {
                     let msg: LspMessage = serde_json::from_str(&msg).unwrap();
                     info!("<-- {:?}", msg);
 
-                    responder.send(ReceivedMsg(msg)).await.unwrap();
+                    responder.send(msg).await.unwrap();
                 } else {
                     warn!("Skiped: {}", line);
                 }

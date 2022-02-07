@@ -369,14 +369,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "lsp"
-version = "0.1.0"
-dependencies = [
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "lsp_server"
 version = "0.1.0"
 dependencies = [
@@ -386,9 +378,9 @@ dependencies = [
  "env_logger",
  "lexer",
  "log",
- "lsp",
  "parser",
  "regex",
+ "serde",
  "serde_json",
  "token",
  "tokio",

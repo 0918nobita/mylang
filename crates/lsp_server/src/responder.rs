@@ -6,14 +6,13 @@ use std::sync::{
 use actix::{Actor, Addr, Context, ContextFutureSpawner, Handler, WrapFuture};
 use lexer::{result::LexErr, with_pos::WithPosExt, LexExt};
 use log::warn;
-use lsp::LspMessage;
 use parser::ParseErr;
 use serde_json::{json, Value as JsonValue};
 use token::Locatable;
 use token::Token;
 use valq::query_value;
 
-use crate::{received_msg::ReceivedMsg, send_msg::SendMsg, sender::Sender};
+use crate::{message::LspMessage, sender::Sender};
 
 fn text_document_uri(params_obj: &JsonValue) -> Option<&JsonValue> {
     query_value!(params_obj.textDocument.uri)
@@ -83,13 +82,13 @@ async fn analyze_src_and_report_errs(
     diagnostics.extend(diagnostics_from_parser);
 
     sender
-        .send(SendMsg(LspMessage::Notification {
+        .send(LspMessage::Notification {
             method: "textDocument/publishDiagnostics".to_owned(),
             params: json!({
                 "uri": uri,
                 "diagnostics": diagnostics,
             }),
-        }))
+        })
         .await?;
 
     Ok(())
@@ -113,10 +112,10 @@ impl Actor for Responder {
     type Context = Context<Self>;
 }
 
-impl Handler<ReceivedMsg> for Responder {
+impl Handler<LspMessage> for Responder {
     type Result = ();
 
-    fn handle(&mut self, msg: ReceivedMsg, ctx: &mut Self::Context) {
+    fn handle(&mut self, msg: LspMessage, ctx: &mut Self::Context) {
         let sender = self.sender.clone();
 
         let diagnostics_supported = Arc::clone(&self.diagnostics_supported);
@@ -124,7 +123,7 @@ impl Handler<ReceivedMsg> for Responder {
         async move {
             let diagnostics_currently_enabled = diagnostics_supported.load(Ordering::Relaxed);
 
-            match msg.0 {
+            match msg {
                 LspMessage::Request { id, method, params } if method == "initialize" => {
                     diagnostics_supported.store(
                         query_value!(params.capabilities.textDocument.publishDiagnostics).is_some(),
@@ -132,14 +131,14 @@ impl Handler<ReceivedMsg> for Responder {
                     );
 
                     sender
-                        .send(SendMsg(LspMessage::Response {
+                        .send(LspMessage::Response {
                             id,
                             result: json!({
                                 "capabilities": {
                                     "textDocumentSync": 1,
                                 }
                             }),
-                        }))
+                        })
                         .await
                         .unwrap()
                 }
@@ -179,10 +178,10 @@ impl Handler<ReceivedMsg> for Responder {
                 {
                     if let Some(uri) = text_document_uri(&params) {
                         sender
-                            .send(SendMsg(LspMessage::Notification {
+                            .send(LspMessage::Notification {
                                 method: "textDocument/publishDiagnostics".to_owned(),
                                 params: json!({ "uri": uri, "diagnostics": [] }),
-                            }))
+                            })
                             .await
                             .unwrap()
                     }

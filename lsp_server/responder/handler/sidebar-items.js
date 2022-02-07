@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["handle",""],["handle_did_change_notification",""],["handle_did_close_notification",""],["handle_did_open_notification",""],["handle_initialize_request",""],["text_document_uri",""]]});
+initSidebarItems({"fn":[["handle",""],["handle_did_change_notification",""],["handle_did_close_notification",""],["handle_did_open_notification",""],["handle_initialize_request",""],["text_document_uri",""],["token_types",""]]});

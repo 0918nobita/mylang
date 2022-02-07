@@ -131,17 +131,17 @@
 <span id="130">130</span>
 </pre><pre class="rust"><code><span class="doccomment">//! 字句解析器</span>
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">result</span>;
+<span class="kw">mod</span> <span class="ident">result</span>;
 <span class="kw">mod</span> <span class="ident">state</span>;
 <span class="kw">mod</span> <span class="ident">transition</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">with_pos</span>;
+<span class="kw">mod</span> <span class="ident">with_pos</span>;
 
 <span class="kw">use</span> <span class="ident">std::io::BufRead</span>;
 
-<span class="kw">use</span> <span class="ident">result::LexErr</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">result::LexErr</span>;
 <span class="kw">use</span> <span class="ident">token::Pos</span>;
 <span class="kw">use</span> <span class="ident">utf8_chars::BufReadCharsExt</span>;
-<span class="kw">use</span> <span class="ident">with_pos::WithPosExt</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">with_pos::WithPosExt</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">result::LexResult</span>,

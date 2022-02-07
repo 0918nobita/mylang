@@ -50,7 +50,7 @@
 <span id="49">49</span>
 </pre><pre class="rust"><code><span class="doccomment">//! 文字のイテレータを「位置・文字ペア」のイテレータに変換するアダプタ</span>
 
-<span class="kw">use</span> <span class="ident">ast::pos::Pos</span>;
+<span class="kw">use</span> <span class="ident">token::Pos</span>;
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WithPos</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>
 <span class="kw">where</span>
@@ -72,9 +72,9 @@
 
             <span class="kw">if</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;\n&#39;</span> {
                 <span class="self">self</span>.<span class="ident">pos</span>.<span class="ident">line</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
-                <span class="self">self</span>.<span class="ident">pos</span>.<span class="ident">column</span> <span class="op">=</span> <span class="number">0</span>;
+                <span class="self">self</span>.<span class="ident">pos</span>.<span class="ident">character</span> <span class="op">=</span> <span class="number">0</span>;
             } <span class="kw">else</span> {
-                <span class="self">self</span>.<span class="ident">pos</span>.<span class="ident">column</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+                <span class="self">self</span>.<span class="ident">pos</span>.<span class="ident">character</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             }
 
             (<span class="ident">prev_pos</span>, <span class="ident">c</span>)

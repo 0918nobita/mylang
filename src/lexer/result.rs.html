@@ -33,18 +33,10 @@
 <span id="32">32</span>
 <span id="33">33</span>
 <span id="34">34</span>
-<span id="35">35</span>
-<span id="36">36</span>
-<span id="37">37</span>
-<span id="38">38</span>
 </pre><pre class="rust"><code><span class="doccomment">//! 字句解析の結果</span>
 
-<span class="kw">use</span> <span class="ident">ast</span>::{
-    <span class="ident">pos::Pos</span>,
-    <span class="ident">range</span>::{<span class="ident">Locatable</span>, <span class="ident">Range</span>},
-};
 <span class="kw">use</span> <span class="ident">thiserror::Error</span>;
-<span class="kw">use</span> <span class="ident">token::Token</span>;
+<span class="kw">use</span> <span class="ident">token</span>::{<span class="ident">Locatable</span>, <span class="ident">Pos</span>, <span class="ident">Range</span>, <span class="ident">Token</span>};
 
 <span class="doccomment">/// 字句解析中に発生するエラー</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Error</span>)]</span>

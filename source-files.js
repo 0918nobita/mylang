@@ -1,5 +1,5 @@
 var N = null;var sourcesIndex = {};
-sourcesIndex["ast"] = {"name":"","files":["expr.rs","lib.rs","pos.rs","range.rs","stmt.rs"]};
+sourcesIndex["ast"] = {"name":"","files":["expr.rs","lib.rs","stmt.rs"]};
 sourcesIndex["ast_interp"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["ast_to_bytecode"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["bytecode"] = {"name":"","files":["lib.rs"]};
@@ -9,5 +9,5 @@ sourcesIndex["lexer"] = {"name":"","dirs":[{"name":"state","files":["i32.rs","ke
 sourcesIndex["lsp"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["lsp_server"] = {"name":"","files":["lib.rs","received_msg.rs","receiver.rs","responder.rs","send_msg.rs","sender.rs"]};
 sourcesIndex["parser"] = {"name":"","files":["lib.rs"]};
-sourcesIndex["token"] = {"name":"","files":["lib.rs"]};
+sourcesIndex["token"] = {"name":"","files":["lib.rs","locatable.rs","pos.rs","range.rs"]};
 createSourceSidebar();

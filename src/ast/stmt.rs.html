@@ -17,14 +17,10 @@
 <span id="16">16</span>
 <span id="17">17</span>
 <span id="18">18</span>
-<span id="19">19</span>
-<span id="20">20</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+<span class="kw">use</span> <span class="ident">token</span>::{<span class="ident">Locatable</span>, <span class="ident">Range</span>};
 
-<span class="kw">use</span> <span class="kw">super</span>::{
-    <span class="ident">expr::Expr</span>,
-    <span class="ident">range</span>::{<span class="ident">Locatable</span>, <span class="ident">Range</span>},
-};
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::expr::Expr</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Stmt</span> {

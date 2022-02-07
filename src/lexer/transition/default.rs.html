@@ -28,11 +28,9 @@
 <span id="27">27</span>
 <span id="28">28</span>
 <span id="29">29</span>
-<span id="30">30</span>
 </pre><pre class="rust"><code><span class="doccomment">//! 初期状態のとき、または他の状態で想定外の文字が出現したときに行う状態遷移</span>
 
-<span class="kw">use</span> <span class="ident">ast::pos::Pos</span>;
-<span class="kw">use</span> <span class="ident">token::Token</span>;
+<span class="kw">use</span> <span class="ident">token</span>::{<span class="ident">Pos</span>, <span class="ident">Token</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">result</span>::{<span class="ident">LexErr</span>, <span class="ident">LexResult</span>},

@@ -201,12 +201,12 @@
 };
 
 <span class="kw">use</span> <span class="ident">actix</span>::{<span class="ident">Actor</span>, <span class="ident">Addr</span>, <span class="ident">Context</span>, <span class="ident">ContextFutureSpawner</span>, <span class="ident">Handler</span>, <span class="ident">WrapFuture</span>};
-<span class="kw">use</span> <span class="ident">ast::range::Locatable</span>;
 <span class="kw">use</span> <span class="ident">lexer</span>::{<span class="ident">result::LexErr</span>, <span class="ident">with_pos::WithPosExt</span>, <span class="ident">LexExt</span>};
 <span class="kw">use</span> <span class="ident">log::warn</span>;
 <span class="kw">use</span> <span class="ident">lsp::LspMessage</span>;
 <span class="kw">use</span> <span class="ident">parser::ParseErr</span>;
 <span class="kw">use</span> <span class="ident">serde_json</span>::{<span class="ident">json</span>, <span class="ident">Value</span> <span class="kw">as</span> <span class="ident">JsonValue</span>};
+<span class="kw">use</span> <span class="ident">token::Locatable</span>;
 <span class="kw">use</span> <span class="ident">token::Token</span>;
 <span class="kw">use</span> <span class="ident">valq::query_value</span>;
 
@@ -241,8 +241,8 @@
     <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">range</span>.<span class="ident">start</span>;
     <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">range</span>.<span class="ident">end</span>;
     <span class="macro">json!</span>({
-        <span class="string">&quot;start&quot;</span>: { <span class="string">&quot;line&quot;</span>: <span class="ident">start</span>.<span class="ident">line</span>, <span class="string">&quot;character&quot;</span>: <span class="ident">start</span>.<span class="ident">column</span> },
-        <span class="string">&quot;end&quot;</span>: { <span class="string">&quot;line&quot;</span>: <span class="ident">end</span>.<span class="ident">line</span>, <span class="string">&quot;character&quot;</span>: <span class="ident">end</span>.<span class="ident">column</span> },
+        <span class="string">&quot;start&quot;</span>: { <span class="string">&quot;line&quot;</span>: <span class="ident">start</span>.<span class="ident">line</span>, <span class="string">&quot;character&quot;</span>: <span class="ident">start</span>.<span class="ident">character</span> },
+        <span class="string">&quot;end&quot;</span>: { <span class="string">&quot;line&quot;</span>: <span class="ident">end</span>.<span class="ident">line</span>, <span class="string">&quot;character&quot;</span>: <span class="ident">end</span>.<span class="ident">character</span> },
     })
 }
 

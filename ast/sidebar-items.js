@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["expr",""],["pos",""],["range",""],["stmt",""]]});
+initSidebarItems({"enum":[["Expr",""],["Stmt",""]],"mod":[["expr",""],["stmt",""]]});

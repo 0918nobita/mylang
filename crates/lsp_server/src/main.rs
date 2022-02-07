@@ -7,7 +7,7 @@ fn main() -> anyhow::Result<()> {
 
     let system = System::new();
 
-    system.block_on(async { launch_lsp_server().await })?;
+    system.block_on(async { launch_lsp_server().await });
 
     system.run()?;
 

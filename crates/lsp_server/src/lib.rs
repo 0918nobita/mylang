@@ -12,5 +12,5 @@ pub async fn launch_lsp_server() {
 
     let responder = Responder::new(sender).start();
 
-    Receiver { responder }.start();
+    Receiver::new(responder).start();
 }

@@ -11,7 +11,7 @@ use self::handler::handle;
 use crate::{message::LspMessage, sender::Sender};
 
 pub struct Responder {
-    pub sender: Addr<Sender>,
+    sender: Addr<Sender>,
     diagnostics_supported: Arc<AtomicBool>,
 }
 

@@ -6,7 +6,13 @@ use tokio::io::{self, AsyncBufReadExt, AsyncReadExt, BufReader};
 use crate::{message::LspMessage, responder::Responder};
 
 pub struct Receiver {
-    pub responder: Addr<Responder>,
+    responder: Addr<Responder>,
+}
+
+impl Receiver {
+    pub fn new(responder: Addr<Responder>) -> Self {
+        Self { responder }
+    }
 }
 
 impl Actor for Receiver {
@@ -19,6 +25,7 @@ impl Actor for Receiver {
             let stdin = BufReader::new(io::stdin());
             let mut lines = stdin.lines();
             let re = Regex::new(r"Content-Length: (\d+)").unwrap();
+
             while let Ok(Some(line)) = lines.next_line().await {
                 if let Some(caps) = re.captures(&line) {
                     let len = 2 + caps[1].parse::<usize>().unwrap();

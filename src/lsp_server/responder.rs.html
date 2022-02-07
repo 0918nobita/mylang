@@ -248,13 +248,13 @@
 
 <span class="kw">fn</span> <span class="ident">lex_err_to_diagnostic</span>(<span class="ident">err</span>: <span class="kw-2">&amp;</span><span class="ident">LexErr</span>) -&gt; <span class="ident">JsonValue</span> {
     <span class="kw">let</span> <span class="ident">range</span> <span class="op">=</span> <span class="ident">locatable_to_json_range</span>(<span class="ident">err</span>);
-    <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">err</span>.<span class="ident">to_string</span>();
+    <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;(Tokenization Error) {}&quot;</span>, <span class="ident">err</span>);
     <span class="macro">json!</span>({ <span class="string">&quot;range&quot;</span>: <span class="ident">range</span>, <span class="string">&quot;message&quot;</span>: <span class="ident">message</span> })
 }
 
 <span class="kw">fn</span> <span class="ident">parse_err_to_diagnostic</span>(<span class="ident">err</span>: <span class="ident">ParseErr</span>) -&gt; <span class="ident">JsonValue</span> {
     <span class="kw">let</span> <span class="ident">range</span> <span class="op">=</span> <span class="ident">locatable_to_json_range</span>(<span class="kw-2">&amp;</span><span class="ident">err</span>);
-    <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">err</span>.<span class="ident">to_string</span>();
+    <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;(Syntax Error) {}&quot;</span>, <span class="ident">err</span>);
     <span class="macro">json!</span>({ <span class="string">&quot;range&quot;</span>: <span class="ident">range</span>, <span class="string">&quot;message&quot;</span>: <span class="ident">message</span> })
 }
 

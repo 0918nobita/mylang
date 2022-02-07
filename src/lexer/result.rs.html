@@ -41,16 +41,16 @@
 <span class="doccomment">/// 字句解析中に発生するエラー</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Error</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">LexErr</span> {
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;({0}) Forbidden character: &#39;{1}&#39;&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Forbidden character: &#39;{1}&#39;&quot;</span>)]</span>
     <span class="ident">ForbiddenChar</span>(<span class="ident">Pos</span>, <span class="ident">char</span>),
 
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;({0}) Invalid escape sequence: &#39;{1}&#39;&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Invalid escape sequence: &#39;{1}&#39;&quot;</span>)]</span>
     <span class="ident">InvalidEscapeSequence</span>(<span class="ident">Pos</span>, <span class="ident">char</span>),
 
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;({0}) Invalid keyword: \&quot;{1}\&quot;&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Invalid keyword: \&quot;{1}\&quot;&quot;</span>)]</span>
     <span class="ident">InvalidKeyword</span>(<span class="ident">Range</span>, <span class="ident">String</span>),
 
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;({0}) Missing a closing quote for string literal&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Missing a closing quote for string literal&quot;</span>)]</span>
     <span class="ident">MissingClosingQuoteForStr</span>(<span class="ident">Pos</span>),
 }
 

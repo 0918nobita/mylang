@@ -123,10 +123,10 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Error</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ParseErr</span> {
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;({0}) Term expected, but not found&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Term expected, but not found&quot;</span>)]</span>
     <span class="ident">TermExpected</span>(<span class="ident">Pos</span>),
 
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;({0}) Either print_int or print_str expected, but not found&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Either print_int or print_str expected, but not found&quot;</span>)]</span>
     <span class="ident">KeywordExpected</span>(<span class="ident">Range</span>),
 }
 

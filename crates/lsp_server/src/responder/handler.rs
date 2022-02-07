@@ -1,15 +1,36 @@
-use std::sync::{
-    atomic::{AtomicBool, Ordering},
-    Arc,
+use std::{
+    collections::HashMap,
+    sync::{
+        atomic::{AtomicBool, Ordering},
+        Arc,
+    },
 };
 
 use actix::Addr;
-use log::warn;
+use log::{info, warn};
 use serde_json::{json, Value as JsonValue};
 use valq::query_value;
 
 use super::analyzer::analyze_src;
 use crate::{message::LspMessage, sender::Sender};
+
+fn token_types(params_obj: &JsonValue) -> Option<HashMap<String, usize>> {
+    let token_types = query_value!(
+        params_obj.capabilities.textDocument.semanticTokens.tokenTypes -> array
+    )?;
+
+    let token_types = token_types
+        .iter()
+        .map(|token_type| token_type.as_str())
+        .collect::<Option<Vec<_>>>()?;
+
+    let mut token_type_map = HashMap::new();
+    for (i, token_type) in token_types.iter().enumerate() {
+        token_type_map.insert(token_type.to_string(), i);
+    }
+
+    Some(token_type_map)
+}
 
 async fn handle_initialize_request(
     sender: Addr<Sender>,
@@ -21,6 +42,8 @@ async fn handle_initialize_request(
         query_value!(params.capabilities.textDocument.publishDiagnostics).is_some(),
         Ordering::Relaxed,
     );
+
+    info!("TokenTypes: {:?}", token_types(&params));
 
     sender
         .send(LspMessage::Response {

@@ -7,8 +7,8 @@ pub mod with_pos;
 
 use std::io::BufRead;
 
-use ast::pos::Pos;
 use result::LexErr;
+use token::Pos;
 use utf8_chars::BufReadCharsExt;
 use with_pos::WithPosExt;
 

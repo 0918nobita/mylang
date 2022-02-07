@@ -1,5 +1,4 @@
-use ast::{pos::Pos, range::Range};
-use token::Token;
+use token::{Pos, Range, Token};
 
 #[derive(Clone, Debug)]
 pub struct I32State {

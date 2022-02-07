@@ -1,11 +1,7 @@
 //! 字句解析の結果
 
-use ast::{
-    pos::Pos,
-    range::{Locatable, Range},
-};
 use thiserror::Error;
-use token::Token;
+use token::{Locatable, Pos, Range, Token};
 
 /// 字句解析中に発生するエラー
 #[derive(Debug, Error)]

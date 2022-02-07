@@ -1,4 +1,5 @@
-pub mod expr;
-pub mod pos;
-pub mod range;
-pub mod stmt;
+mod expr;
+mod stmt;
+
+pub use expr::Expr;
+pub use stmt::Stmt;

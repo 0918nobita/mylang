@@ -1,8 +1,12 @@
-use ast::{
-    pos::Pos,
-    range::{Locatable, Range},
-};
+mod locatable;
+mod pos;
+mod range;
+
 use serde::{Deserialize, Serialize};
+
+pub use locatable::Locatable;
+pub use pos::Pos;
+pub use range::Range;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub enum KeywordKind {

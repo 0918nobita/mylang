@@ -1,5 +1,5 @@
 use anyhow::bail;
-use ast::{expr::Expr, stmt::Stmt};
+use ast::{Expr, Stmt};
 use entity::{Entity, I32Entity, StrEntity};
 
 fn eval(expr: &Expr) -> anyhow::Result<Entity> {
@@ -48,8 +48,9 @@ pub fn execute(stmts: &[Stmt]) -> anyhow::Result<()> {
 
 #[cfg(test)]
 mod tests {
-    use ast::{expr::Expr, range::Range};
+    use ast::Expr;
     use entity::{Entity, I32Entity, StrEntity};
+    use token::Range;
 
     use super::eval;
 

@@ -1,4 +1,4 @@
-use ast::pos::Pos;
+use token::Pos;
 
 use crate::{result::LexResult, state::keyword::KeywordState};
 

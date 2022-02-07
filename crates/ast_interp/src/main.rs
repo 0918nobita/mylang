@@ -1,6 +1,6 @@
 use std::{fs::File, io::BufReader};
 
-use ast::stmt::Stmt;
+use ast::Stmt;
 use ast_interp::execute;
 use clap::Parser;
 

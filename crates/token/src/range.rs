@@ -36,7 +36,3 @@ impl From<Pos> for Range {
         }
     }
 }
-
-pub trait Locatable {
-    fn locate(&self) -> Range;
-}

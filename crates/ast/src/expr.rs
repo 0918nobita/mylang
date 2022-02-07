@@ -1,6 +1,5 @@
-use super::range::{Locatable, Range};
-
 use serde::{Deserialize, Serialize};
+use token::{Locatable, Range};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub enum Expr {

@@ -1,5 +1,4 @@
-use ast::pos::Pos;
-use token::Token;
+use token::{Pos, Token};
 
 use crate::{result::LexErr, state::str::StrState};
 

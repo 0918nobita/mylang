@@ -1,9 +1,7 @@
 use serde::{Deserialize, Serialize};
+use token::{Locatable, Range};
 
-use super::{
-    expr::Expr,
-    range::{Locatable, Range},
-};
+use super::expr::Expr;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub enum Stmt {

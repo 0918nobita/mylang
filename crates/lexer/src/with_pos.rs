@@ -1,6 +1,6 @@
 //! 文字のイテレータを「位置・文字ペア」のイテレータに変換するアダプタ
 
-use ast::pos::Pos;
+use token::Pos;
 
 pub struct WithPos<I>
 where

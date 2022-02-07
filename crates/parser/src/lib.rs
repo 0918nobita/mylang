@@ -7,14 +7,10 @@
 //! term ::= INT_LIT | STRING_LIT ;
 //! ```
 
-use ast::{
-    expr::Expr,
-    range::{Locatable, Range},
-    stmt::Stmt,
-};
+use ast::{Expr, Stmt};
 use itertools::{put_back, PutBack};
 use thiserror::Error;
-use token::{KeywordKind, Token};
+use token::{KeywordKind, Locatable, Range, Token};
 
 /// 構文解析中に発生するエラー
 #[allow(dead_code)]
@@ -34,7 +30,7 @@ pub enum ParseErr {
 }
 
 impl Locatable for ParseErr {
-    fn locate(&self) -> ast::range::Range {
+    fn locate(&self) -> Range {
         // TODO: 正確な範囲を返す
         Range::default()
     }

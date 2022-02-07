@@ -1,5 +1,4 @@
-use ast::{pos::Pos, range::Range};
-use token::Token;
+use token::{Pos, Range, Token};
 
 use crate::result::LexErr;
 

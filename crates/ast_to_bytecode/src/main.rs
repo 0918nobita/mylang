@@ -4,7 +4,7 @@ use std::{
 };
 
 use anyhow::Context;
-use ast::stmt::Stmt;
+use ast::Stmt;
 use ast_to_bytecode::ast_to_bytecode;
 use clap::Parser;
 

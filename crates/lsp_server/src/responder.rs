@@ -4,12 +4,12 @@ use std::sync::{
 };
 
 use actix::{Actor, Addr, Context, ContextFutureSpawner, Handler, WrapFuture};
-use ast::range::Locatable;
 use lexer::{result::LexErr, with_pos::WithPosExt, LexExt};
 use log::warn;
 use lsp::LspMessage;
 use parser::ParseErr;
 use serde_json::{json, Value as JsonValue};
+use token::Locatable;
 use token::Token;
 use valq::query_value;
 

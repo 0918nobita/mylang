@@ -1,5 +1,4 @@
-use ast::pos::Pos;
-use token::Token;
+use token::{Pos, Token};
 
 use crate::state::i32::I32State;
 

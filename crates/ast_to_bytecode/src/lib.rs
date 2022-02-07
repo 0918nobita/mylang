@@ -1,4 +1,4 @@
-use ast::{expr::Expr, stmt::Stmt};
+use ast::{Expr, Stmt};
 use bytecode::Inst;
 
 fn expr_to_bytecode(expr: &Expr) -> Vec<Inst> {

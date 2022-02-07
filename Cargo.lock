@@ -73,6 +73,7 @@ name = "ast"
 version = "0.1.0"
 dependencies = [
  "serde",
+ "token",
 ]
 
 [[package]]
@@ -84,6 +85,7 @@ dependencies = [
  "clap",
  "entity",
  "serde_json",
+ "token",
 ]
 
 [[package]]
@@ -335,7 +337,6 @@ name = "lexer"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "ast",
  "clap",
  "serde_json",
  "thiserror",
@@ -678,7 +679,6 @@ dependencies = [
 name = "token"
 version = "0.1.0"
 dependencies = [
- "ast",
  "serde",
 ]
 

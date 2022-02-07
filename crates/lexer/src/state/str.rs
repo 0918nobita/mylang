@@ -24,7 +24,7 @@ impl StrState {
         match (self.escape, c) {
             (_, '\n') => Err(LexErr::ForbiddenChar(pos, c)),
 
-            (true, c @ ('\\' | 'n')) => Ok(Self {
+            (true, c @ ('n' | '\\' | '"')) => Ok(Self {
                 start: self.start.clone(),
                 end: pos,
                 escape: false,

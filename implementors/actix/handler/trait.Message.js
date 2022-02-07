@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["lsp_server"] = [{"text":"impl Message for <a class=\"struct\" href=\"lsp_server/received_msg/struct.ReceivedMsg.html\" title=\"struct lsp_server::received_msg::ReceivedMsg\">ReceivedMsg</a>","synthetic":false,"types":["lsp_server::received_msg::ReceivedMsg"]},{"text":"impl Message for <a class=\"struct\" href=\"lsp_server/send_msg/struct.SendMsg.html\" title=\"struct lsp_server::send_msg::SendMsg\">SendMsg</a>","synthetic":false,"types":["lsp_server::send_msg::SendMsg"]}];
+implementors["lsp_server"] = [{"text":"impl Message for <a class=\"enum\" href=\"lsp_server/message/enum.LspMessage.html\" title=\"enum lsp_server::message::LspMessage\">LspMessage</a>","synthetic":false,"types":["lsp_server::message::LspMessage"]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

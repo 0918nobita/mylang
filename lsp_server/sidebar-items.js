@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["launch_lsp_server",""]],"mod":[["received_msg",""],["receiver",""],["responder",""],["send_msg",""],["sender",""]]});
+initSidebarItems({"fn":[["launch_lsp_server",""]],"mod":[["message",""],["receiver",""],["responder",""],["sender",""]]});

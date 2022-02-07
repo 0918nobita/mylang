@@ -194,7 +194,6 @@
 <span id="193">193</span>
 <span id="194">194</span>
 <span id="195">195</span>
-<span id="196">196</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::sync</span>::{
     <span class="ident">atomic</span>::{<span class="ident">AtomicBool</span>, <span class="ident">Ordering</span>},
     <span class="ident">Arc</span>,
@@ -203,14 +202,13 @@
 <span class="kw">use</span> <span class="ident">actix</span>::{<span class="ident">Actor</span>, <span class="ident">Addr</span>, <span class="ident">Context</span>, <span class="ident">ContextFutureSpawner</span>, <span class="ident">Handler</span>, <span class="ident">WrapFuture</span>};
 <span class="kw">use</span> <span class="ident">lexer</span>::{<span class="ident">result::LexErr</span>, <span class="ident">with_pos::WithPosExt</span>, <span class="ident">LexExt</span>};
 <span class="kw">use</span> <span class="ident">log::warn</span>;
-<span class="kw">use</span> <span class="ident">lsp::LspMessage</span>;
 <span class="kw">use</span> <span class="ident">parser::ParseErr</span>;
 <span class="kw">use</span> <span class="ident">serde_json</span>::{<span class="ident">json</span>, <span class="ident">Value</span> <span class="kw">as</span> <span class="ident">JsonValue</span>};
 <span class="kw">use</span> <span class="ident">token::Locatable</span>;
 <span class="kw">use</span> <span class="ident">token::Token</span>;
 <span class="kw">use</span> <span class="ident">valq::query_value</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">received_msg::ReceivedMsg</span>, <span class="ident">send_msg::SendMsg</span>, <span class="ident">sender::Sender</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">message::LspMessage</span>, <span class="ident">sender::Sender</span>};
 
 <span class="kw">fn</span> <span class="ident">text_document_uri</span>(<span class="ident">params_obj</span>: <span class="kw-2">&amp;</span><span class="ident">JsonValue</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">JsonValue</span><span class="op">&gt;</span> {
     <span class="macro">query_value!</span>(<span class="ident">params_obj</span>.<span class="ident">textDocument</span>.<span class="ident">uri</span>)
@@ -280,13 +278,13 @@
     <span class="ident">diagnostics</span>.<span class="ident">extend</span>(<span class="ident">diagnostics_from_parser</span>);
 
     <span class="ident">sender</span>
-        .<span class="ident">send</span>(<span class="ident">SendMsg</span>(<span class="ident">LspMessage::Notification</span> {
+        .<span class="ident">send</span>(<span class="ident">LspMessage::Notification</span> {
             <span class="ident">method</span>: <span class="string">&quot;textDocument/publishDiagnostics&quot;</span>.<span class="ident">to_owned</span>(),
             <span class="ident">params</span>: <span class="macro">json!</span>({
                 <span class="string">&quot;uri&quot;</span>: <span class="ident">uri</span>,
                 <span class="string">&quot;diagnostics&quot;</span>: <span class="ident">diagnostics</span>,
             }),
-        }))
+        })
         .<span class="kw">await</span><span class="question-mark">?</span>;
 
     <span class="prelude-val">Ok</span>(())
@@ -310,10 +308,10 @@
     <span class="kw">type</span> <span class="ident">Context</span> <span class="op">=</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
 }
 
-<span class="kw">impl</span> <span class="ident">Handler</span><span class="op">&lt;</span><span class="ident">ReceivedMsg</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Responder</span> {
+<span class="kw">impl</span> <span class="ident">Handler</span><span class="op">&lt;</span><span class="ident">LspMessage</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Responder</span> {
     <span class="kw">type</span> <span class="prelude-ty">Result</span> <span class="op">=</span> ();
 
-    <span class="kw">fn</span> <span class="ident">handle</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">msg</span>: <span class="ident">ReceivedMsg</span>, <span class="ident">ctx</span>: <span class="kw-2">&amp;mut</span> <span class="ident"><span class="self">Self</span>::Context</span>) {
+    <span class="kw">fn</span> <span class="ident">handle</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">msg</span>: <span class="ident">LspMessage</span>, <span class="ident">ctx</span>: <span class="kw-2">&amp;mut</span> <span class="ident"><span class="self">Self</span>::Context</span>) {
         <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">sender</span>.<span class="ident">clone</span>();
 
         <span class="kw">let</span> <span class="ident">diagnostics_supported</span> <span class="op">=</span> <span class="ident">Arc::clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">diagnostics_supported</span>);
@@ -321,7 +319,7 @@
         <span class="kw">async</span> <span class="kw">move</span> {
             <span class="kw">let</span> <span class="ident">diagnostics_currently_enabled</span> <span class="op">=</span> <span class="ident">diagnostics_supported</span>.<span class="ident">load</span>(<span class="ident">Ordering::Relaxed</span>);
 
-            <span class="kw">match</span> <span class="ident">msg</span>.<span class="number">0</span> {
+            <span class="kw">match</span> <span class="ident">msg</span> {
                 <span class="ident">LspMessage::Request</span> { <span class="ident">id</span>, <span class="ident">method</span>, <span class="ident">params</span> } <span class="kw">if</span> <span class="ident">method</span> <span class="op">==</span> <span class="string">&quot;initialize&quot;</span> =&gt; {
                     <span class="ident">diagnostics_supported</span>.<span class="ident">store</span>(
                         <span class="macro">query_value!</span>(<span class="ident">params</span>.<span class="ident">capabilities</span>.<span class="ident">textDocument</span>.<span class="ident">publishDiagnostics</span>).<span class="ident">is_some</span>(),
@@ -329,14 +327,14 @@
                     );
 
                     <span class="ident">sender</span>
-                        .<span class="ident">send</span>(<span class="ident">SendMsg</span>(<span class="ident">LspMessage::Response</span> {
+                        .<span class="ident">send</span>(<span class="ident">LspMessage::Response</span> {
                             <span class="ident">id</span>,
                             <span class="ident">result</span>: <span class="macro">json!</span>({
                                 <span class="string">&quot;capabilities&quot;</span>: {
                                     <span class="string">&quot;textDocumentSync&quot;</span>: <span class="number">1</span>,
                                 }
                             }),
-                        }))
+                        })
                         .<span class="kw">await</span>
                         .<span class="ident">unwrap</span>()
                 }
@@ -376,10 +374,10 @@
                 {
                     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">uri</span>) <span class="op">=</span> <span class="ident">text_document_uri</span>(<span class="kw-2">&amp;</span><span class="ident">params</span>) {
                         <span class="ident">sender</span>
-                            .<span class="ident">send</span>(<span class="ident">SendMsg</span>(<span class="ident">LspMessage::Notification</span> {
+                            .<span class="ident">send</span>(<span class="ident">LspMessage::Notification</span> {
                                 <span class="ident">method</span>: <span class="string">&quot;textDocument/publishDiagnostics&quot;</span>.<span class="ident">to_owned</span>(),
                                 <span class="ident">params</span>: <span class="macro">json!</span>({ <span class="string">&quot;uri&quot;</span>: <span class="ident">uri</span>, <span class="string">&quot;diagnostics&quot;</span>: [] }),
-                            }))
+                            })
                             .<span class="kw">await</span>
                             .<span class="ident">unwrap</span>()
                     }

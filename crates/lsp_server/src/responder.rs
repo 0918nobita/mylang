@@ -51,13 +51,13 @@ where
 
 fn lex_err_to_diagnostic(err: &LexErr) -> JsonValue {
     let range = locatable_to_json_range(err);
-    let message = err.to_string();
+    let message = format!("(Tokenization Error) {}", err);
     json!({ "range": range, "message": message })
 }
 
 fn parse_err_to_diagnostic(err: ParseErr) -> JsonValue {
     let range = locatable_to_json_range(&err);
-    let message = err.to_string();
+    let message = format!("(Syntax Error) {}", err);
     json!({ "range": range, "message": message })
 }
 

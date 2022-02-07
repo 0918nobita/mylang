@@ -16,10 +16,10 @@ use token::{KeywordKind, Locatable, Pos, Range, Token};
 #[allow(dead_code)]
 #[derive(Debug, Error)]
 pub enum ParseErr {
-    #[error("({0}) Term expected, but not found")]
+    #[error("Term expected, but not found")]
     TermExpected(Pos),
 
-    #[error("({0}) Either print_int or print_str expected, but not found")]
+    #[error("Either print_int or print_str expected, but not found")]
     KeywordExpected(Range),
 }
 

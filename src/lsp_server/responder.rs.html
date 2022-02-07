@@ -55,7 +55,7 @@
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">message::LspMessage</span>, <span class="ident">sender::Sender</span>};
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Responder</span> {
-    <span class="kw">pub</span> <span class="ident">sender</span>: <span class="ident">Addr</span><span class="op">&lt;</span><span class="ident">Sender</span><span class="op">&gt;</span>,
+    <span class="ident">sender</span>: <span class="ident">Addr</span><span class="op">&lt;</span><span class="ident">Sender</span><span class="op">&gt;</span>,
     <span class="ident">diagnostics_supported</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">AtomicBool</span><span class="op">&gt;</span>,
 }
 

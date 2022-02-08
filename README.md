@@ -61,33 +61,33 @@ VS Code でこのリポジトリのルートディレクトリを開き、F5 ま
 ![Sublime Text 4 のスクリーンショット](img/sublime.png)
 
 - Package Control で LSP パッケージをインストール
-- 「`Tools` → `Developer` -> `New Syntax…`」を選択し、開いた右側のエディタの内容を以下のように編集し、ファイル名は `mylang.sublime-syntax` にして保存する
+- 「Tools」→「Developer」→「New Syntax…」を選択し、開いた右側のエディタの内容を以下のように編集し、ファイル名は `mylang.sublime-syntax` にして保存する
 
 ```yaml
 %YAML 1.2
 ---
 # See http://www.sublimetext.com/docs/syntax.html
 file_extensions:
-    - mylang
+  - mylang
 scope: source.mylang
 contexts:
-    main: []
+  main: []
 ```
 
-- 「`Preferences` → `Package Settings` -> `LSP` -> `Settings`」を選択し、開いた右側のエディタの内容を以下のように編集して保存する
+- 「Preferences」→「Package Settings」→「LSP」→「Settings」を選択し、開いた右側のエディタの内容を以下のように編集して保存する
 
 ```json5
 // Settings in here override those in "LSP/LSP.sublime-settings"
 {
-    "clients": {
-        "MyLang": {
-            "enabled": true,
-            "command": ["lsp_server"],
-            "selector": "source.mylang",
-            "env": {
-                "RUST_LOG": "info"
-            }
-        }
+  "clients": {
+    "MyLang": {
+      "enabled": true,
+      "command": ["lsp_server"],
+      "selector": "source.mylang",
+      "env": {
+        "RUST_LOG": "info"
+      }
     }
+  }
 }
 ```

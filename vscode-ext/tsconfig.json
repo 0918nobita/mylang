@@ -11,7 +11,7 @@
     // "disableReferencedProjectLoad": true,             /* TypeScript によって自動的に読み込まれるプロジェクトの数を減らします。 */
 
     /* 言語と環境 */
-    "target": "es2016",                                  /* 生成された JavaScript の JavaScript 言語バージョンを設定し、互換性のあるライブラリ宣言を含めます。 */
+    "target": "es2016" /* 生成された JavaScript の JavaScript 言語バージョンを設定し、互換性のあるライブラリ宣言を含めます。 */,
     // "lib": [],                                        /* ターゲットのランタイム環境を記述する、バンドルされたライブラリ宣言ファイルのセットを指定します。 */
     // "jsx": "preserve",                                /* 生成済みの JSX コードを指定します。 */
     // "experimentalDecorators": true,                   /* TC39 ステージ 2 ドラフト デコレーター用の実験的なサポートを有効にします。 */
@@ -24,7 +24,7 @@
     // "useDefineForClassFields": true,                  /* ECMAScript 標準準拠クラス フィールドを生成します。 */
 
     /* モジュール */
-    "module": "commonjs",                                /* 生成済みのモジュール コードを指定します。 */
+    "module": "commonjs" /* 生成済みのモジュール コードを指定します。 */,
     // "rootDir": "./",                                  /* ソース ファイル内のルート フォルダーを指定します。 */
     // "moduleResolution": "node",                       /* TypeScript を使用して、指定されたモジュール指定子でファイルを検索する方法を指定します。 */
     // "baseUrl": "./",                                  /* 非相対モジュール名を解決するための基本ディレクトリを指定します。 */
@@ -49,7 +49,7 @@
     // "outFile": "./",                                  /* 1 つの JavaScript ファイルにすべての出力をバンドルするファイルを指定します。'declaration' が true の場合は、すべての .d.ts 出力をバンドルするファイルも指定します。 */
     // "outDir": "./",                                   /* すべての生成されたファイルに対して出力フォルダーを指定します。 */
     // "removeComments": true,                           /* コメントの生成を無効にします。 */
-    "noEmit": true,                                      /* コンパイルからのファイルの出力を無効にします。 */
+    "noEmit": true /* コンパイルからのファイルの出力を無効にします。 */,
     // "importHelpers": true,                            /* tslib からヘルパー関数をファイルごとに含めるのではなく、プロジェクトごとに 1 回インポートすることを許可します。 */
     // "importsNotUsedAsValues": "remove",               /* 型にのみ使用されるインポートの生成または確認動作を指定する */
     // "downlevelIteration": true,                       /* イテレーションのために、準拠性が高いものの、冗長でパフォーマンスが低い JavaScript を生成します。 */
@@ -69,12 +69,12 @@
     /* 制約の相互運用 */
     // "isolatedModules": true,                          /* 各ファイルが他のインポートに依存しないで安全にトランスパイルできることを確認します。 */
     // "allowSyntheticDefaultImports": true,             /* モジュールに既定のエクスポートがない場合は、'import x from y' を許可します。 */
-    "esModuleInterop": true,                             /* CommonJS モジュールのインポートをサポートしやすくするために追加の JavaScript を生成します。これにより、互換性のある型に対して 'allowSyntheticDefaultImports' を使用できるようになります。 */
+    "esModuleInterop": true /* CommonJS モジュールのインポートをサポートしやすくするために追加の JavaScript を生成します。これにより、互換性のある型に対して 'allowSyntheticDefaultImports' を使用できるようになります。 */,
     // "preserveSymlinks": true,                         /* symlink を realpath に解決できないようにします。これは、ノードの同じフラグに関連しています。 */
-    "forceConsistentCasingInFileNames": true,            /* インポートの大文字と小文字の指定が正しいことを確認します。 */
+    "forceConsistentCasingInFileNames": true /* インポートの大文字と小文字の指定が正しいことを確認します。 */,
 
     /* 種類を確認中 */
-    "strict": true,                                      /* 厳密な型チェックのオプションをすべて有効にします。 */
+    "strict": true /* 厳密な型チェックのオプションをすべて有効にします。 */,
     // "noImplicitAny": true,                            /* 暗黙的な 'any' 型を含む式と宣言に関するエラー報告を有効にします。 */
     // "strictNullChecks": true,                         /* 型チェックを行うときは、'null' と 'undefined' が考慮されます。 */
     // "strictFunctionTypes": true,                      /* 関数を割り当てる際、パラメーターと戻り値が互換性のあるサブタイプであることを確認します。 */
@@ -96,6 +96,6 @@
 
     /* 完全 */
     // "skipDefaultLibCheck": true,                      /* TypeScript に含まれている .d.ts ファイルの型チェックをスキップします。 */
-    "skipLibCheck": true                                 /* すべての .d.ts ファイルについて型チェックをスキップします。 */
+    "skipLibCheck": true /* すべての .d.ts ファイルについて型チェックをスキップします。 */
   }
 }

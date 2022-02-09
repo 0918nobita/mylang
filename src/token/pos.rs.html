@@ -31,21 +31,75 @@
 <span id="30">30</span>
 <span id="31">31</span>
 <span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::fmt</span>;
 
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Default</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Default</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Pos</span> {
     <span class="ident">line</span>: <span class="ident">u32</span>,
     <span class="ident">character</span>: <span class="ident">u32</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Pos</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">line</span>: <span class="ident">u32</span>, <span class="ident">character</span>: <span class="ident">u32</span>) -&gt; <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">line</span>, <span class="ident">character</span> }
+    }
+
+    <span class="doccomment">/// 次の文字位置に移動する (改行ではない文字が続くことを想定している)</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use token::Pos;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut pos = Pos::new(3, 7);</span>
+    <span class="doccomment">/// pos.next_char();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let expected = Pos::new(3, 8);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(pos, expected);</span>
+    <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">next_char</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">character</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
     }
 
+    <span class="doccomment">/// 次の行の先頭に移動する</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use token::Pos;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut pos = Pos::new(1, 8);</span>
+    <span class="doccomment">/// pos.next_line();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let expected = Pos::new(2, 0);</span>
+    <span class="doccomment">/// assert_eq!(pos, expected);</span>
+    <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">next_line</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">line</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
         <span class="self">self</span>.<span class="ident">character</span> <span class="op">=</span> <span class="number">0</span>;

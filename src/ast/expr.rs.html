@@ -22,6 +22,7 @@
 <span id="21">21</span>
 <span id="22">22</span>
 <span id="23">23</span>
+<span id="24">24</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">token</span>::{<span class="ident">Locatable</span>, <span class="ident">Range</span>};
 
@@ -38,9 +39,10 @@
             <span class="ident">Expr::I32Lit</span>(<span class="ident">r</span>, <span class="kw">_</span>) <span class="op">|</span> <span class="ident">Expr::StrLit</span>(<span class="ident">r</span>, <span class="kw">_</span>) =&gt; <span class="ident">r</span>.<span class="ident">clone</span>(),
 
             <span class="ident">Expr::Add</span>(<span class="ident">lhs</span>, <span class="ident">rhs</span>) =&gt; {
-                <span class="kw">let</span> <span class="ident">lhs_range</span> <span class="op">=</span> <span class="ident">lhs</span>.<span class="ident">locate</span>();
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">range</span> <span class="op">=</span> <span class="ident">lhs</span>.<span class="ident">locate</span>();
                 <span class="kw">let</span> <span class="ident">rhs_range</span> <span class="op">=</span> <span class="ident">rhs</span>.<span class="ident">locate</span>();
-                <span class="ident">lhs_range</span>.<span class="ident">concat</span>(<span class="ident">rhs_range</span>)
+                <span class="ident">range</span>.<span class="ident">concat</span>(<span class="ident">rhs_range</span>);
+                <span class="ident">range</span>
             }
         }
     }

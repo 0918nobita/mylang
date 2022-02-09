@@ -57,7 +57,6 @@
 <span id="56">56</span>
 <span id="57">57</span>
 <span id="58">58</span>
-<span id="59">59</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::fmt</span>;
 
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
@@ -76,13 +75,12 @@
     <span class="doccomment">/// 次の文字位置に移動する (改行ではない文字が続くことを想定している)</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// use token::Pos;</span>
+    <span class="doccomment">/// use token::pos;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let mut pos = Pos::new(3, 7);</span>
+    <span class="doccomment">/// let mut pos = pos!(3;7);</span>
     <span class="doccomment">/// pos.next_char();</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let expected = Pos::new(3, 8);</span>
-    <span class="doccomment">///</span>
+    <span class="doccomment">/// let expected = pos!(3;8);</span>
     <span class="doccomment">/// assert_eq!(pos, expected);</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">next_char</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
@@ -92,12 +90,12 @@
     <span class="doccomment">/// 次の行の先頭に移動する</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// use token::Pos;</span>
+    <span class="doccomment">/// use token::pos;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let mut pos = Pos::new(1, 8);</span>
+    <span class="doccomment">/// let mut pos = pos!(1;8);</span>
     <span class="doccomment">/// pos.next_line();</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let expected = Pos::new(2, 0);</span>
+    <span class="doccomment">/// let expected = pos!(2;0);</span>
     <span class="doccomment">/// assert_eq!(pos, expected);</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">next_line</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {

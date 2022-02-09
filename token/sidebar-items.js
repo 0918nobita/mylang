@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["KeywordKind",""],["Token",""]],"mod":[["locatable",""],["pos",""],["range",""]],"struct":[["Pos",""],["Range",""]],"trait":[["Locatable",""]]});
+initSidebarItems({"enum":[["KeywordKind",""],["Token",""]],"macro":[["pos",""],["range",""]],"mod":[["locatable",""],["pos",""],["range",""]],"struct":[["Pos",""],["Range",""]],"trait":[["Locatable",""]]});

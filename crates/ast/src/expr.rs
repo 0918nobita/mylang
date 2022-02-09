@@ -16,10 +16,7 @@ impl Locatable for Expr {
             Expr::Add(lhs, rhs) => {
                 let lhs_range = lhs.locate();
                 let rhs_range = rhs.locate();
-                Range {
-                    start: lhs_range.start,
-                    end: rhs_range.end,
-                }
+                lhs_range.concat(rhs_range)
             }
         }
     }

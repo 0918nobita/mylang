@@ -6,13 +6,24 @@ use super::pos::Pos;
 
 #[derive(Clone, Default, Serialize, Deserialize)]
 pub struct Range {
-    pub start: Pos,
-    pub end: Pos,
+    start: Pos,
+    end: Pos,
 }
 
 impl Range {
     pub fn new(start: Pos, end: Pos) -> Self {
         Range { start, end }
+    }
+
+    pub fn end(&self) -> Pos {
+        self.end.clone()
+    }
+
+    pub fn concat(&self, other: Range) -> Range {
+        Range {
+            start: self.start.clone(),
+            end: other.end,
+        }
     }
 }
 

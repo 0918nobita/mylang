@@ -38,9 +38,9 @@ fn term(
 ) -> Result<(Pos, Expr), ParseErr> {
     if let Some(tok) = tokens.next() {
         match tok {
-            Token::I32(range, n) => Ok((range.end.clone(), Expr::I32Lit(range, n))),
-            Token::Str(range, s) => Ok((range.end.clone(), Expr::StrLit(range, s))),
-            _ => Err(ParseErr::TermExpected(tok.locate().end)),
+            Token::I32(range, n) => Ok((range.end(), Expr::I32Lit(range, n))),
+            Token::Str(range, s) => Ok((range.end(), Expr::StrLit(range, s))),
+            _ => Err(ParseErr::TermExpected(tok.locate().end())),
         }
     } else {
         Err(ParseErr::TermExpected(pos))
@@ -91,7 +91,7 @@ fn program(tokens: &mut PutBack<impl Iterator<Item = Token>>) -> Vec<Result<Stmt
         match tok {
             Token::Newline(_) => (),
             _ => {
-                let pos = tok.locate().end;
+                let pos = tok.locate().end();
                 tokens.put_back(tok);
                 results.push(stmt(tokens, pos));
             }

@@ -21,10 +21,9 @@ where
             let prev_pos = self.pos.clone();
 
             if c == '\n' {
-                self.pos.line += 1;
-                self.pos.character = 0;
+                self.pos.next_line();
             } else {
-                self.pos.character += 1;
+                self.pos.next_char();
             }
 
             (prev_pos, c)

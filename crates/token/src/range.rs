@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use super::pos::Pos;
 
-#[derive(Clone, Default, Serialize, Deserialize)]
+#[derive(Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Range {
     start: Pos,
     end: Pos,
@@ -19,11 +19,21 @@ impl Range {
         self.end.clone()
     }
 
-    pub fn concat(&self, other: Range) -> Range {
-        Range {
-            start: self.start.clone(),
-            end: other.end,
-        }
+    /// 末尾を別の範囲の末尾に設定する
+    ///
+    /// ```
+    /// use token::range;
+    ///
+    /// let mut former = range!(0;0, 0;5);
+    ///
+    /// let latter = range!(0;7, 0;10);
+    /// former.concat(latter);
+    ///
+    /// let expected = range!(0;0, 0;10);
+    /// assert_eq!(former, expected);
+    /// ```
+    pub fn concat(&mut self, other: Range) {
+        self.end = other.end;
     }
 }
 

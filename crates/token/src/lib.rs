@@ -8,6 +8,23 @@ pub use locatable::Locatable;
 pub use pos::Pos;
 pub use range::Range;
 
+#[macro_export]
+macro_rules! pos {
+    ($line:expr ; $char:expr) => {
+        token::Pos::new($line, $char)
+    };
+}
+
+#[macro_export]
+macro_rules! range {
+    ($start_line:expr ; $start_char:expr, $end_line:expr ; $end_char:expr) => {
+        token::Range::new(
+            token::pos!($start_line;$start_char),
+            token::pos!($end_line;$end_char),
+        )
+    };
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub enum KeywordKind {
     PrintI32,

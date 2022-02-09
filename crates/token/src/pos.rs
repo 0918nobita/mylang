@@ -16,13 +16,12 @@ impl Pos {
     /// 次の文字位置に移動する (改行ではない文字が続くことを想定している)
     ///
     /// ```
-    /// use token::Pos;
+    /// use token::pos;
     ///
-    /// let mut pos = Pos::new(3, 7);
+    /// let mut pos = pos!(3;7);
     /// pos.next_char();
     ///
-    /// let expected = Pos::new(3, 8);
-    ///
+    /// let expected = pos!(3;8);
     /// assert_eq!(pos, expected);
     /// ```
     pub fn next_char(&mut self) {
@@ -32,12 +31,12 @@ impl Pos {
     /// 次の行の先頭に移動する
     ///
     /// ```
-    /// use token::Pos;
+    /// use token::pos;
     ///
-    /// let mut pos = Pos::new(1, 8);
+    /// let mut pos = pos!(1;8);
     /// pos.next_line();
     ///
-    /// let expected = Pos::new(2, 0);
+    /// let expected = pos!(2;0);
     /// assert_eq!(pos, expected);
     /// ```
     pub fn next_line(&mut self) {

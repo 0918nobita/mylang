@@ -14,9 +14,10 @@ impl Locatable for Expr {
             Expr::I32Lit(r, _) | Expr::StrLit(r, _) => r.clone(),
 
             Expr::Add(lhs, rhs) => {
-                let lhs_range = lhs.locate();
+                let mut range = lhs.locate();
                 let rhs_range = rhs.locate();
-                lhs_range.concat(rhs_range)
+                range.concat(rhs_range);
+                range
             }
         }
     }

@@ -22,9 +22,6 @@
 <span id="21">21</span>
 <span id="22">22</span>
 <span id="23">23</span>
-<span id="24">24</span>
-<span id="25">25</span>
-<span id="26">26</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">token</span>::{<span class="ident">Locatable</span>, <span class="ident">Range</span>};
 
@@ -43,10 +40,7 @@
             <span class="ident">Expr::Add</span>(<span class="ident">lhs</span>, <span class="ident">rhs</span>) =&gt; {
                 <span class="kw">let</span> <span class="ident">lhs_range</span> <span class="op">=</span> <span class="ident">lhs</span>.<span class="ident">locate</span>();
                 <span class="kw">let</span> <span class="ident">rhs_range</span> <span class="op">=</span> <span class="ident">rhs</span>.<span class="ident">locate</span>();
-                <span class="ident">Range</span> {
-                    <span class="ident">start</span>: <span class="ident">lhs_range</span>.<span class="ident">start</span>,
-                    <span class="ident">end</span>: <span class="ident">rhs_range</span>.<span class="ident">end</span>,
-                }
+                <span class="ident">lhs_range</span>.<span class="ident">concat</span>(<span class="ident">rhs_range</span>)
             }
         }
     }

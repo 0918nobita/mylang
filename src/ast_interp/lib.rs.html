@@ -102,10 +102,6 @@
 <span id="101">101</span>
 <span id="102">102</span>
 <span id="103">103</span>
-<span id="104">104</span>
-<span id="105">105</span>
-<span id="106">106</span>
-<span id="107">107</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">anyhow::bail</span>;
 <span class="kw">use</span> <span class="ident">ast</span>::{<span class="ident">Expr</span>, <span class="ident">Stmt</span>};
 <span class="kw">use</span> <span class="ident">entity</span>::{<span class="ident">Entity</span>, <span class="ident">I32Entity</span>, <span class="ident">StrEntity</span>};
@@ -157,60 +153,56 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="ident">ast::Expr</span>;
-    <span class="kw">use</span> <span class="ident">entity</span>::{<span class="ident">Entity</span>, <span class="ident">I32Entity</span>, <span class="ident">StrEntity</span>};
     <span class="kw">use</span> <span class="ident">token::Range</span>;
 
     <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::eval</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">eval_test</span>() {
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">eval</span>(<span class="kw-2">&amp;</span><span class="ident">Expr::I32Lit</span>(<span class="ident">Range::default</span>(), <span class="number">2</span>)),
-            <span class="prelude-val">Ok</span>(<span class="ident">Entity::I32</span>(<span class="ident">ent</span>)) <span class="kw">if</span> <span class="ident">ent</span> <span class="op">==</span> <span class="ident">I32Entity::new</span>(<span class="number">2</span>)
-        ));
+    <span class="kw">fn</span> <span class="ident">test_i32_lit</span>() {
+        <span class="kw">let</span> <span class="ident">ent</span> <span class="op">=</span> <span class="ident">eval</span>(<span class="kw-2">&amp;</span><span class="ident">Expr::I32Lit</span>(<span class="ident">Range::default</span>(), <span class="number">2</span>));
+        <span class="macro">insta::assert_debug_snapshot!</span>(<span class="ident">ent</span>);
+    }
 
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">eval</span>(<span class="kw-2">&amp;</span><span class="ident">Expr::Add</span>(
-                <span class="ident">Box::new</span>(<span class="ident">Expr::I32Lit</span>(<span class="ident">Range::default</span>(), <span class="number">2</span>)),
-                <span class="ident">Box::new</span>(<span class="ident">Expr::I32Lit</span>(<span class="ident">Range::default</span>(), <span class="number">3</span>))
-            )),
-            <span class="prelude-val">Ok</span>(<span class="ident">Entity::I32</span>(<span class="ident">ent</span>)) <span class="kw">if</span> <span class="ident">ent</span> <span class="op">==</span> <span class="ident">I32Entity::new</span>(<span class="number">5</span>)
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_i32_lit_plus_i32_lit</span>() {
+        <span class="kw">let</span> <span class="ident">ent</span> <span class="op">=</span> <span class="ident">eval</span>(<span class="kw-2">&amp;</span><span class="ident">Expr::Add</span>(
+            <span class="ident">Box::new</span>(<span class="ident">Expr::I32Lit</span>(<span class="ident">Range::default</span>(), <span class="number">2</span>)),
+            <span class="ident">Box::new</span>(<span class="ident">Expr::I32Lit</span>(<span class="ident">Range::default</span>(), <span class="number">3</span>)),
         ));
+        <span class="macro">insta::assert_debug_snapshot!</span>(<span class="ident">ent</span>);
+    }
 
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">eval</span>(<span class="kw-2">&amp;</span><span class="ident">Expr::StrLit</span>(<span class="ident">Range::default</span>(), <span class="string">&quot;foo&quot;</span>.<span class="ident">to_owned</span>())),
-            <span class="prelude-val">Ok</span>(<span class="ident">Entity::Str</span>(<span class="ident">ent</span>)) <span class="kw">if</span> <span class="ident">ent</span> <span class="op">==</span> <span class="ident">StrEntity::new</span>(<span class="string">&quot;foo&quot;</span>.<span class="ident">to_owned</span>())
-        ));
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_str_lit</span>() {
+        <span class="kw">let</span> <span class="ident">ent</span> <span class="op">=</span> <span class="ident">eval</span>(<span class="kw-2">&amp;</span><span class="ident">Expr::StrLit</span>(<span class="ident">Range::default</span>(), <span class="string">&quot;foo&quot;</span>.<span class="ident">to_owned</span>()));
+        <span class="macro">insta::assert_debug_snapshot!</span>(<span class="ident">ent</span>);
+    }
 
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">eval</span>(
-                <span class="kw-2">&amp;</span><span class="ident">Expr::Add</span>(
-                    <span class="ident">Box::new</span>(<span class="ident">Expr::I32Lit</span>(<span class="ident">Range::default</span>(), <span class="number">3</span>)),
-                    <span class="ident">Box::new</span>(<span class="ident">Expr::StrLit</span>(<span class="ident">Range::default</span>(), <span class="string">&quot;bar&quot;</span>.<span class="ident">to_owned</span>()))
-                )
-            ),
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="kw">if</span> <span class="ident">e</span>.<span class="ident">to_string</span>() <span class="op">==</span> <span class="string">&quot;Type mismatch&quot;</span>
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_i32_lit_plus_str_lit</span>() {
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">eval</span>(<span class="kw-2">&amp;</span><span class="ident">Expr::Add</span>(
+            <span class="ident">Box::new</span>(<span class="ident">Expr::I32Lit</span>(<span class="ident">Range::default</span>(), <span class="number">3</span>)),
+            <span class="ident">Box::new</span>(<span class="ident">Expr::StrLit</span>(<span class="ident">Range::default</span>(), <span class="string">&quot;bar&quot;</span>.<span class="ident">to_owned</span>())),
         ));
+        <span class="macro">insta::assert_debug_snapshot!</span>(<span class="ident">res</span>);
+    }
 
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">eval</span>(
-                <span class="kw-2">&amp;</span><span class="ident">Expr::Add</span>(
-                    <span class="ident">Box::new</span>(<span class="ident">Expr::StrLit</span>(<span class="ident">Range::default</span>(), <span class="string">&quot;foo&quot;</span>.<span class="ident">to_owned</span>())),
-                    <span class="ident">Box::new</span>(<span class="ident">Expr::I32Lit</span>(<span class="ident">Range::default</span>(), <span class="number">4</span>))
-                )
-            ),
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="kw">if</span> <span class="ident">e</span>.<span class="ident">to_string</span>() <span class="op">==</span> <span class="string">&quot;Type mismatch&quot;</span>
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_str_lit_plus_i32_lit</span>() {
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">eval</span>(<span class="kw-2">&amp;</span><span class="ident">Expr::Add</span>(
+            <span class="ident">Box::new</span>(<span class="ident">Expr::StrLit</span>(<span class="ident">Range::default</span>(), <span class="string">&quot;foo&quot;</span>.<span class="ident">to_owned</span>())),
+            <span class="ident">Box::new</span>(<span class="ident">Expr::I32Lit</span>(<span class="ident">Range::default</span>(), <span class="number">4</span>)),
         ));
+        <span class="macro">insta::assert_debug_snapshot!</span>(<span class="ident">res</span>);
+    }
 
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">eval</span>(
-                <span class="kw-2">&amp;</span><span class="ident">Expr::Add</span>(
-                    <span class="ident">Box::new</span>(<span class="ident">Expr::StrLit</span>(<span class="ident">Range::default</span>(), <span class="string">&quot;foo&quot;</span>.<span class="ident">to_owned</span>())),
-                    <span class="ident">Box::new</span>(<span class="ident">Expr::StrLit</span>(<span class="ident">Range::default</span>(), <span class="string">&quot;bar&quot;</span>.<span class="ident">to_owned</span>()))
-                )
-            ),
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="kw">if</span> <span class="ident">e</span>.<span class="ident">to_string</span>() <span class="op">==</span> <span class="string">&quot;Type mismatch&quot;</span>
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_str_lit_plus_str_lit</span>() {
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">eval</span>(<span class="kw-2">&amp;</span><span class="ident">Expr::Add</span>(
+            <span class="ident">Box::new</span>(<span class="ident">Expr::StrLit</span>(<span class="ident">Range::default</span>(), <span class="string">&quot;foo&quot;</span>.<span class="ident">to_owned</span>())),
+            <span class="ident">Box::new</span>(<span class="ident">Expr::StrLit</span>(<span class="ident">Range::default</span>(), <span class="string">&quot;bar&quot;</span>.<span class="ident">to_owned</span>())),
         ));
+        <span class="macro">insta::assert_debug_snapshot!</span>(<span class="ident">res</span>);
     }
 }
 </code></pre></div>

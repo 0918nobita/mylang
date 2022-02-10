@@ -1,4 +1,4 @@
-use token::{Pos, Range, Token};
+use token::{range, Pos, Token};
 
 use crate::result::LexErr;
 
@@ -54,7 +54,7 @@ impl StrState {
             panic!("Illigal state")
         }
         Token::Str(
-            Range::new(self.start.clone(), self.end.clone()),
+            range!(self.start.clone(), self.end.clone()),
             self.acc.clone(),
         )
     }

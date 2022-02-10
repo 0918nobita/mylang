@@ -23,6 +23,9 @@ macro_rules! range {
             token::pos!($end_line;$end_char),
         )
     };
+    ($start:expr, $end:expr) => {
+        token::Range::new($start, $end)
+    };
 }
 
 #[derive(Debug, Serialize, Deserialize)]

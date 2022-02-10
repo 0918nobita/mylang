@@ -1,4 +1,4 @@
-use token::{KeywordKind, Pos, Range, Token};
+use token::{range, KeywordKind, Pos, Token};
 
 use crate::result::{LexErr, LexResult};
 
@@ -29,12 +29,12 @@ impl KeywordState {
     pub fn try_tokenize(&self) -> LexResult {
         if let Some(keyword_kind) = KeywordKind::parse(&self.acc) {
             Ok(Token::Keyword(
-                Range::new(self.start.clone(), self.end.clone()),
+                range!(self.start.clone(), self.end.clone()),
                 keyword_kind,
             ))
         } else {
             Err(LexErr::InvalidKeyword(
-                Range::new(self.start.clone(), self.end.clone()),
+                range!(self.start.clone(), self.end.clone()),
                 self.acc.to_string(),
             ))
         }

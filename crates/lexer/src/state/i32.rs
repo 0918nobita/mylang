@@ -1,4 +1,4 @@
-use token::{Pos, Range, Token};
+use token::{range, Pos, Token};
 
 #[derive(Clone, Debug)]
 pub struct I32State {
@@ -26,6 +26,6 @@ impl I32State {
 
     pub fn tokenize(&self) -> Token {
         let i = self.acc.parse::<i32>().unwrap();
-        Token::I32(Range::new(self.start.clone(), self.end.clone()), i)
+        Token::I32(range!(self.start.clone(), self.end.clone()), i)
     }
 }

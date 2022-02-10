@@ -1,3 +1,5 @@
+//! 抽象構文木の定義
+
 mod expr;
 mod stmt;
 

@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use token::{Locatable, Range};
 
+/// 式を表す抽象構文木
 #[derive(Debug, Serialize, Deserialize)]
 pub enum Expr {
     I32Lit(Range, i32),

@@ -27,7 +27,7 @@ pub fn execute(stmts: &[Stmt]) -> anyhow::Result<()> {
             Stmt::PrintI32(_, ref expr) => {
                 let val = eval(expr)?;
                 if let Entity::I32(ent) = val {
-                    println!("{:?}", ent);
+                    println!("{}", ent);
                 } else {
                     bail!("Type mismatch");
                 }
@@ -35,7 +35,7 @@ pub fn execute(stmts: &[Stmt]) -> anyhow::Result<()> {
             Stmt::PrintStr(_, ref expr) => {
                 let val = eval(expr)?;
                 if let Entity::Str(ent) = val {
-                    println!("{:?}", ent);
+                    println!("{}", ent);
                 } else {
                     bail!("Type mismatch");
                 }

@@ -3,6 +3,7 @@ use token::{Locatable, Range};
 
 use super::expr::Expr;
 
+/// 文を表す抽象構文木
 #[derive(Debug, Serialize, Deserialize)]
 pub enum Stmt {
     PrintI32(Range, Expr),

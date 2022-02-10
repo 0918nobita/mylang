@@ -36,3 +36,32 @@ pub fn ast_to_bytecode(ast: &[Stmt]) -> Vec<Inst> {
     }
     insts
 }
+
+#[cfg(test)]
+mod tests {
+    use ast::Expr;
+    use token::{range, Range};
+
+    use super::expr_to_bytecode;
+
+    #[test]
+    fn test_i32_lit_to_bytecode() {
+        insta::assert_debug_snapshot!(expr_to_bytecode(&Expr::I32Lit(Range::default(), 3)));
+    }
+
+    #[test]
+    fn test_str_lit_to_bytecode() {
+        let bytecode = expr_to_bytecode(&Expr::StrLit(range!(0;0,0;4), "Hello".to_owned()));
+        insta::assert_debug_snapshot!(bytecode);
+    }
+
+    #[test]
+    fn test_addition_to_bytecode() {
+        let addition = Expr::Add(
+            Box::new(Expr::I32Lit(range!(0;0,0;0), 3)),
+            Box::new(Expr::I32Lit(range!(0;4,0;4), 4)),
+        );
+        let bytecode = expr_to_bytecode(&addition);
+        insta::assert_debug_snapshot!(bytecode);
+    }
+}

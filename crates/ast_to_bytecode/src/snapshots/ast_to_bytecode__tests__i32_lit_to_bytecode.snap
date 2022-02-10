@@ -1,0 +1,11 @@
+---
+source: crates/ast_to_bytecode/src/lib.rs
+assertion_line: 49
+expression: "expr_to_bytecode(&Expr::I32Lit(Range::default(), 3))"
+
+---
+[
+    I32Const(
+        3,
+    ),
+]

@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Stmt",""]]});
+initSidebarItems({"enum":[["Stmt","文を表す抽象構文木"]]});

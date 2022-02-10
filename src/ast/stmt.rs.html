@@ -17,11 +17,13 @@
 <span id="16">16</span>
 <span id="17">17</span>
 <span id="18">18</span>
+<span id="19">19</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">token</span>::{<span class="ident">Locatable</span>, <span class="ident">Range</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::expr::Expr</span>;
 
+<span class="doccomment">/// 文を表す抽象構文木</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Stmt</span> {
     <span class="ident">PrintI32</span>(<span class="ident">Range</span>, <span class="ident">Expr</span>),

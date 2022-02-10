@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Expr",""]]});
+initSidebarItems({"enum":[["Expr","式を表す抽象構文木"]]});

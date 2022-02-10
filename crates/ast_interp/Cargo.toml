@@ -10,3 +10,6 @@ clap = { version = "3.0.14", features = ["derive"] }
 entity = { path = "../entity" }
 serde_json = "1.0.78"
 token = { path = "../token" }
+
+[dev-dependencies]
+insta = "1.12.0"

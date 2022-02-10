@@ -2,13 +2,17 @@ use std::fmt;
 
 use serde::{Deserialize, Serialize};
 
+/// ソースコード上の位置
 #[derive(Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Pos {
+    /// 行番号
     line: u32,
+    /// 列番号
     character: u32,
 }
 
 impl Pos {
+    /// 新しい位置を生成して返す
     pub fn new(line: u32, character: u32) -> Self {
         Self { line, character }
     }

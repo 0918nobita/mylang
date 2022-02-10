@@ -4,13 +4,17 @@ use serde::{Deserialize, Serialize};
 
 use super::pos::Pos;
 
+/// ソースコード中の範囲
 #[derive(Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Range {
+    /// 始端
     start: Pos,
+    /// 終端
     end: Pos,
 }
 
 impl Range {
+    /// 新しい範囲を生成して返す
     pub fn new(start: Pos, end: Pos) -> Self {
         Range { start, end }
     }
@@ -25,7 +29,7 @@ impl Range {
         self.end
     }
 
-    /// 末尾を別の範囲の末尾に設定する
+    /// 終端を別の範囲の終端に設定する
     ///
     /// ```
     /// use token::range;
@@ -56,6 +60,7 @@ impl fmt::Display for Range {
 }
 
 impl From<Pos> for Range {
+    /// 始端と終端が同じ位置の範囲に変換する
     fn from(pos: Pos) -> Self {
         Self {
             start: pos.clone(),

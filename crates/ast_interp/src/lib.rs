@@ -49,59 +49,55 @@ pub fn execute(stmts: &[Stmt]) -> anyhow::Result<()> {
 #[cfg(test)]
 mod tests {
     use ast::Expr;
-    use entity::{Entity, I32Entity, StrEntity};
     use token::Range;
 
     use super::eval;
 
     #[test]
-    fn eval_test() {
-        assert!(matches!(
-            eval(&Expr::I32Lit(Range::default(), 2)),
-            Ok(Entity::I32(ent)) if ent == I32Entity::new(2)
-        ));
+    fn test_i32_lit() {
+        let ent = eval(&Expr::I32Lit(Range::default(), 2));
+        insta::assert_debug_snapshot!(ent);
+    }
 
-        assert!(matches!(
-            eval(&Expr::Add(
-                Box::new(Expr::I32Lit(Range::default(), 2)),
-                Box::new(Expr::I32Lit(Range::default(), 3))
-            )),
-            Ok(Entity::I32(ent)) if ent == I32Entity::new(5)
+    #[test]
+    fn test_i32_lit_plus_i32_lit() {
+        let ent = eval(&Expr::Add(
+            Box::new(Expr::I32Lit(Range::default(), 2)),
+            Box::new(Expr::I32Lit(Range::default(), 3)),
         ));
+        insta::assert_debug_snapshot!(ent);
+    }
 
-        assert!(matches!(
-            eval(&Expr::StrLit(Range::default(), "foo".to_owned())),
-            Ok(Entity::Str(ent)) if ent == StrEntity::new("foo".to_owned())
-        ));
+    #[test]
+    fn test_str_lit() {
+        let ent = eval(&Expr::StrLit(Range::default(), "foo".to_owned()));
+        insta::assert_debug_snapshot!(ent);
+    }
 
-        assert!(matches!(
-            eval(
-                &Expr::Add(
-                    Box::new(Expr::I32Lit(Range::default(), 3)),
-                    Box::new(Expr::StrLit(Range::default(), "bar".to_owned()))
-                )
-            ),
-            Err(e) if e.to_string() == "Type mismatch"
+    #[test]
+    fn test_i32_lit_plus_str_lit() {
+        let res = eval(&Expr::Add(
+            Box::new(Expr::I32Lit(Range::default(), 3)),
+            Box::new(Expr::StrLit(Range::default(), "bar".to_owned())),
         ));
+        insta::assert_debug_snapshot!(res);
+    }
 
-        assert!(matches!(
-            eval(
-                &Expr::Add(
-                    Box::new(Expr::StrLit(Range::default(), "foo".to_owned())),
-                    Box::new(Expr::I32Lit(Range::default(), 4))
-                )
-            ),
-            Err(e) if e.to_string() == "Type mismatch"
+    #[test]
+    fn test_str_lit_plus_i32_lit() {
+        let res = eval(&Expr::Add(
+            Box::new(Expr::StrLit(Range::default(), "foo".to_owned())),
+            Box::new(Expr::I32Lit(Range::default(), 4)),
         ));
+        insta::assert_debug_snapshot!(res);
+    }
 
-        assert!(matches!(
-            eval(
-                &Expr::Add(
-                    Box::new(Expr::StrLit(Range::default(), "foo".to_owned())),
-                    Box::new(Expr::StrLit(Range::default(), "bar".to_owned()))
-                )
-            ),
-            Err(e) if e.to_string() == "Type mismatch"
+    #[test]
+    fn test_str_lit_plus_str_lit() {
+        let res = eval(&Expr::Add(
+            Box::new(Expr::StrLit(Range::default(), "foo".to_owned())),
+            Box::new(Expr::StrLit(Range::default(), "bar".to_owned())),
         ));
+        insta::assert_debug_snapshot!(res);
     }
 }

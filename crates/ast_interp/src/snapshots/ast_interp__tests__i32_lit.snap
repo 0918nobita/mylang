@@ -1,0 +1,11 @@
+---
+source: crates/ast_interp/src/lib.rs
+assertion_line: 59
+expression: ent
+
+---
+Ok(
+    I32(
+        2,
+    ),
+)

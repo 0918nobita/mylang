@@ -241,6 +241,9 @@ checksum = "a357d28ed41a50f9c765dbfe56cbc04a64e53e5fc58ba79fbc34c10ef3df831f"
 [[package]]
 name = "entity"
 version = "0.1.0"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "env_logger"

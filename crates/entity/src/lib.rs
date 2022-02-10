@@ -1,6 +1,8 @@
 use std::fmt::{Debug, Formatter, Result as FmtResult};
 
-#[derive(PartialEq)]
+use serde::Serialize;
+
+#[derive(PartialEq, Serialize)]
 pub struct I32Entity(i32);
 
 impl I32Entity {
@@ -19,7 +21,7 @@ impl Debug for I32Entity {
     }
 }
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Serialize)]
 pub struct StrEntity(String);
 
 impl StrEntity {
@@ -34,7 +36,7 @@ impl Debug for StrEntity {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub enum Entity {
     I32(I32Entity),
     Str(StrEntity),

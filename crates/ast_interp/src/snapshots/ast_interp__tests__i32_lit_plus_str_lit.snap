@@ -1,0 +1,9 @@
+---
+source: crates/ast_interp/src/lib.rs
+assertion_line: 86
+expression: res
+
+---
+Err(
+    "Type mismatch",
+)

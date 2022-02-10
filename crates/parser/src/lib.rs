@@ -38,8 +38,8 @@ fn term(
 ) -> Result<(Pos, Expr), ParseErr> {
     if let Some(tok) = tokens.next() {
         match tok {
-            Token::I32(range, n) => Ok((range.end(), Expr::I32Lit(range, n))),
-            Token::Str(range, s) => Ok((range.end(), Expr::StrLit(range, s))),
+            Token::I32(range, n) => Ok((range.end_ref().clone(), Expr::I32Lit(range, n))),
+            Token::Str(range, s) => Ok((range.end_ref().clone(), Expr::StrLit(range, s))),
             _ => Err(ParseErr::TermExpected(tok.locate().end())),
         }
     } else {

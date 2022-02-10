@@ -15,8 +15,14 @@ impl Range {
         Range { start, end }
     }
 
-    pub fn end(&self) -> Pos {
-        self.end.clone()
+    /// 終端の参照を返す
+    pub fn end_ref(&self) -> &Pos {
+        &self.end
+    }
+
+    /// 所有権をムーブして終端を返す
+    pub fn end(self) -> Pos {
+        self.end
     }
 
     /// 末尾を別の範囲の末尾に設定する

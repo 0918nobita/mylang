@@ -60,6 +60,9 @@
 <span id="59">59</span>
 <span id="60">60</span>
 <span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
 </pre><pre class="rust"><code><span class="kw">mod</span> <span class="ident">locatable</span>;
 <span class="kw">mod</span> <span class="ident">pos</span>;
 <span class="kw">mod</span> <span class="ident">range</span>;
@@ -84,6 +87,9 @@
             <span class="macro">token::pos!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">start_line</span>;<span class="macro-nonterminal">$</span><span class="macro-nonterminal">start_char</span>),
             <span class="macro">token::pos!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">end_line</span>;<span class="macro-nonterminal">$</span><span class="macro-nonterminal">end_char</span>),
         )
+    };
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">start</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">end</span>:<span class="ident">expr</span>) =&gt; {
+        <span class="ident">token::Range::new</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">start</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">end</span>)
     };
 }
 

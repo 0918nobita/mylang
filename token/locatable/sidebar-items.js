@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["Locatable",""]]});
+initSidebarItems({"trait":[["Locatable","ソースコード上で対応する範囲が特定できることを表現するトレイト"]]});

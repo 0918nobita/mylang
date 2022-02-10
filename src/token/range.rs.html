@@ -64,19 +64,28 @@
 <span id="63">63</span>
 <span id="64">64</span>
 <span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::fmt</span>;
 
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::pos::Pos</span>;
 
+<span class="doccomment">/// ソースコード中の範囲</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Default</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Range</span> {
+    <span class="doccomment">/// 始端</span>
     <span class="ident">start</span>: <span class="ident">Pos</span>,
+    <span class="doccomment">/// 終端</span>
     <span class="ident">end</span>: <span class="ident">Pos</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Range</span> {
+    <span class="doccomment">/// 新しい範囲を生成して返す</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">start</span>: <span class="ident">Pos</span>, <span class="ident">end</span>: <span class="ident">Pos</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">Range</span> { <span class="ident">start</span>, <span class="ident">end</span> }
     }
@@ -91,7 +100,7 @@
         <span class="self">self</span>.<span class="ident">end</span>
     }
 
-    <span class="doccomment">/// 末尾を別の範囲の末尾に設定する</span>
+    <span class="doccomment">/// 終端を別の範囲の終端に設定する</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use token::range;</span>
@@ -122,6 +131,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Pos</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Range</span> {
+    <span class="doccomment">/// 始端と終端が同じ位置の範囲に変換する</span>
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">pos</span>: <span class="ident">Pos</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">start</span>: <span class="ident">pos</span>.<span class="ident">clone</span>(),

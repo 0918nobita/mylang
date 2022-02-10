@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["KeywordKind",""],["Token",""]],"macro":[["pos",""],["range",""]],"mod":[["locatable",""],["pos",""],["range",""]],"struct":[["Pos",""],["Range",""]],"trait":[["Locatable",""]]});
+initSidebarItems({"enum":[["KeywordKind",""],["Token",""]],"macro":[["pos",""],["range",""]],"mod":[["locatable",""],["pos",""],["range",""]],"struct":[["Pos","ソースコード上の位置"],["Range","ソースコード中の範囲"]],"trait":[["Locatable","ソースコード上で対応する範囲が特定できることを表現するトレイト"]]});

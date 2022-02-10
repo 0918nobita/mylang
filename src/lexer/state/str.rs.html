@@ -60,7 +60,7 @@
 <span id="59">59</span>
 <span id="60">60</span>
 <span id="61">61</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">token</span>::{<span class="ident">Pos</span>, <span class="ident">Range</span>, <span class="ident">Token</span>};
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">token</span>::{<span class="ident">range</span>, <span class="ident">Pos</span>, <span class="ident">Token</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::result::LexErr</span>;
 
@@ -116,7 +116,7 @@
             <span class="macro">panic!</span>(<span class="string">&quot;Illigal state&quot;</span>)
         }
         <span class="ident">Token::Str</span>(
-            <span class="ident">Range::new</span>(<span class="self">self</span>.<span class="ident">start</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">end</span>.<span class="ident">clone</span>()),
+            <span class="macro">range!</span>(<span class="self">self</span>.<span class="ident">start</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">end</span>.<span class="ident">clone</span>()),
             <span class="self">self</span>.<span class="ident">acc</span>.<span class="ident">clone</span>(),
         )
     }

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Range",""]]});
+initSidebarItems({"struct":[["Range","ソースコード中の範囲"]]});

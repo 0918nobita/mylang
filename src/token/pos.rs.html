@@ -57,17 +57,25 @@
 <span id="56">56</span>
 <span id="57">57</span>
 <span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::fmt</span>;
 
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
+<span class="doccomment">/// ソースコード上の位置</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Default</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Pos</span> {
+    <span class="doccomment">/// 行番号</span>
     <span class="ident">line</span>: <span class="ident">u32</span>,
+    <span class="doccomment">/// 列番号</span>
     <span class="ident">character</span>: <span class="ident">u32</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Pos</span> {
+    <span class="doccomment">/// 新しい位置を生成して返す</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">line</span>: <span class="ident">u32</span>, <span class="ident">character</span>: <span class="ident">u32</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">line</span>, <span class="ident">character</span> }
     }

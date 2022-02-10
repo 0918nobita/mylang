@@ -30,7 +30,7 @@
 <span id="29">29</span>
 <span id="30">30</span>
 <span id="31">31</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">token</span>::{<span class="ident">Pos</span>, <span class="ident">Range</span>, <span class="ident">Token</span>};
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">token</span>::{<span class="ident">range</span>, <span class="ident">Pos</span>, <span class="ident">Token</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">I32State</span> {
@@ -58,7 +58,7 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tokenize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Token</span> {
         <span class="kw">let</span> <span class="ident">i</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">acc</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-        <span class="ident">Token::I32</span>(<span class="ident">Range::new</span>(<span class="self">self</span>.<span class="ident">start</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">end</span>.<span class="ident">clone</span>()), <span class="ident">i</span>)
+        <span class="ident">Token::I32</span>(<span class="macro">range!</span>(<span class="self">self</span>.<span class="ident">start</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">end</span>.<span class="ident">clone</span>()), <span class="ident">i</span>)
     }
 }
 </code></pre></div>

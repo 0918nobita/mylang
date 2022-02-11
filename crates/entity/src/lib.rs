@@ -1,3 +1,7 @@
+//! mylang のランタイムで扱う「実体」の定義
+//!
+//! バイトコードインタプリタ、構文木インタプリタの両方で扱う値
+
 use std::fmt::{Debug, Display, Formatter, Result as FmtResult};
 
 use serde::Serialize;

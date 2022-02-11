@@ -1,3 +1,5 @@
+//! 字句解析で取り出されるトークンとその付帯情報の定義
+
 mod locatable;
 mod pos;
 mod range;

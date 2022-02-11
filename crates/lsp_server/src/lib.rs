@@ -1,3 +1,5 @@
+//! mylang を記述するための、LSP に準拠した言語サーバの実装
+
 mod message;
 mod receiver;
 mod responder;

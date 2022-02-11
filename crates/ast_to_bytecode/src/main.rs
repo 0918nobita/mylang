@@ -5,8 +5,9 @@ use std::{
 
 use anyhow::Context;
 use ast::Stmt;
-use ast_to_bytecode::ast_to_bytecode;
 use clap::Parser;
+
+use ast_to_bytecode::ast_to_bytecode;
 
 #[derive(Parser)]
 struct Opts {

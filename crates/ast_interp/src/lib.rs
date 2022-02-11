@@ -1,3 +1,7 @@
+//! 抽象構文木インタプリタ
+//!
+//! スモールステップ意味論に沿って、構文木を繰り返し簡約し結果を返す。
+
 use anyhow::bail;
 use ast::{Expr, Stmt};
 use entity::{Entity, I32Entity, StrEntity};

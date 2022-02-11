@@ -1,3 +1,5 @@
+//! 抽象構文木→バイトコード変換器
+
 use ast::{Expr, Stmt};
 use bytecode::Inst;
 

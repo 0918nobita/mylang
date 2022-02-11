@@ -1,3 +1,5 @@
+//! バイトコードの定義
+
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]

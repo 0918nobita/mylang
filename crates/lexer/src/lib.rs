@@ -58,6 +58,8 @@ fn transition(state: &State, pos_c: (Pos, char)) -> (State, Vec<LexResult>) {
         },
     }
 }
+
+/// 「文字と位置のイテレータを、トークン取得結果のイテレータに変換するアダプタ」として字句解析器を実装している
 pub struct Lex<I>
 where
     I: Iterator<Item = (Pos, char)> + Sized,
@@ -72,6 +74,7 @@ where
 {
     type Item = Vec<LexResult>;
 
+    /// 内部イテレータと内部状態をもとに、次のトークンを取り出す
     fn next(&mut self) -> Option<Self::Item> {
         let state = self.state.as_ref()?.clone();
 
@@ -102,7 +105,9 @@ where
     }
 }
 
+/// 字句解析器に変換可能なイテレータを表すトレイト
 pub trait LexExt: Iterator<Item = (Pos, char)> + Sized {
+    /// 位置と文字のイテレータを、字句解析器に変換する
     fn lex(self) -> Lex<Self>;
 }
 

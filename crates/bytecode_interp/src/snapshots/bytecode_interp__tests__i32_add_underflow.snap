@@ -1,12 +1,14 @@
 ---
 source: crates/bytecode_interp/src/lib.rs
-assertion_line: 85
+assertion_line: 104
 expression: "(i32_add(&mut stack), stack)"
 
 ---
 (
     Err(
-        Failed to get right-hand side,
+        StackUnderflow(
+            "Failed to get right-hand side of the addition",
+        ),
     ),
     [],
 )

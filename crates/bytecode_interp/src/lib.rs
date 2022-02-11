@@ -1,50 +1,81 @@
-use anyhow::{bail, Context};
+//! バイトコードインタプリタ
+
 use bytecode::Inst;
 use entity::{Entity, I32Entity, StrEntity};
+use thiserror::Error;
 
+/// バイトコードインタプリタで発生するエラー
+#[derive(Debug, Error)]
+pub enum InterpError {
+    /// スタックが空であり、値をスタックから取り出せなかった
+    #[error("Stack underflow ({0})")]
+    StackUnderflow(String),
+
+    /// 取り出した値が、期待した型の値ではなかった
+    #[error("Type mismatch")]
+    TypeMismatch,
+}
+
+/// バイトコードの実行結果
+type InterpResult<T> = Result<T, InterpError>;
+
+/// I32Const 命令を実行する
 fn i32_const(stack: &mut Vec<Entity>, immediate: i32) {
     stack.push(Entity::I32(I32Entity::new(immediate)));
 }
 
-fn i32_add(stack: &mut Vec<Entity>) -> anyhow::Result<()> {
-    let lhs = stack.pop().context("Failed to get left-hand side")?;
-    let rhs = stack.pop().context("Failed to get right-hand side")?;
+/// I32Add 命令を実行する
+fn i32_add(stack: &mut Vec<Entity>) -> InterpResult<()> {
+    let lhs = stack.pop().ok_or_else(|| {
+        InterpError::StackUnderflow("Failed to get left-hand side of the addition".to_owned())
+    })?;
+    let rhs = stack.pop().ok_or_else(|| {
+        InterpError::StackUnderflow("Failed to get right-hand side of the addition".to_owned())
+    })?;
 
     if let (Entity::I32(lhs), Entity::I32(rhs)) = (lhs, rhs) {
         stack.push(Entity::I32(lhs.add(&rhs)));
         Ok(())
     } else {
-        bail!("Type mismatch");
+        Err(InterpError::TypeMismatch)
     }
 }
 
+/// StrConst 命令を実行する
 fn str_const(stack: &mut Vec<Entity>, immediate: &str) {
     stack.push(Entity::Str(StrEntity::new(immediate.to_owned())));
 }
 
-fn print_i32(stack: &mut Vec<Entity>) -> anyhow::Result<()> {
-    let ent = stack.pop().context("Failed to get entity")?;
+/// PrintI32 命令を実行する
+fn print_i32(stack: &mut Vec<Entity>) -> InterpResult<()> {
+    let ent = stack.pop().ok_or_else(|| {
+        InterpError::StackUnderflow("Failed to get the entity to output".to_owned())
+    })?;
 
     if let Entity::I32(ent) = ent {
         println!("{}", ent);
         Ok(())
     } else {
-        bail!("Type mismatch");
+        Err(InterpError::TypeMismatch)
     }
 }
 
-fn print_str(stack: &mut Vec<Entity>) -> anyhow::Result<()> {
-    let ent = stack.pop().context("Failed to get entity")?;
+/// PrintStr 命令を実行する
+fn print_str(stack: &mut Vec<Entity>) -> InterpResult<()> {
+    let ent = stack
+        .pop()
+        .ok_or_else(|| InterpError::StackUnderflow("Failed to get entity".to_owned()))?;
 
     if let Entity::Str(ent) = ent {
         println!("{}", ent);
         Ok(())
     } else {
-        bail!("Type mismatch");
+        Err(InterpError::TypeMismatch)
     }
 }
 
-pub fn execute(insts: impl Iterator<Item = Inst>) -> anyhow::Result<()> {
+/// バイトコードを解釈実行する
+pub fn execute(insts: impl Iterator<Item = Inst>) -> InterpResult<()> {
     let mut stack = Vec::<Entity>::new();
 
     for inst in insts {

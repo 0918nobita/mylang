@@ -152,6 +152,7 @@ dependencies = [
  "clap",
  "entity",
  "insta",
+ "thiserror",
 ]
 
 [[package]]

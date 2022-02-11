@@ -8,6 +8,7 @@ actix = "0.12.0"
 anyhow = "1.0.53"
 ast = { path = "../ast" }
 env_logger = "0.9.0"
+itertools = "0.10.3"
 lexer = { path = "../lexer" }
 log = "0.4.14"
 parser = { path = "../parser" }

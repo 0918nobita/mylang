@@ -5,6 +5,7 @@ use std::{
 
 use anyhow::anyhow;
 use clap::Parser;
+use itertools::Itertools;
 use token::Token;
 
 #[derive(Parser)]
@@ -39,13 +40,7 @@ fn main() -> anyhow::Result<()> {
 
     let (stmts, errors): (Vec<_>, Vec<_>) = parser::parse(tokens.into_iter())
         .into_iter()
-        .partition(Result::is_ok);
-
-    let stmts = stmts.into_iter().map(Result::unwrap).collect::<Vec<_>>();
-    let errors = errors
-        .into_iter()
-        .map(Result::unwrap_err)
-        .collect::<Vec<_>>();
+        .partition_result();
 
     if errors.is_empty() {
         let json = serde_json::to_string_pretty(&stmts)?;

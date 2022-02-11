@@ -1,4 +1,5 @@
 use actix::Addr;
+use itertools::Itertools;
 use lexer::{LexErr, LexExt, WithPosExt};
 use serde_json::{json, Value as JsonValue};
 use token::Token;
@@ -8,20 +9,7 @@ use crate::{message::LspMessage, sender::Sender};
 use super::diagnostic::{lex_err_to_diagnostic, parse_err_to_diagnostic};
 
 fn lex(text: &str) -> (Vec<Token>, Vec<LexErr>) {
-    let (tokens, errors): (Vec<_>, Vec<_>) = text
-        .chars()
-        .with_pos()
-        .lex()
-        .flatten()
-        .partition(Result::is_ok);
-
-    let tokens = tokens.into_iter().map(Result::unwrap).collect::<Vec<_>>();
-
-    let errors = errors
-        .into_iter()
-        .map(Result::unwrap_err)
-        .collect::<Vec<_>>();
-    (tokens, errors)
+    text.chars().with_pos().lex().flatten().partition_result()
 }
 
 pub async fn analyze_src(sender: Addr<Sender>, uri: &JsonValue, text: &str) -> anyhow::Result<()> {
@@ -31,11 +19,10 @@ pub async fn analyze_src(sender: Addr<Sender>, uri: &JsonValue, text: &str) -> a
 
     let (_stmts, errors): (Vec<_>, Vec<_>) = parser::parse(tokens.into_iter())
         .into_iter()
-        .partition(Result::is_ok);
+        .partition_result();
 
     let diagnostics_from_parser = errors
         .into_iter()
-        .map(Result::unwrap_err)
         .map(parse_err_to_diagnostic)
         .collect::<Vec<_>>();
 

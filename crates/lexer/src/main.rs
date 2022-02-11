@@ -5,6 +5,7 @@ use std::{
 
 use anyhow::anyhow;
 use clap::Parser;
+use itertools::Itertools;
 
 #[derive(Parser)]
 struct Opts {
@@ -34,14 +35,7 @@ fn main() -> anyhow::Result<()> {
         Box::new(BufWriter::new(stdout.lock()))
     };
 
-    let (tokens, errors): (Vec<_>, Vec<_>) = lexer::lex(&mut src).partition(Result::is_ok);
-
-    let tokens = tokens.into_iter().map(Result::unwrap).collect::<Vec<_>>();
-
-    let errors = errors
-        .into_iter()
-        .map(Result::unwrap_err)
-        .collect::<Vec<_>>();
+    let (tokens, errors): (Vec<_>, Vec<_>) = lexer::lex(&mut src).partition_result();
 
     if errors.is_empty() {
         let json = serde_json::to_string_pretty(&tokens)?;

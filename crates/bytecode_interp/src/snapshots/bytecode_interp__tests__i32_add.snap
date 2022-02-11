@@ -1,0 +1,16 @@
+---
+source: crates/bytecode_interp/src/lib.rs
+assertion_line: 79
+expression: "(i32_add(&mut stack), stack)"
+
+---
+(
+    Ok(
+        (),
+    ),
+    [
+        I32(
+            7,
+        ),
+    ],
+)

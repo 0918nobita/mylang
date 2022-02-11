@@ -151,6 +151,7 @@ dependencies = [
  "bytecode",
  "clap",
  "entity",
+ "insta",
 ]
 
 [[package]]

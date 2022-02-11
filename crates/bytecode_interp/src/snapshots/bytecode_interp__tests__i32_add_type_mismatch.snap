@@ -1,0 +1,12 @@
+---
+source: crates/bytecode_interp/src/lib.rs
+assertion_line: 94
+expression: "(i32_add(&mut stack), stack)"
+
+---
+(
+    Err(
+        "Type mismatch",
+    ),
+    [],
+)

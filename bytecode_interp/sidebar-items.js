@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["execute",""],["i32_add",""],["i32_const",""],["print_i32",""],["print_str",""],["str_const",""]]});
+initSidebarItems({"enum":[["InterpError","バイトコードインタプリタで発生するエラー"]],"fn":[["execute","バイトコードを解釈実行する"],["i32_add","I32Add 命令を実行する"],["i32_const","I32Const 命令を実行する"],["print_i32","PrintI32 命令を実行する"],["print_str","PrintStr 命令を実行する"],["str_const","StrConst 命令を実行する"]],"type":[["InterpResult","バイトコードの実行結果"]]});

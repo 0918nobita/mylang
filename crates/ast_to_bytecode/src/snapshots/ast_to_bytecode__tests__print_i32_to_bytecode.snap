@@ -1,0 +1,12 @@
+---
+source: crates/ast_to_bytecode/src/lib.rs
+assertion_line: 72
+expression: bytecode
+
+---
+[
+    I32Const(
+        3,
+    ),
+    PrintI32,
+]

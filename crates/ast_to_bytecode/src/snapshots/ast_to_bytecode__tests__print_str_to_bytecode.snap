@@ -1,0 +1,12 @@
+---
+source: crates/ast_to_bytecode/src/lib.rs
+assertion_line: 82
+expression: bytecode
+
+---
+[
+    StrConst(
+        "Hello, world!",
+    ),
+    PrintStr,
+]

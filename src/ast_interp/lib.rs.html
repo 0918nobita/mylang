@@ -102,7 +102,15 @@
 <span id="101">101</span>
 <span id="102">102</span>
 <span id="103">103</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">anyhow::bail</span>;
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+</pre><pre class="rust"><code><span class="doccomment">//! 抽象構文木インタプリタ</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! スモールステップ意味論に沿って、構文木を繰り返し簡約し結果を返す。</span>
+
+<span class="kw">use</span> <span class="ident">anyhow::bail</span>;
 <span class="kw">use</span> <span class="ident">ast</span>::{<span class="ident">Expr</span>, <span class="ident">Stmt</span>};
 <span class="kw">use</span> <span class="ident">entity</span>::{<span class="ident">Entity</span>, <span class="ident">I32Entity</span>, <span class="ident">StrEntity</span>};
 

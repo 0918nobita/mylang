@@ -57,7 +57,15 @@
 <span id="56">56</span>
 <span id="57">57</span>
 <span id="58">58</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::fmt</span>::{<span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">Formatter</span>, <span class="prelude-ty">Result</span> <span class="kw">as</span> <span class="ident">FmtResult</span>};
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+</pre><pre class="rust"><code><span class="doccomment">//! mylang のランタイムで扱う「実体」の定義</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! バイトコードインタプリタ、構文木インタプリタの両方で扱う値</span>
+
+<span class="kw">use</span> <span class="ident">std::fmt</span>::{<span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">Formatter</span>, <span class="prelude-ty">Result</span> <span class="kw">as</span> <span class="ident">FmtResult</span>};
 
 <span class="kw">use</span> <span class="ident">serde::Serialize</span>;
 

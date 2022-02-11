@@ -9,7 +9,11 @@
 <span id="8"> 8</span>
 <span id="9"> 9</span>
 <span id="10">10</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+<span id="11">11</span>
+<span id="12">12</span>
+</pre><pre class="rust"><code><span class="doccomment">//! バイトコードの定義</span>
+
+<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Inst</span> {

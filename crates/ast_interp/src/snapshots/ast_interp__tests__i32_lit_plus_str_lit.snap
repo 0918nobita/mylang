@@ -1,9 +1,12 @@
 ---
 source: crates/ast_interp/src/lib.rs
-assertion_line: 86
+assertion_line: 130
 expression: res
 
 ---
 Err(
-    "Type mismatch",
+    TypeMismatch {
+        expected: I32,
+        actual: Str,
+    },
 )

@@ -4,10 +4,7 @@
 
 use std::fmt::{Debug, Display, Formatter, Result as FmtResult};
 
-use serde::Serialize;
-
 /// 符号付き32ビット整数値
-#[derive(PartialEq, Serialize)]
 pub struct I32Entity(i32);
 
 impl I32Entity {
@@ -33,7 +30,6 @@ impl Display for I32Entity {
 }
 
 /// 文字列データ
-#[derive(PartialEq, Serialize)]
 pub struct StrEntity(String);
 
 impl StrEntity {
@@ -55,8 +51,24 @@ impl Display for StrEntity {
 }
 
 /// バイトコード実行時に扱う値
-#[derive(Debug, Serialize)]
+#[derive(Debug)]
 pub enum Entity {
     I32(I32Entity),
     Str(StrEntity),
+}
+
+/// 実行時型情報
+#[derive(Debug)]
+pub enum RuntimeTypeInfo {
+    I32,
+    Str,
+}
+
+impl Entity {
+    pub fn get_type(&self) -> RuntimeTypeInfo {
+        match self {
+            Entity::I32(_) => RuntimeTypeInfo::I32,
+            Entity::Str(_) => RuntimeTypeInfo::Str,
+        }
+    }
 }

@@ -17,5 +17,8 @@ fn main() -> anyhow::Result<()> {
     let reader = BufReader::new(file);
 
     let stmts: Vec<Stmt> = serde_json::from_reader(reader)?;
-    execute(&stmts)
+
+    execute(&stmts)?;
+
+    Ok(())
 }

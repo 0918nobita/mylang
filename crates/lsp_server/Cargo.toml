@@ -14,7 +14,7 @@ log = "0.4.14"
 parser = { path = "../parser" }
 regex = "1.5.4"
 serde = { version = "1.0.136", features = ["derive"] }
-serde_json = "1.0.78"
+serde_json = "1.0.79"
 token = { path = "../token" }
 valq = "0.1.0"
 

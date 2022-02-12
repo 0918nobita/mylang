@@ -65,16 +65,25 @@
 <span id="60">60</span>
 <span id="61">61</span>
 <span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
 </pre><pre class="rust"><code><span class="doccomment">//! mylang のランタイムで扱う「実体」の定義</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! バイトコードインタプリタ、構文木インタプリタの両方で扱う値</span>
 
 <span class="kw">use</span> <span class="ident">std::fmt</span>::{<span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">Formatter</span>, <span class="prelude-ty">Result</span> <span class="kw">as</span> <span class="ident">FmtResult</span>};
 
-<span class="kw">use</span> <span class="ident">serde::Serialize</span>;
-
 <span class="doccomment">/// 符号付き32ビット整数値</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Serialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">I32Entity</span>(<span class="ident">i32</span>);
 
 <span class="kw">impl</span> <span class="ident">I32Entity</span> {
@@ -100,7 +109,6 @@
 }
 
 <span class="doccomment">/// 文字列データ</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Serialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StrEntity</span>(<span class="ident">String</span>);
 
 <span class="kw">impl</span> <span class="ident">StrEntity</span> {
@@ -122,11 +130,27 @@
 }
 
 <span class="doccomment">/// バイトコード実行時に扱う値</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Entity</span> {
     <span class="ident">I32</span>(<span class="ident">I32Entity</span>),
     <span class="ident">Str</span>(<span class="ident">StrEntity</span>),
 }
+
+<span class="doccomment">/// 実行時型情報</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RuntimeTypeInfo</span> {
+    <span class="ident">I32</span>,
+    <span class="ident">Str</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">Entity</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">RuntimeTypeInfo</span> {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="ident">Entity::I32</span>(<span class="kw">_</span>) =&gt; <span class="ident">RuntimeTypeInfo::I32</span>,
+            <span class="ident">Entity::Str</span>(<span class="kw">_</span>) =&gt; <span class="ident">RuntimeTypeInfo::Str</span>,
+        }
+    }
+}
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="entity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-nightly (e646f3d2a 2022-02-10)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="entity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-nightly (e789f3a3a 2022-02-11)" ></div>
 </body></html>

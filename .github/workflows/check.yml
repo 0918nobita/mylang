@@ -5,6 +5,7 @@ on:
     paths:
       - ".github/workflows/check.yml"
       - "crates/**/*.rs"
+      - "crates/**/*.snap"
       - "crates/**/Cargo.toml"
       - "examples/**/*.mylang"
       - "Cargo.toml"

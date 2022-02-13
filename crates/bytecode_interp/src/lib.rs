@@ -1,7 +1,7 @@
 //! バイトコードインタプリタ
 
 use bytecode::Inst;
-use entity::{Entity, I32Entity, StrEntity};
+use entity::{Entity, I32Entity, RuntimeTypeInfo, StrEntity};
 use thiserror::Error;
 
 /// バイトコードインタプリタで発生するエラー
@@ -12,8 +12,11 @@ pub enum InterpError {
     StackUnderflow(String),
 
     /// 取り出した値が、期待した型の値ではなかった
-    #[error("Type mismatch")]
-    TypeMismatch,
+    #[error("Type mismatch (expected: {expected:?}, actual: {actual:?})")]
+    TypeMismatch {
+        expected: RuntimeTypeInfo,
+        actual: RuntimeTypeInfo,
+    },
 }
 
 /// バイトコードの実行結果
@@ -33,12 +36,28 @@ fn i32_add(stack: &mut Vec<Entity>) -> InterpResult<()> {
         InterpError::StackUnderflow("Failed to get right-hand side of the addition".to_owned())
     })?;
 
-    if let (Entity::I32(lhs), Entity::I32(rhs)) = (lhs, rhs) {
-        stack.push(Entity::I32(lhs.add(&rhs)));
-        Ok(())
-    } else {
-        Err(InterpError::TypeMismatch)
-    }
+    let lhs = match lhs {
+        Entity::I32(i32_entity) => i32_entity,
+        _ => {
+            return Err(InterpError::TypeMismatch {
+                expected: RuntimeTypeInfo::I32,
+                actual: lhs.get_type(),
+            })
+        }
+    };
+
+    let rhs = match rhs {
+        Entity::I32(i32_entity) => i32_entity,
+        _ => {
+            return Err(InterpError::TypeMismatch {
+                expected: RuntimeTypeInfo::I32,
+                actual: rhs.get_type(),
+            })
+        }
+    };
+
+    stack.push(Entity::I32(lhs.add(&rhs)));
+    Ok(())
 }
 
 /// StrConst 命令を実行する
@@ -52,12 +71,18 @@ fn print_i32(stack: &mut Vec<Entity>) -> InterpResult<()> {
         InterpError::StackUnderflow("Failed to get the entity to output".to_owned())
     })?;
 
-    if let Entity::I32(ent) = ent {
-        println!("{}", ent);
-        Ok(())
-    } else {
-        Err(InterpError::TypeMismatch)
-    }
+    let ent = match ent {
+        Entity::I32(i32_entity) => i32_entity,
+        _ => {
+            return Err(InterpError::TypeMismatch {
+                expected: RuntimeTypeInfo::I32,
+                actual: ent.get_type(),
+            })
+        }
+    };
+
+    println!("{}", ent);
+    Ok(())
 }
 
 /// PrintStr 命令を実行する
@@ -66,12 +91,18 @@ fn print_str(stack: &mut Vec<Entity>) -> InterpResult<()> {
         .pop()
         .ok_or_else(|| InterpError::StackUnderflow("Failed to get entity".to_owned()))?;
 
-    if let Entity::Str(ent) = ent {
-        println!("{}", ent);
-        Ok(())
-    } else {
-        Err(InterpError::TypeMismatch)
-    }
+    let ent = match ent {
+        Entity::Str(str_entity) => str_entity,
+        _ => {
+            return Err(InterpError::TypeMismatch {
+                expected: RuntimeTypeInfo::Str,
+                actual: ent.get_type(),
+            })
+        }
+    };
+
+    println!("{}", ent);
+    Ok(())
 }
 
 /// バイトコードを解釈実行する

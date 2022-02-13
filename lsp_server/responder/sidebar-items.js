@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["analyzer",""],["diagnostic",""],["handler",""],["range",""]],"struct":[["Responder",""]]});
+initSidebarItems({"mod":[["analyzer",""],["diagnostic",""],["handler",""],["range",""]],"struct":[["Responder","言語クライアントから受信したメッセージをもとに応答を決定し、[`Sender`] に送信を依頼するアクター"]]});

@@ -33,12 +33,14 @@
 <span id="28">28</span>
 <span id="29">29</span>
 <span id="30">30</span>
+<span id="31">31</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">actix</span>::{<span class="ident">Actor</span>, <span class="ident">Context</span>, <span class="ident">ContextFutureSpawner</span>, <span class="ident">Handler</span>, <span class="ident">WrapFuture</span>};
 <span class="kw">use</span> <span class="ident">log::info</span>;
 <span class="kw">use</span> <span class="ident">tokio::io</span>::{<span class="self">self</span>, <span class="ident">AsyncWriteExt</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::message::LspMessage</span>;
 
+<span class="doccomment">/// 依頼された応答・通知メッセージを言語クライアントに送信するアクター</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Sender</span>;
 
 <span class="kw">impl</span> <span class="ident">Actor</span> <span class="kw">for</span> <span class="ident">Sender</span> {

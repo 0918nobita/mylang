@@ -46,6 +46,7 @@
 <span id="41">41</span>
 <span id="42">42</span>
 <span id="43">43</span>
+<span id="44">44</span>
 </pre><pre class="rust"><code><span class="kw">mod</span> <span class="ident">analyzer</span>;
 <span class="kw">mod</span> <span class="ident">diagnostic</span>;
 <span class="kw">mod</span> <span class="ident">handler</span>;
@@ -58,6 +59,7 @@
 <span class="kw">use</span> <span class="ident"><span class="self">self</span>::handler::handle</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">message::LspMessage</span>, <span class="ident">sender::Sender</span>};
 
+<span class="doccomment">/// 言語クライアントから受信したメッセージをもとに応答を決定し、[`Sender`] に送信を依頼するアクター</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Responder</span> {
     <span class="ident">sender</span>: <span class="ident">Addr</span><span class="op">&lt;</span><span class="ident">Sender</span><span class="op">&gt;</span>,
     <span class="ident">diagnostics_supported</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">AtomicBool</span><span class="op">&gt;</span>,

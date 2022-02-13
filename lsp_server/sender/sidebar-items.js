@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Sender",""]]});
+initSidebarItems({"struct":[["Sender","依頼された応答・通知メッセージを言語クライアントに送信するアクター"]]});

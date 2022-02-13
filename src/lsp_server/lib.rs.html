@@ -21,6 +21,7 @@
 <span id="16">16</span>
 <span id="17">17</span>
 <span id="18">18</span>
+<span id="19">19</span>
 </pre><pre class="rust"><code><span class="doccomment">//! mylang を記述するための、LSP に準拠した言語サーバの実装</span>
 
 <span class="kw">mod</span> <span class="ident">message</span>;
@@ -32,6 +33,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">receiver::Receiver</span>, <span class="ident">responder::Responder</span>, <span class="ident">sender::Sender</span>};
 
+<span class="doccomment">/// 言語サーバに関連する各アクターを起動する</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">launch_lsp_server</span>() {
     <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="ident">Sender</span>.<span class="ident">start</span>();
 

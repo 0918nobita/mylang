@@ -4,6 +4,7 @@ use tokio::io::{self, AsyncWriteExt};
 
 use crate::message::LspMessage;
 
+/// 依頼された応答・通知メッセージを言語クライアントに送信するアクター
 pub struct Sender;
 
 impl Actor for Sender {

@@ -5,6 +5,7 @@ use tokio::io::{self, AsyncBufReadExt, AsyncReadExt, BufReader};
 
 use crate::{message::LspMessage, responder::Responder};
 
+/// 言語クライアントからのメッセージを受け取るアクター
 pub struct Receiver {
     responder: Addr<Responder>,
 }

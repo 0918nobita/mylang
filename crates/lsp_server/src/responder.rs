@@ -10,6 +10,7 @@ use actix::{Actor, Addr, Context, ContextFutureSpawner, Handler, WrapFuture};
 use self::handler::handle;
 use crate::{message::LspMessage, sender::Sender};
 
+/// 言語クライアントから受信したメッセージをもとに応答を決定し、[`Sender`] に送信を依頼するアクター
 pub struct Responder {
     sender: Addr<Sender>,
     diagnostics_supported: Arc<AtomicBool>,

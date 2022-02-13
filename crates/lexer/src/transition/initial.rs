@@ -7,7 +7,7 @@ use crate::{
     state::{i32::I32State, keyword::KeywordState, str::StrState, State},
 };
 
-pub fn default_transition((pos, c): (Pos, char)) -> (State, Vec<LexResult>) {
+pub fn initial_lex((pos, c): (Pos, char)) -> (State, Vec<LexResult>) {
     match c {
         '\n' => (State::Initial, vec![Ok(Token::Newline(pos))]),
 

@@ -10,9 +10,9 @@
 
 ```bash
 cd examples
-cargo run --bin lexer -- hello.mylang -o hello.tok.json
-cargo run --bin parser -- hello.tok.json -o hello.ast.json
-cargo run --bin ast_interp -- hello.ast.json
+cargo run --bin mylang_lexer -- -o hello.tok.json hello.mylang
+cargo run --bin mylang_parser -- -o hello.ast.json hello.tok.json
+cargo run --bin mylang_ast_interp -- hello.ast.json
 ```
 
 ### AST をバイトコードに変換してから VM で実行する場合
@@ -36,7 +36,7 @@ Rust で言語サーバを開発しており、これを各種エディタの言
 ### (エディタ共通) 言語サーバのビルド・インストール方法
 
 ```bash
-cargo build -p lsp_server
+cargo build -p mylang_lsp_server
 cargo install --path ./crates/lsp_server
 ```
 
@@ -82,7 +82,7 @@ contexts:
   "clients": {
     "MyLang": {
       "enabled": true,
-      "command": ["lsp_server"],
+      "command": ["mylang_lsp_server"],
       "selector": "source.mylang",
       "env": {
         "RUST_LOG": "info"

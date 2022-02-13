@@ -24,6 +24,21 @@
         "cwd": "${workspaceFolder}/vscode-ext"
       },
       "group": "build"
+    },
+    {
+      "label": "test",
+      "type": "shell",
+      "command": "cargo test",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "review-snapshots",
+      "type": "shell",
+      "command": "cargo insta review",
+      "problemMatcher": []
     }
   ]
 }

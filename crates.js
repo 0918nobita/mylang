@@ -1,1 +1,1 @@
-window.ALL_CRATES = ["ast","ast_interp","ast_to_bytecode","bytecode","bytecode_interp","entity","lexer","lsp_server","parser","token"];
+window.ALL_CRATES = ["mylang_ast","mylang_ast_interp","mylang_bytecode","mylang_bytecode_compiler","mylang_entity","mylang_lexer","mylang_lsp_server","mylang_parser","mylang_token","mylang_vm"];

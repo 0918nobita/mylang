@@ -9,10 +9,10 @@
 //! term ::= INT_LIT | STRING_LIT ;
 //! ```
 
-use ast::{Expr, Stmt};
 use itertools::{put_back, PutBack};
+use mylang_ast::{Expr, Stmt};
+use mylang_token::{KeywordKind, Locatable, Pos, Range, Token};
 use thiserror::Error;
-use token::{KeywordKind, Locatable, Pos, Range, Token};
 
 /// 構文解析中に発生するエラー
 #[allow(dead_code)]

@@ -1,4 +1,4 @@
-use token::{range, Pos, Token};
+use mylang_token::{range, Pos, Token};
 
 #[derive(Clone, Debug)]
 pub struct I32State {

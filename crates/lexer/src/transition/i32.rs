@@ -1,4 +1,4 @@
-use token::{Pos, Token};
+use mylang_token::{Pos, Token};
 
 use crate::state::i32::I32State;
 

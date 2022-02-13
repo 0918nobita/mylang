@@ -6,7 +6,7 @@ use std::{
 use anyhow::anyhow;
 use clap::Parser;
 use itertools::Itertools;
-use token::Token;
+use mylang_token::Token;
 
 #[derive(Parser)]
 struct Opts {
@@ -38,7 +38,7 @@ fn main() -> anyhow::Result<()> {
 
     let tokens: Vec<Token> = serde_json::from_reader(src)?;
 
-    let (stmts, errors): (Vec<_>, Vec<_>) = parser::parse(tokens.into_iter())
+    let (stmts, errors): (Vec<_>, Vec<_>) = mylang_parser::parse(tokens.into_iter())
         .into_iter()
         .partition_result();
 

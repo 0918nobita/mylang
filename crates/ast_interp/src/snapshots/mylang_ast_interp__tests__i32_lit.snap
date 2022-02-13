@@ -1,11 +1,11 @@
 ---
 source: crates/ast_interp/src/lib.rs
-assertion_line: 74
+assertion_line: 106
 expression: ent
 
 ---
 Ok(
-    Str(
-        foo,
+    I32(
+        2,
     ),
 )

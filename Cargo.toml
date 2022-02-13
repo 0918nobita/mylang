@@ -2,12 +2,12 @@
 members = [
     "crates/ast",
     "crates/ast_interp",
-    "crates/ast_to_bytecode",
     "crates/bytecode",
-    "crates/bytecode_interp",
+    "crates/bytecode_compiler",
     "crates/entity",
     "crates/lexer",
     "crates/lsp_server",
     "crates/parser",
     "crates/token",
+    "crates/vm",
 ]

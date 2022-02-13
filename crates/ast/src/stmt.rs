@@ -1,5 +1,5 @@
+use mylang_token::{Locatable, Range};
 use serde::{Deserialize, Serialize};
-use token::{Locatable, Range};
 
 use super::expr::Expr;
 

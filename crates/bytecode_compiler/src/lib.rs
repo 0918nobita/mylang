@@ -1,7 +1,7 @@
 //! 抽象構文木→バイトコード変換器
 
-use ast::{Expr, Stmt};
-use bytecode::Inst;
+use mylang_ast::{Expr, Stmt};
+use mylang_bytecode::Inst;
 
 fn expr_to_bytecode(expr: &Expr) -> Vec<Inst> {
     match expr {
@@ -41,8 +41,8 @@ pub fn ast_to_bytecode(ast: &[Stmt]) -> Vec<Inst> {
 
 #[cfg(test)]
 mod tests {
-    use ast::{Expr, Stmt};
-    use token::{range, Range};
+    use mylang_ast::{Expr, Stmt};
+    use mylang_token::{range, Range};
 
     use crate::{expr_to_bytecode, stmt_to_bytecode};
 

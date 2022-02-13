@@ -32,7 +32,7 @@ impl Range {
     /// 終端を別の範囲の終端に設定する
     ///
     /// ```
-    /// use token::range;
+    /// use mylang_token::range;
     ///
     /// let mut former = range!(0;0, 0;5);
     ///

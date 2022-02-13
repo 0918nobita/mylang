@@ -35,7 +35,7 @@ fn main() -> anyhow::Result<()> {
         Box::new(BufWriter::new(stdout.lock()))
     };
 
-    let (tokens, errors): (Vec<_>, Vec<_>) = lexer::lex(&mut src).partition_result();
+    let (tokens, errors): (Vec<_>, Vec<_>) = mylang_lexer::lex(&mut src).partition_result();
 
     if errors.is_empty() {
         let json = serde_json::to_string_pretty(&tokens)?;

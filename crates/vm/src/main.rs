@@ -3,8 +3,8 @@ use std::{
     io::{self, BufRead, BufReader},
 };
 
-use bytecode::Inst;
 use clap::Parser;
+use mylang_bytecode::Inst;
 
 #[derive(Parser)]
 struct Opts {
@@ -24,7 +24,7 @@ fn main() -> anyhow::Result<()> {
 
     let insts: Vec<Inst> = bincode::deserialize_from(byte_code)?;
 
-    bytecode_interp::execute(insts.into_iter())?;
+    mylang_vm::execute(insts.into_iter())?;
 
     Ok(())
 }

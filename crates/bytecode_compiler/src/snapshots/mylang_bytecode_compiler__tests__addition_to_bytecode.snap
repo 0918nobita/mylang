@@ -1,6 +1,6 @@
 ---
-source: crates/ast_to_bytecode/src/lib.rs
-assertion_line: 65
+source: crates/bytecode_compiler/src/lib.rs
+assertion_line: 67
 expression: bytecode
 
 ---

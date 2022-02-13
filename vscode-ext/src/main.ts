@@ -10,7 +10,10 @@ let client: LanguageClient | undefined;
 
 export const activate = (context: ExtensionContext) => {
     const serverOptions: ServerOptions = {
-        command: path.join(context.extensionPath, '../target/debug/lsp_server'),
+        command: path.join(
+            context.extensionPath,
+            '../target/debug/mylang_lsp_server'
+        ),
         options: {
             env: { RUST_LOG: 'info' },
         },

@@ -1,9 +1,9 @@
 use std::{fs::File, io::BufReader};
 
-use ast::Stmt;
 use clap::Parser;
+use mylang_ast::Stmt;
 
-use ast_interp::execute;
+use mylang_ast_interp::execute;
 
 #[derive(Parser)]
 struct Opts {

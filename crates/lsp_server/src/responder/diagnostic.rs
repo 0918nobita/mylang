@@ -1,5 +1,5 @@
-use lexer::LexErr;
-use parser::ParseErr;
+use mylang_lexer::LexErr;
+use mylang_parser::ParseErr;
 use serde_json::{json, Value as JsonValue};
 
 use super::range::locatable_to_lsp_range;

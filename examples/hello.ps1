@@ -1,4 +1,5 @@
-cargo run --bin lexer -- hello.mylang -o hello.tok.json && `
-    cargo run --bin parser -- hello.tok.json -o hello.ast.json && `
-    cargo run --bin ast_to_bytecode -- hello.ast.json -o hello.bytecode && `
-    cargo run --bin bytecode_interp -- hello.bytecode
+cargo build && `
+    & ..\target\debug\mylang_lexer -o hello.tok.json hello.mylang && `
+    & ..\target\debug\mylang_parser -o hello.ast.json hello.tok.json && `
+    & ..\target\debug\mylang_bytecode_compiler -o hello.bytecode hello.ast.json && `
+    & ..\target\debug\mylang_vm hello.bytecode

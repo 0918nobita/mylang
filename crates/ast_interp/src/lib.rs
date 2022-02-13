@@ -2,8 +2,8 @@
 //!
 //! スモールステップ意味論に沿って、構文木を繰り返し簡約し結果を返す。
 
-use ast::{Expr, Stmt};
-use entity::{Entity, I32Entity, RuntimeTypeInfo, StrEntity};
+use mylang_ast::{Expr, Stmt};
+use mylang_entity::{Entity, I32Entity, RuntimeTypeInfo, StrEntity};
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -95,8 +95,8 @@ pub fn execute(stmts: &[Stmt]) -> AstInterpResult<()> {
 
 #[cfg(test)]
 mod tests {
-    use ast::Expr;
-    use token::Range;
+    use mylang_ast::Expr;
+    use mylang_token::Range;
 
     use super::eval_expr;
 

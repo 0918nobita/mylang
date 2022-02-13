@@ -1,7 +1,7 @@
 //! バイトコードインタプリタ
 
-use bytecode::Inst;
-use entity::{Entity, I32Entity, RuntimeTypeInfo, StrEntity};
+use mylang_bytecode::Inst;
+use mylang_entity::{Entity, I32Entity, RuntimeTypeInfo, StrEntity};
 use thiserror::Error;
 
 /// バイトコードインタプリタで発生するエラー
@@ -128,7 +128,7 @@ pub fn execute(insts: impl Iterator<Item = Inst>) -> InterpResult<()> {
 
 #[cfg(test)]
 mod tests {
-    use entity::{Entity, I32Entity, StrEntity};
+    use mylang_entity::{Entity, I32Entity, StrEntity};
 
     use crate::i32_add;
 

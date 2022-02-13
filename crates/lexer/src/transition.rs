@@ -5,7 +5,7 @@ mod initial;
 mod keyword;
 mod str;
 
-use token::Pos;
+use mylang_token::Pos;
 
 use crate::{
     result::LexResult,

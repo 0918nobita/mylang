@@ -13,20 +13,20 @@ pub use range::Range;
 #[macro_export]
 macro_rules! pos {
     ($line:expr ; $char:expr) => {
-        token::Pos::new($line, $char)
+        mylang_token::Pos::new($line, $char)
     };
 }
 
 #[macro_export]
 macro_rules! range {
     ($start_line:expr ; $start_char:expr, $end_line:expr ; $end_char:expr) => {
-        token::Range::new(
-            token::pos!($start_line;$start_char),
-            token::pos!($end_line;$end_char),
+        mylang_token::Range::new(
+            mylang_token::pos!($start_line;$start_char),
+            mylang_token::pos!($end_line;$end_char),
         )
     };
     ($start:expr, $end:expr) => {
-        token::Range::new($start, $end)
+        mylang_token::Range::new($start, $end)
     };
 }
 

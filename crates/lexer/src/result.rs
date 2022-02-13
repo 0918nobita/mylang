@@ -1,7 +1,7 @@
 //! 字句解析の結果
 
+use mylang_token::{Locatable, Pos, Range, Token};
 use thiserror::Error;
-use token::{Locatable, Pos, Range, Token};
 
 /// 字句解析中に発生するエラー
 #[derive(Debug, Error)]

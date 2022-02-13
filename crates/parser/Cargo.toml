@@ -1,13 +1,13 @@
 [package]
-name = "parser"
+name = "mylang_parser"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
 anyhow = "1.0.53"
-ast = { path = "../ast" }
+mylang_ast = { path = "../ast" }
 clap = { version = "3.0.14", features = ["derive"] }
 itertools = "0.10.3"
 serde_json = "1.0.79"
 thiserror = "1.0.30"
-token = { path = "../token" }
+mylang_token = { path = "../token" }

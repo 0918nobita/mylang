@@ -7,7 +7,7 @@ mod with_pos;
 
 use std::io::BufRead;
 
-use token::Pos;
+use mylang_token::Pos;
 use utf8_chars::BufReadCharsExt;
 pub use with_pos::WithPosExt;
 

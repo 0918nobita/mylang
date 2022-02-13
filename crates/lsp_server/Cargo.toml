@@ -1,21 +1,21 @@
 [package]
-name = "lsp_server"
+name = "mylang_lsp_server"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
 actix = "0.12.0"
 anyhow = "1.0.53"
-ast = { path = "../ast" }
+mylang_ast = { path = "../ast" }
 env_logger = "0.9.0"
 itertools = "0.10.3"
-lexer = { path = "../lexer" }
+mylang_lexer = { path = "../lexer" }
 log = "0.4.14"
-parser = { path = "../parser" }
+mylang_parser = { path = "../parser" }
 regex = "1.5.4"
 serde = { version = "1.0.136", features = ["derive"] }
 serde_json = "1.0.79"
-token = { path = "../token" }
+mylang_token = { path = "../token" }
 valq = "0.1.0"
 
 [dependencies.tokio]

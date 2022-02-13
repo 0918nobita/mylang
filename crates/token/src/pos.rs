@@ -20,7 +20,7 @@ impl Pos {
     /// 次の文字位置に移動する (改行ではない文字が続くことを想定している)
     ///
     /// ```
-    /// use token::pos;
+    /// use mylang_token::pos;
     ///
     /// let mut pos = pos!(3;7);
     /// pos.next_char();
@@ -35,7 +35,7 @@ impl Pos {
     /// 次の行の先頭に移動する
     ///
     /// ```
-    /// use token::pos;
+    /// use mylang_token::pos;
     ///
     /// let mut pos = pos!(1;8);
     /// pos.next_line();

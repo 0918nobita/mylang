@@ -1,0 +1,11 @@
+---
+source: crates/bytecode_compiler/src/lib.rs
+assertion_line: 57
+expression: bytecode
+
+---
+[
+    StrConst(
+        "Hello",
+    ),
+]

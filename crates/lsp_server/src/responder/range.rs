@@ -1,5 +1,5 @@
+use mylang_token::Locatable;
 use serde_json::Value as JsonValue;
-use token::Locatable;
 
 pub fn locatable_to_lsp_range<L>(locatable: &L) -> JsonValue
 where

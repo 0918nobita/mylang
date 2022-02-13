@@ -1,5 +1,5 @@
 ---
-source: crates/bytecode_interp/src/lib.rs
+source: crates/vm/src/lib.rs
 assertion_line: 156
 expression: "(i32_add(&mut stack), stack)"
 

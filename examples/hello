@@ -2,7 +2,7 @@
 
 cargo build
 
-../target/debug/lexer hello.mylang -o hello.tok.json
-../target/debug/parser hello.tok.json -o hello.ast.json
-../target/debug/ast_to_bytecode hello.ast.json -o hello.bytecode
-../target/debug/bytecode_interp hello.bytecode
+../target/debug/mylang_lexer -o hello.tok.json hello.mylang
+../target/debug/mylang_parser -o hello.ast.json hello.tok.json
+../target/debug/mylang_bytecode_compiler -o hello.bytecode hello.ast.json
+../target/debug/mylang_vm hello.bytecode

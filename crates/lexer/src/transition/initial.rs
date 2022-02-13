@@ -1,6 +1,6 @@
 //! 初期状態のとき、または他の状態で想定外の文字が出現したときに行う状態遷移
 
-use token::{Pos, Token};
+use mylang_token::{Pos, Token};
 
 use crate::{
     result::{LexErr, LexResult},

@@ -1,4 +1,4 @@
-use token::{range, KeywordKind, Pos, Token};
+use mylang_token::{range, KeywordKind, Pos, Token};
 
 use crate::result::{LexErr, LexResult};
 

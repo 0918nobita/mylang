@@ -19,6 +19,11 @@ impl Range {
         Range { start, end }
     }
 
+    /// 始端の参照を返す
+    pub fn start_ref(&self) -> &Pos {
+        &self.start
+    }
+
     /// 終端の参照を返す
     pub fn end_ref(&self) -> &Pos {
         &self.end

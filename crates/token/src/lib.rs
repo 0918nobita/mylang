@@ -10,6 +10,7 @@ pub use locatable::Locatable;
 pub use pos::Pos;
 pub use range::Range;
 
+/// [`Pos`] を簡単に生成するためのマクロ
 #[macro_export]
 macro_rules! pos {
     ($line:expr ; $char:expr) => {
@@ -17,6 +18,7 @@ macro_rules! pos {
     };
 }
 
+/// [`Range`] を簡単に生成するためのマクロ
 #[macro_export]
 macro_rules! range {
     ($start_line:expr ; $start_char:expr, $end_line:expr ; $end_char:expr) => {

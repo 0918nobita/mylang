@@ -10,7 +10,7 @@ use actix::Actor;
 use crate::{receiver::Receiver, responder::Responder, sender::Sender};
 
 /// 言語サーバに関連する各アクターを起動する
-pub async fn launch_lsp_server() {
+pub fn launch_lsp_server() {
     let sender = Sender.start();
 
     let responder = Responder::new(sender).start();

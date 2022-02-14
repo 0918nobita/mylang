@@ -19,6 +19,5 @@ fn main() -> anyhow::Result<()> {
     let stmts: Vec<Stmt> = serde_json::from_reader(reader)?;
 
     execute(&stmts)?;
-
     Ok(())
 }

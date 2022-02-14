@@ -5,17 +5,14 @@ mod state;
 mod transition;
 mod with_pos;
 
-use std::io::BufRead;
-
 use mylang_token::Pos;
-use utf8_chars::BufReadCharsExt;
-pub use with_pos::WithPosExt;
+use with_pos::WithPosExt;
 
 use crate::{result::LexResult, state::State, transition::transition};
 pub use result::LexErr;
 
 /// 「文字と位置のイテレータを、トークン取得結果のイテレータに変換するアダプタ」として字句解析器を実装している
-pub struct Lex<I>
+struct Lex<I>
 where
     I: Iterator<Item = (Pos, char)> + Sized,
 {
@@ -61,7 +58,7 @@ where
 }
 
 /// 字句解析器に変換可能なイテレータを表すトレイト
-pub trait LexExt: Iterator<Item = (Pos, char)> + Sized {
+trait LexExt: Iterator<Item = (Pos, char)> + Sized {
     /// 位置と文字のイテレータを、字句解析器に変換する
     fn lex(self) -> Lex<Self>;
 }
@@ -80,11 +77,10 @@ where
 
 /// 字句解析を実行する
 ///
-/// UTF-8 文字列から順番に文字を取り出し、字句解析器としての状態を持ち回りながら flatMap を行い、結果を順次流す。
-///
-/// ## Panics
-///
-/// UTF-8 文字列として不正な入力を得た場合には panic する。
-pub fn lex<T: BufRead>(src: &mut T) -> impl Iterator<Item = LexResult> + '_ {
-    src.chars().map(|r| r.unwrap()).with_pos().lex().flatten()
+/// 順番に文字を取り出し、字句解析器としての状態を持ち回りながら flatMap を行い、結果を順次流す。
+pub fn lex<'a, T>(src: T) -> impl Iterator<Item = LexResult> + 'a
+where
+    T: Iterator<Item = char> + 'a,
+{
+    src.with_pos().lex().flatten()
 }

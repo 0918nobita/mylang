@@ -1,6 +1,6 @@
 use actix::Addr;
 use itertools::Itertools;
-use mylang_lexer::{LexErr, LexExt, WithPosExt};
+use mylang_lexer::{lex, LexErr};
 use mylang_token::Token;
 use serde_json::{json, Value as JsonValue};
 
@@ -8,12 +8,12 @@ use crate::{message::LspMessage, sender::Sender};
 
 use super::diagnostic::{lex_err_to_diagnostic, parse_err_to_diagnostic};
 
-fn lex(text: &str) -> (Vec<Token>, Vec<LexErr>) {
-    text.chars().with_pos().lex().flatten().partition_result()
+fn lex_all(text: &str) -> (Vec<Token>, Vec<LexErr>) {
+    lex(text.chars()).partition_result()
 }
 
 pub async fn analyze_src(sender: Addr<Sender>, uri: &JsonValue, text: &str) -> anyhow::Result<()> {
-    let (tokens, errors) = lex(text);
+    let (tokens, errors) = lex_all(text);
 
     let mut diagnostics: Vec<_> = errors.iter().map(lex_err_to_diagnostic).collect();
 

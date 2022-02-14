@@ -6,6 +6,7 @@ use std::{
 use anyhow::anyhow;
 use clap::Parser;
 use itertools::Itertools;
+use utf8_chars::BufReadCharsExt;
 
 #[derive(Parser)]
 struct Opts {
@@ -35,7 +36,8 @@ fn main() -> anyhow::Result<()> {
         Box::new(BufWriter::new(stdout.lock()))
     };
 
-    let (tokens, errors): (Vec<_>, Vec<_>) = mylang_lexer::lex(&mut src).partition_result();
+    let (tokens, errors): (Vec<_>, Vec<_>) =
+        mylang_lexer::lex(src.chars().map(|r| r.unwrap())).partition_result();
 
     if errors.is_empty() {
         let json = serde_json::to_string_pretty(&tokens)?;

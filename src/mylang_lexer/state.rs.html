@@ -18,6 +18,8 @@
 <span id="13">13</span>
 <span id="14">14</span>
 <span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
 </pre><pre class="rust"><code><span class="doccomment">//! 字句解析器の状態</span>
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">i32</span>;
@@ -26,8 +28,10 @@
 
 <span class="kw">use</span> <span class="self">self</span>::{<span class="ident">i32::I32State</span>, <span class="ident">keyword::KeywordState</span>, <span class="ident">str::StrState</span>};
 
+<span class="doccomment">/// 字句解析器内部の状態</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">State</span> {
+    <span class="doccomment">/// 初期状態</span>
     <span class="ident">Initial</span>,
     <span class="ident">I32</span>(<span class="ident">I32State</span>),
     <span class="ident">Str</span>(<span class="ident">StrState</span>),

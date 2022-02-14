@@ -50,18 +50,31 @@ impl Display for StrEntity {
     }
 }
 
-/// バイトコード実行時に扱う値
-#[derive(Debug)]
-pub enum Entity {
-    I32(I32Entity),
-    Str(StrEntity),
-}
-
 /// 実行時型情報
 #[derive(Debug)]
 pub enum RuntimeTypeInfo {
     I32,
     Str,
+}
+
+impl Display for RuntimeTypeInfo {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
+        write!(
+            f,
+            "{}",
+            match self {
+                RuntimeTypeInfo::I32 => "i32",
+                RuntimeTypeInfo::Str => "str",
+            }
+        )
+    }
+}
+
+/// バイトコード実行時に扱う値
+#[derive(Debug)]
+pub enum Entity {
+    I32(I32Entity),
+    Str(StrEntity),
 }
 
 impl Entity {

@@ -8,7 +8,7 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum AstInterpError {
-    #[error("Type mismatch (expected: {expected:?}, actual: {actual:?})")]
+    #[error("Type mismatch (expected: {expected}, actual: {actual})")]
     TypeMismatch {
         expected: RuntimeTypeInfo,
         actual: RuntimeTypeInfo,

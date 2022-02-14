@@ -12,7 +12,7 @@ pub enum InterpError {
     StackUnderflow(String),
 
     /// 取り出した値が、期待した型の値ではなかった
-    #[error("Type mismatch (expected: {expected:?}, actual: {actual:?})")]
+    #[error("Type mismatch (expected: {expected}, actual: {actual})")]
     TypeMismatch {
         expected: RuntimeTypeInfo,
         actual: RuntimeTypeInfo,

@@ -163,7 +163,7 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Error</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AstInterpError</span> {
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Type mismatch (expected: {expected:?}, actual: {actual:?})&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Type mismatch (expected: {expected}, actual: {actual})&quot;</span>)]</span>
     <span class="ident">TypeMismatch</span> {
         <span class="ident">expected</span>: <span class="ident">RuntimeTypeInfo</span>,
         <span class="ident">actual</span>: <span class="ident">RuntimeTypeInfo</span>,

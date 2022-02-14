@@ -77,6 +77,19 @@
 <span id="72">72</span>
 <span id="73">73</span>
 <span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
 </pre><pre class="rust"><code><span class="doccomment">//! mylang のランタイムで扱う「実体」の定義</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! バイトコードインタプリタ、構文木インタプリタの両方で扱う値</span>
@@ -129,18 +142,31 @@
     }
 }
 
-<span class="doccomment">/// バイトコード実行時に扱う値</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Entity</span> {
-    <span class="ident">I32</span>(<span class="ident">I32Entity</span>),
-    <span class="ident">Str</span>(<span class="ident">StrEntity</span>),
-}
-
 <span class="doccomment">/// 実行時型情報</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RuntimeTypeInfo</span> {
     <span class="ident">I32</span>,
     <span class="ident">Str</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">RuntimeTypeInfo</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">FmtResult</span> {
+        <span class="macro">write!</span>(
+            <span class="ident">f</span>,
+            <span class="string">&quot;{}&quot;</span>,
+            <span class="kw">match</span> <span class="self">self</span> {
+                <span class="ident">RuntimeTypeInfo::I32</span> =&gt; <span class="string">&quot;i32&quot;</span>,
+                <span class="ident">RuntimeTypeInfo::Str</span> =&gt; <span class="string">&quot;str&quot;</span>,
+            }
+        )
+    }
+}
+
+<span class="doccomment">/// バイトコード実行時に扱う値</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Entity</span> {
+    <span class="ident">I32</span>(<span class="ident">I32Entity</span>),
+    <span class="ident">Str</span>(<span class="ident">StrEntity</span>),
 }
 
 <span class="kw">impl</span> <span class="ident">Entity</span> {

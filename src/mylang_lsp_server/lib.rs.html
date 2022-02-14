@@ -34,7 +34,7 @@
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">receiver::Receiver</span>, <span class="ident">responder::Responder</span>, <span class="ident">sender::Sender</span>};
 
 <span class="doccomment">/// 言語サーバに関連する各アクターを起動する</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">launch_lsp_server</span>() {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">launch_lsp_server</span>() {
     <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="ident">Sender</span>.<span class="ident">start</span>();
 
     <span class="kw">let</span> <span class="ident">responder</span> <span class="op">=</span> <span class="ident">Responder::new</span>(<span class="ident">sender</span>).<span class="ident">start</span>();

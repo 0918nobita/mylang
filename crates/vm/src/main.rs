@@ -3,28 +3,17 @@ use std::{
     io::{self, BufRead, BufReader},
 };
 
-use clap::{Parser, ArgEnum};
+use clap::{app_from_crate, Arg};
 use mylang_bytecode::Inst;
-
-#[derive(Parser)]
-struct Opts {
-    input: Option<String>,
-
-    #[clap(long = "input_format", arg_enum, default_value = "binary")]
-    input_format: InputFormat,
-}
-
-#[derive(Clone, ArgEnum)]
-enum InputFormat {
-    Json,
-    Binary,
-}
+use mylang_cli_ext::{input_format_arg, value_of_input_format, InputFormat};
 
 fn main() -> anyhow::Result<()> {
-    let Opts {
-        input,
-        input_format,
-    } = Opts::parse();
+    let matches = app_from_crate!()
+        .arg(Arg::new("input").required(false))
+        .arg(input_format_arg().default_value("binary"))
+        .get_matches();
+    let input_format = value_of_input_format(&matches)?;
+    let input = matches.value_of("input");
 
     let stdin = io::stdin();
     let byte_code: Box<dyn BufRead> = if let Some(input) = input {

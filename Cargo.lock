@@ -459,6 +459,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "mylang_cli_ext"
+version = "0.1.0"
+dependencies = [
+ "clap",
+]
+
+[[package]]
 name = "mylang_lexer"
 version = "0.1.0"
 dependencies = [
@@ -521,6 +528,7 @@ dependencies = [
  "clap",
  "insta",
  "mylang_bytecode",
+ "mylang_cli_ext",
  "serde_json",
  "thiserror",
 ]

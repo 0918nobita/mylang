@@ -4,6 +4,7 @@ members = [
     "crates/ast_interp",
     "crates/bytecode",
     "crates/bytecode_compiler",
+    "crates/cli_ext",
     "crates/lexer",
     "crates/lsp_server",
     "crates/parser",

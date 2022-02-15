@@ -1,12 +1,15 @@
 //! バイトコードインタプリタ
 
+mod entity;
+
 use mylang_bytecode::Inst;
-use mylang_entity::{Entity, I32Entity, RuntimeTypeInfo, StrEntity};
 use thiserror::Error;
+
+use entity::{Entity, I32Entity, RuntimeTypeInfo, StrEntity};
 
 /// バイトコードインタプリタで発生するエラー
 #[derive(Debug, Error)]
-pub enum InterpError {
+pub enum VMError {
     /// スタックが空であり、値をスタックから取り出せなかった
     #[error("Stack underflow ({0})")]
     StackUnderflow(String),
@@ -20,7 +23,7 @@ pub enum InterpError {
 }
 
 /// バイトコードの実行結果
-type InterpResult<T> = Result<T, InterpError>;
+type VMResult<T> = Result<T, VMError>;
 
 /// I32Const 命令を実行する
 fn i32_const(stack: &mut Vec<Entity>, immediate: i32) {
@@ -28,18 +31,18 @@ fn i32_const(stack: &mut Vec<Entity>, immediate: i32) {
 }
 
 /// I32Add 命令を実行する
-fn i32_add(stack: &mut Vec<Entity>) -> InterpResult<()> {
+fn i32_add(stack: &mut Vec<Entity>) -> VMResult<()> {
     let lhs = stack.pop().ok_or_else(|| {
-        InterpError::StackUnderflow("Failed to get left-hand side of the addition".to_owned())
+        VMError::StackUnderflow("Failed to get left-hand side of the addition".to_owned())
     })?;
     let rhs = stack.pop().ok_or_else(|| {
-        InterpError::StackUnderflow("Failed to get right-hand side of the addition".to_owned())
+        VMError::StackUnderflow("Failed to get right-hand side of the addition".to_owned())
     })?;
 
     let lhs = match lhs {
         Entity::I32(i32_entity) => i32_entity,
         _ => {
-            return Err(InterpError::TypeMismatch {
+            return Err(VMError::TypeMismatch {
                 expected: RuntimeTypeInfo::I32,
                 actual: lhs.get_type(),
             })
@@ -49,7 +52,7 @@ fn i32_add(stack: &mut Vec<Entity>) -> InterpResult<()> {
     let rhs = match rhs {
         Entity::I32(i32_entity) => i32_entity,
         _ => {
-            return Err(InterpError::TypeMismatch {
+            return Err(VMError::TypeMismatch {
                 expected: RuntimeTypeInfo::I32,
                 actual: rhs.get_type(),
             })
@@ -66,15 +69,15 @@ fn str_const(stack: &mut Vec<Entity>, immediate: &str) {
 }
 
 /// PrintI32 命令を実行する
-fn print_i32(stack: &mut Vec<Entity>) -> InterpResult<()> {
-    let ent = stack.pop().ok_or_else(|| {
-        InterpError::StackUnderflow("Failed to get the entity to output".to_owned())
-    })?;
+fn print_i32(stack: &mut Vec<Entity>) -> VMResult<()> {
+    let ent = stack
+        .pop()
+        .ok_or_else(|| VMError::StackUnderflow("Failed to get the entity to output".to_owned()))?;
 
     let ent = match ent {
         Entity::I32(i32_entity) => i32_entity,
         _ => {
-            return Err(InterpError::TypeMismatch {
+            return Err(VMError::TypeMismatch {
                 expected: RuntimeTypeInfo::I32,
                 actual: ent.get_type(),
             })
@@ -86,15 +89,15 @@ fn print_i32(stack: &mut Vec<Entity>) -> InterpResult<()> {
 }
 
 /// PrintStr 命令を実行する
-fn print_str(stack: &mut Vec<Entity>) -> InterpResult<()> {
+fn print_str(stack: &mut Vec<Entity>) -> VMResult<()> {
     let ent = stack
         .pop()
-        .ok_or_else(|| InterpError::StackUnderflow("Failed to get entity".to_owned()))?;
+        .ok_or_else(|| VMError::StackUnderflow("Failed to get entity".to_owned()))?;
 
     let ent = match ent {
         Entity::Str(str_entity) => str_entity,
         _ => {
-            return Err(InterpError::TypeMismatch {
+            return Err(VMError::TypeMismatch {
                 expected: RuntimeTypeInfo::Str,
                 actual: ent.get_type(),
             })
@@ -105,22 +108,54 @@ fn print_str(stack: &mut Vec<Entity>) -> InterpResult<()> {
     Ok(())
 }
 
-/// バイトコードを解釈実行する
-pub fn execute(insts: impl Iterator<Item = Inst>) -> InterpResult<()> {
-    let mut stack = Vec::<Entity>::new();
+fn call(stack: &mut Vec<Entity>, pc: &mut usize, addr: usize) -> VMResult<()> {
+    stack.push(Entity::Addr(*pc + 1));
+    *pc = addr;
+    Ok(())
+}
 
-    for inst in insts {
-        match inst {
-            Inst::I32Const(i) => i32_const(&mut stack, i),
+fn ret(stack: &mut Vec<Entity>, pc: &mut usize) -> VMResult<()> {
+    let addr = stack
+        .pop()
+        .ok_or_else(|| VMError::StackUnderflow("Failed to get return address".to_owned()))?;
+    let addr = match addr {
+        Entity::Addr(addr) => addr,
+        _ => {
+            return Err(VMError::TypeMismatch {
+                expected: RuntimeTypeInfo::Addr,
+                actual: addr.get_type(),
+            })
+        }
+    };
+
+    *pc = addr;
+    Ok(())
+}
+
+/// バイトコードを解釈実行する
+pub fn execute(insts: &[Inst]) -> VMResult<()> {
+    let mut stack = Vec::<Entity>::new();
+    let mut pc = 0;
+    let len = insts.len();
+
+    while pc < len {
+        match &insts[pc] {
+            Inst::I32Const(i) => i32_const(&mut stack, *i),
 
             Inst::I32Add => i32_add(&mut stack)?,
 
-            Inst::StrConst(s) => str_const(&mut stack, &s),
+            Inst::StrConst(s) => str_const(&mut stack, s),
 
             Inst::PrintI32 => print_i32(&mut stack)?,
 
             Inst::PrintStr => print_str(&mut stack)?,
+
+            Inst::Call(addr) => call(&mut stack, &mut pc, *addr)?,
+
+            Inst::Return => ret(&mut stack, &mut pc)?,
         }
+
+        pc += 1;
     }
 
     Ok(())
@@ -128,9 +163,10 @@ pub fn execute(insts: impl Iterator<Item = Inst>) -> InterpResult<()> {
 
 #[cfg(test)]
 mod tests {
-    use mylang_entity::{Entity, I32Entity, StrEntity};
-
-    use crate::i32_add;
+    use crate::{
+        entity::{Entity, I32Entity, StrEntity},
+        i32_add,
+    };
 
     #[test]
     fn test_i32_add() {

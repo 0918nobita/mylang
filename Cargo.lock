@@ -432,7 +432,6 @@ dependencies = [
  "clap",
  "insta",
  "mylang_ast",
- "mylang_entity",
  "mylang_token",
  "serde_json",
  "thiserror",
@@ -458,10 +457,6 @@ dependencies = [
  "mylang_token",
  "serde_json",
 ]
-
-[[package]]
-name = "mylang_entity"
-version = "0.1.0"
 
 [[package]]
 name = "mylang_lexer"
@@ -526,7 +521,6 @@ dependencies = [
  "clap",
  "insta",
  "mylang_bytecode",
- "mylang_entity",
  "thiserror",
 ]
 

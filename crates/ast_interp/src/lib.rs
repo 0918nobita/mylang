@@ -2,9 +2,12 @@
 //!
 //! スモールステップ意味論に沿って、構文木を繰り返し簡約し結果を返す。
 
+mod entity;
+
 use mylang_ast::{Expr, Stmt};
-use mylang_entity::{Entity, I32Entity, RuntimeTypeInfo, StrEntity};
 use thiserror::Error;
+
+use entity::{Entity, I32Entity, RuntimeTypeInfo, StrEntity};
 
 #[derive(Debug, Error)]
 pub enum AstInterpError {

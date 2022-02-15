@@ -1,6 +1,4 @@
-//! mylang のランタイムで扱う「実体」の定義
-//!
-//! バイトコードインタプリタ、構文木インタプリタの両方で扱う値
+//! 仮想マシンで扱う「実体」の定義
 
 use std::fmt::{Debug, Display, Formatter, Result as FmtResult};
 
@@ -53,6 +51,7 @@ impl Display for StrEntity {
 /// 実行時型情報
 #[derive(Debug)]
 pub enum RuntimeTypeInfo {
+    Addr,
     I32,
     Str,
 }
@@ -63,6 +62,7 @@ impl Display for RuntimeTypeInfo {
             f,
             "{}",
             match self {
+                RuntimeTypeInfo::Addr => "addr",
                 RuntimeTypeInfo::I32 => "i32",
                 RuntimeTypeInfo::Str => "str",
             }
@@ -73,6 +73,7 @@ impl Display for RuntimeTypeInfo {
 /// バイトコード実行時に扱う値
 #[derive(Debug)]
 pub enum Entity {
+    Addr(usize),
     I32(I32Entity),
     Str(StrEntity),
 }
@@ -80,6 +81,7 @@ pub enum Entity {
 impl Entity {
     pub fn get_type(&self) -> RuntimeTypeInfo {
         match self {
+            Entity::Addr(_) => RuntimeTypeInfo::Addr,
             Entity::I32(_) => RuntimeTypeInfo::I32,
             Entity::Str(_) => RuntimeTypeInfo::Str,
         }

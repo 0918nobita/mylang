@@ -24,6 +24,6 @@ fn main() -> anyhow::Result<()> {
 
     let insts: Vec<Inst> = bincode::deserialize_from(byte_code)?;
 
-    mylang_vm::execute(insts.into_iter())?;
+    mylang_vm::execute(&insts)?;
     Ok(())
 }

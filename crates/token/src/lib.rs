@@ -34,6 +34,8 @@ macro_rules! range {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub enum KeywordKind {
+    Let,
+    In,
     PrintI32,
     PrintStr,
 }
@@ -41,8 +43,10 @@ pub enum KeywordKind {
 impl KeywordKind {
     pub fn parse(str: &str) -> Option<Self> {
         match str {
-            "print_int" => Some(KeywordKind::PrintI32),
-            "print_str" => Some(KeywordKind::PrintStr),
+            "let" => Some(Self::Let),
+            "in" => Some(Self::In),
+            "print_int" => Some(Self::PrintI32),
+            "print_str" => Some(Self::PrintStr),
             _ => None,
         }
     }

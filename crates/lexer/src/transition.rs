@@ -2,8 +2,8 @@
 
 mod i32;
 mod initial;
-mod keyword;
 mod str;
+mod symbol;
 
 use mylang_token::Pos;
 
@@ -13,8 +13,8 @@ use crate::{
     transition::{
         i32::{i32_lex, I32LexResult},
         initial::initial_lex,
-        keyword::{keyword_lex, KeywordLexResult},
         str::{str_lex, StrLexResult},
+        symbol::{symbol_lex, SymbolLexResult},
     },
 };
 
@@ -41,11 +41,11 @@ pub fn transition(state: &State, pos_c: (Pos, char)) -> (State, Vec<LexResult>) 
             StrLexResult::Err(str_state, err) => (State::Str(str_state), vec![Err(err)]),
         },
 
-        State::Keyword(keyword_state) => match keyword_lex(keyword_state, pos_c.clone()) {
-            KeywordLexResult::Continued(keyword_state) => (State::Keyword(keyword_state), vec![]),
+        State::Symbol(keyword_state) => match symbol_lex(keyword_state, pos_c.clone()) {
+            SymbolLexResult::Continued(keyword_state) => (State::Symbol(keyword_state), vec![]),
 
-            KeywordLexResult::Interrupted(prev_result) => {
-                let mut results = vec![prev_result];
+            SymbolLexResult::Interrupted(prev_token) => {
+                let mut results = vec![Ok(prev_token)];
                 let (next_state, next_results) = initial_lex(pos_c);
                 results.extend(next_results);
                 (next_state, results)

@@ -4,7 +4,7 @@ use mylang_token::{Pos, Token};
 
 use crate::{
     result::{LexErr, LexResult},
-    state::{i32::I32State, keyword::KeywordState, str::StrState, State},
+    state::{i32::I32State, str::StrState, symbol::SymbolState, State},
 };
 
 pub fn initial_lex((pos, c): (Pos, char)) -> (State, Vec<LexResult>) {
@@ -19,10 +19,9 @@ pub fn initial_lex((pos, c): (Pos, char)) -> (State, Vec<LexResult>) {
 
         c if c.is_ascii_digit() => (State::I32(I32State::new(pos, c.to_string())), vec![]),
 
-        c if c.is_ascii_alphabetic() => (
-            State::Keyword(KeywordState::new(pos, c.to_string())),
-            vec![],
-        ),
+        c if c.is_ascii_alphabetic() => {
+            (State::Symbol(SymbolState::new(pos, c.to_string())), vec![])
+        }
 
         _ => (State::Initial, vec![Err(LexErr::ForbiddenChar(pos, c))]),
     }

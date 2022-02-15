@@ -29,6 +29,7 @@ impl Locatable for ParseErr {
     fn locate(&self) -> Range {
         match self {
             ParseErr::TermExpected(pos) => pos.clone().into(),
+
             ParseErr::KeywordExpected(range) => range.clone(),
         }
     }
@@ -41,7 +42,9 @@ fn term(
     if let Some(tok) = tokens.next() {
         match tok {
             Token::I32(range, n) => Ok((range.end_ref().clone(), Expr::I32Lit(range, n))),
+
             Token::Str(range, s) => Ok((range.end_ref().clone(), Expr::StrLit(range, s))),
+
             _ => Err(ParseErr::TermExpected(tok.locate().end())),
         }
     } else {
@@ -60,13 +63,16 @@ fn expr(
             let (pos, rhs) = expr(tokens, pos)?;
             Ok(match rhs {
                 Expr::Add(b, c) => (pos, Expr::Add(Box::new(Expr::Add(Box::new(lhs), b)), c)),
+
                 _ => (pos, Expr::Add(Box::new(lhs), Box::new(rhs))),
             })
         }
+
         Some(tok) => {
             tokens.put_back(tok);
             Ok((pos, lhs))
         }
+
         None => Ok((pos, lhs)),
     }
 }
@@ -77,11 +83,14 @@ fn stmt(tokens: &mut PutBack<impl Iterator<Item = Token>>, pos: Pos) -> Result<S
             let (_, expr) = expr(tokens, pos)?;
             Ok(Stmt::PrintI32(range, expr))
         }
+
         Some(Token::Keyword(range, KeywordKind::PrintStr)) => {
             let (_, expr) = expr(tokens, pos)?;
             Ok(Stmt::PrintStr(range, expr))
         }
+
         Some(tok) => Err(ParseErr::KeywordExpected(tok.locate())),
+
         _ => Err(ParseErr::KeywordExpected(pos.into())),
     }
 }
@@ -92,6 +101,7 @@ fn program(tokens: &mut PutBack<impl Iterator<Item = Token>>) -> Vec<Result<Stmt
     while let Some(tok) = tokens.next() {
         match tok {
             Token::Newline(_) => (),
+
             _ => {
                 let pos = tok.locate().end();
                 tokens.put_back(tok);

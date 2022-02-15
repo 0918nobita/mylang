@@ -58,15 +58,18 @@ pub enum Token {
     AddOp(Pos),
     Str(Range, String),
     Keyword(Range, KeywordKind),
+    Ident(Range, String),
     Newline(Pos),
 }
 
 impl Locatable for Token {
     fn locate(&self) -> Range {
         match self {
-            Token::I32(r, _) | Token::Str(r, _) | Token::Keyword(r, _) => r.clone(),
+            Self::I32(r, _) | Self::Str(r, _) | Self::Keyword(r, _) | Self::Ident(r, _) => {
+                r.clone()
+            }
 
-            Token::AddOp(p) | Token::Newline(p) => p.clone().into(),
+            Self::AddOp(p) | Self::Newline(p) => p.clone().into(),
         }
     }
 }

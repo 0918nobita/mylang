@@ -1,15 +1,13 @@
 use mylang_token::{range, KeywordKind, Pos, Token};
 
-use crate::result::{LexErr, LexResult};
-
 #[derive(Clone, Debug)]
-pub struct KeywordState {
+pub struct SymbolState {
     start: Pos,
     end: Pos,
     acc: String,
 }
 
-impl KeywordState {
+impl SymbolState {
     pub fn new(pos: Pos, acc: String) -> Self {
         Self {
             start: pos.clone(),
@@ -26,17 +24,14 @@ impl KeywordState {
         }
     }
 
-    pub fn try_tokenize(&self) -> LexResult {
+    pub fn tokenize(&self) -> Token {
         if let Some(keyword_kind) = KeywordKind::parse(&self.acc) {
-            Ok(Token::Keyword(
-                range!(self.start.clone(), self.end.clone()),
-                keyword_kind,
-            ))
+            Token::Keyword(range!(self.start.clone(), self.end.clone()), keyword_kind)
         } else {
-            Err(LexErr::InvalidKeyword(
+            Token::Ident(
                 range!(self.start.clone(), self.end.clone()),
-                self.acc.to_string(),
-            ))
+                self.acc.clone(),
+            )
         }
     }
 }

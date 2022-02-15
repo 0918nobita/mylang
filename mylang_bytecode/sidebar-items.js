@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Inst",""]]});
+initSidebarItems({"enum":[["Inst","命令"]]});

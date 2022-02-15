@@ -153,13 +153,19 @@
 <span id="148">148</span>
 <span id="149">149</span>
 <span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
 </pre><pre class="rust"><code><span class="doccomment">//! 抽象構文木インタプリタ</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! スモールステップ意味論に沿って、構文木を繰り返し簡約し結果を返す。</span>
 
+<span class="kw">mod</span> <span class="ident">entity</span>;
+
 <span class="kw">use</span> <span class="ident">mylang_ast</span>::{<span class="ident">Expr</span>, <span class="ident">Stmt</span>};
-<span class="kw">use</span> <span class="ident">mylang_entity</span>::{<span class="ident">Entity</span>, <span class="ident">I32Entity</span>, <span class="ident">RuntimeTypeInfo</span>, <span class="ident">StrEntity</span>};
 <span class="kw">use</span> <span class="ident">thiserror::Error</span>;
+
+<span class="kw">use</span> <span class="ident">entity</span>::{<span class="ident">Entity</span>, <span class="ident">I32Entity</span>, <span class="ident">RuntimeTypeInfo</span>, <span class="ident">StrEntity</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Error</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AstInterpError</span> {

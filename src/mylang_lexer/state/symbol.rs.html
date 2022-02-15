@@ -40,9 +40,6 @@
 <span id="35">35</span>
 <span id="36">36</span>
 <span id="37">37</span>
-<span id="38">38</span>
-<span id="39">39</span>
-<span id="40">40</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">mylang_token</span>::{<span class="ident">range</span>, <span class="ident">KeywordKind</span>, <span class="ident">Pos</span>, <span class="ident">Token</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
@@ -71,10 +68,7 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tokenize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Token</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">keyword_kind</span>) <span class="op">=</span> <span class="ident">KeywordKind::parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">acc</span>) {
-            <span class="ident">Token::Keyword</span>(
-                <span class="macro">range!</span>(<span class="self">self</span>.<span class="ident">start</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">end</span>.<span class="ident">clone</span>()),
-                <span class="ident">keyword_kind</span>,
-            )
+            <span class="ident">Token::Keyword</span>(<span class="macro">range!</span>(<span class="self">self</span>.<span class="ident">start</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">end</span>.<span class="ident">clone</span>()), <span class="ident">keyword_kind</span>)
         } <span class="kw">else</span> {
             <span class="ident">Token::Ident</span>(
                 <span class="macro">range!</span>(<span class="self">self</span>.<span class="ident">start</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">end</span>.<span class="ident">clone</span>()),

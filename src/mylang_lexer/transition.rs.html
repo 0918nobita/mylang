@@ -62,8 +62,8 @@
 
 <span class="kw">mod</span> <span class="ident">i32</span>;
 <span class="kw">mod</span> <span class="ident">initial</span>;
-<span class="kw">mod</span> <span class="ident">symbol</span>;
 <span class="kw">mod</span> <span class="ident">str</span>;
+<span class="kw">mod</span> <span class="ident">symbol</span>;
 
 <span class="kw">use</span> <span class="ident">mylang_token::Pos</span>;
 
@@ -73,8 +73,8 @@
     <span class="ident">transition</span>::{
         <span class="ident">i32</span>::{<span class="ident">i32_lex</span>, <span class="ident">I32LexResult</span>},
         <span class="ident">initial::initial_lex</span>,
-        <span class="ident">symbol</span>::{<span class="ident">symbol_lex</span>, <span class="ident">SymbolLexResult</span>},
         <span class="ident">str</span>::{<span class="ident">str_lex</span>, <span class="ident">StrLexResult</span>},
+        <span class="ident">symbol</span>::{<span class="ident">symbol_lex</span>, <span class="ident">SymbolLexResult</span>},
     },
 };
 

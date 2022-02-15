@@ -23,10 +23,10 @@
 </pre><pre class="rust"><code><span class="doccomment">//! 字句解析器の状態</span>
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">i32</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">symbol</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">str</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">symbol</span>;
 
-<span class="kw">use</span> <span class="self">self</span>::{<span class="ident">i32::I32State</span>, <span class="ident">symbol::SymbolState</span>, <span class="ident">str::StrState</span>};
+<span class="kw">use</span> <span class="self">self</span>::{<span class="ident">i32::I32State</span>, <span class="ident">str::StrState</span>, <span class="ident">symbol::SymbolState</span>};
 
 <span class="doccomment">/// 字句解析器内部の状態</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>

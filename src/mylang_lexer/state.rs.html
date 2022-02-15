@@ -23,10 +23,10 @@
 </pre><pre class="rust"><code><span class="doccomment">//! 字句解析器の状態</span>
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">i32</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">keyword</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">symbol</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">str</span>;
 
-<span class="kw">use</span> <span class="self">self</span>::{<span class="ident">i32::I32State</span>, <span class="ident">keyword::KeywordState</span>, <span class="ident">str::StrState</span>};
+<span class="kw">use</span> <span class="self">self</span>::{<span class="ident">i32::I32State</span>, <span class="ident">symbol::SymbolState</span>, <span class="ident">str::StrState</span>};
 
 <span class="doccomment">/// 字句解析器内部の状態</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
@@ -35,7 +35,7 @@
     <span class="ident">Initial</span>,
     <span class="ident">I32</span>(<span class="ident">I32State</span>),
     <span class="ident">Str</span>(<span class="ident">StrState</span>),
-    <span class="ident">Keyword</span>(<span class="ident">KeywordState</span>),
+    <span class="ident">Symbol</span>(<span class="ident">SymbolState</span>),
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mylang_lexer" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-nightly (c5c610aad 2022-02-14)" ></div>

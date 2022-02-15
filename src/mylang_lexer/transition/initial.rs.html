@@ -38,7 +38,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">result</span>::{<span class="ident">LexErr</span>, <span class="ident">LexResult</span>},
-    <span class="ident">state</span>::{<span class="ident">i32::I32State</span>, <span class="ident">keyword::KeywordState</span>, <span class="ident">str::StrState</span>, <span class="ident">State</span>},
+    <span class="ident">state</span>::{<span class="ident">i32::I32State</span>, <span class="ident">symbol::SymbolState</span>, <span class="ident">str::StrState</span>, <span class="ident">State</span>},
 };
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">initial_lex</span>((<span class="ident">pos</span>, <span class="ident">c</span>): (<span class="ident">Pos</span>, <span class="ident">char</span>)) -&gt; (<span class="ident">State</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">LexResult</span><span class="op">&gt;</span>) {
@@ -54,7 +54,7 @@
         <span class="ident">c</span> <span class="kw">if</span> <span class="ident">c</span>.<span class="ident">is_ascii_digit</span>() =&gt; (<span class="ident">State::I32</span>(<span class="ident">I32State::new</span>(<span class="ident">pos</span>, <span class="ident">c</span>.<span class="ident">to_string</span>())), <span class="macro">vec!</span>[]),
 
         <span class="ident">c</span> <span class="kw">if</span> <span class="ident">c</span>.<span class="ident">is_ascii_alphabetic</span>() =&gt; (
-            <span class="ident">State::Keyword</span>(<span class="ident">KeywordState::new</span>(<span class="ident">pos</span>, <span class="ident">c</span>.<span class="ident">to_string</span>())),
+            <span class="ident">State::Symbol</span>(<span class="ident">SymbolState::new</span>(<span class="ident">pos</span>, <span class="ident">c</span>.<span class="ident">to_string</span>())),
             <span class="macro">vec!</span>[],
         ),
 

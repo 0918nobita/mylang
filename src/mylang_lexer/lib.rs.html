@@ -139,9 +139,9 @@
                     <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="prelude-val">None</span>;
                     <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="prelude-val">Err</span>(<span class="ident">LexErr::MissingClosingQuoteForStr</span>(<span class="ident">str_state</span>.<span class="ident">end</span>))])
                 }
-                <span class="ident">State::Keyword</span>(<span class="ident">keyword_state</span>) =&gt; {
+                <span class="ident">State::Symbol</span>(<span class="ident">keyword_state</span>) =&gt; {
                     <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="prelude-val">None</span>;
-                    <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="ident">keyword_state</span>.<span class="ident">try_tokenize</span>()])
+                    <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="prelude-val">Ok</span>(<span class="ident">keyword_state</span>.<span class="ident">tokenize</span>())])
                 }
             }
         }

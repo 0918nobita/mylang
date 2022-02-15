@@ -521,6 +521,7 @@ dependencies = [
  "clap",
  "insta",
  "mylang_bytecode",
+ "serde_json",
  "thiserror",
 ]
 

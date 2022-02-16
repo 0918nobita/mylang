@@ -6,12 +6,16 @@ use std::{
 use anyhow::bail;
 use clap::{app_from_crate, Arg};
 use mylang_bytecode::Inst;
-use mylang_cli_ext::{input_format_arg, value_of_input_format, InputFormat};
+use mylang_cli_ext::FileFormat;
 
 fn main() -> anyhow::Result<()> {
     let matches = app_from_crate!()
         .arg(
-            input_format_arg()
+            Arg::new("input_format")
+                .long("input_format")
+                .visible_alias("if")
+                .takes_value(true)
+                .possible_values(FileFormat::possible_values())
                 .default_value("binary")
                 .help("Format of input bytecode"),
         )
@@ -28,7 +32,7 @@ fn main() -> anyhow::Result<()> {
         )
         .get_matches();
 
-    let input_format = value_of_input_format(&matches)?;
+    let input_format = FileFormat::value_of(&matches, "input_format")?;
     let use_stdin = matches.is_present("stdin");
     let input = matches.value_of("input");
 
@@ -44,8 +48,8 @@ fn main() -> anyhow::Result<()> {
     };
 
     let insts: Vec<Inst> = match input_format {
-        InputFormat::Json => serde_json::from_reader(byte_code)?,
-        InputFormat::Binary => bincode::deserialize_from(byte_code)?,
+        FileFormat::Json => serde_json::from_reader(byte_code)?,
+        FileFormat::Binary => bincode::deserialize_from(byte_code)?,
     };
 
     mylang_vm::execute(&insts)?;

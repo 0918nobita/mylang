@@ -15,7 +15,6 @@ use mylang_token::{KeywordKind, Locatable, Pos, Range, Token};
 use thiserror::Error;
 
 /// 構文解析中に発生するエラー
-#[allow(dead_code)]
 #[derive(Debug, Error)]
 pub enum ParseErr {
     #[error("Term expected, but not found")]

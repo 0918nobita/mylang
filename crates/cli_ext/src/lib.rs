@@ -1,36 +1,33 @@
 use std::str::FromStr;
 
-use clap::{Arg, ArgEnum, ArgMatches, Error};
+use clap::{ArgEnum, ArgMatches, Error, PossibleValue};
 
 #[derive(Clone, ArgEnum)]
-pub enum InputFormat {
+pub enum FileFormat {
     Json,
     Binary,
 }
 
-impl FromStr for InputFormat {
+impl FileFormat {
+    pub fn possible_values<'a>() -> impl Iterator<Item = PossibleValue<'a>> {
+        FileFormat::value_variants()
+            .iter()
+            .filter_map(ArgEnum::to_possible_value)
+    }
+
+    pub fn value_of(matches: &ArgMatches, name: &str) -> Result<Self, Error> {
+        matches.value_of_t::<Self>(name)
+    }
+}
+
+impl FromStr for FileFormat {
     type Err = String;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "json" => Ok(InputFormat::Json),
-            "binary" => Ok(InputFormat::Binary),
+            "json" => Ok(FileFormat::Json),
+            "binary" => Ok(FileFormat::Binary),
             _ => Err(format!("Invalid input format: {s}")),
         }
     }
-}
-
-pub fn input_format_arg<'a>() -> Arg<'a> {
-    Arg::new("input_format")
-        .long("input_format")
-        .takes_value(true)
-        .possible_values(
-            InputFormat::value_variants()
-                .iter()
-                .filter_map(ArgEnum::to_possible_value),
-        )
-}
-
-pub fn value_of_input_format(matches: &ArgMatches) -> Result<InputFormat, Error> {
-    matches.value_of_t::<InputFormat>("input_format")
 }

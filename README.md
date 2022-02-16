@@ -11,7 +11,7 @@
 ```bash
 cd examples
 cargo run --bin mylang_lexer -- -o hello.tok.json hello.mylang
-cargo run --bin mylang_parser -- -o hello.ast.json hello.tok.json
+cargo run --bin mylang_parser -- hello.tok.json hello.ast.json
 cargo run --bin mylang_ast_interp -- hello.ast.json
 ```
 

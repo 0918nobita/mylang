@@ -463,6 +463,7 @@ name = "mylang_cli_ext"
 version = "0.1.0"
 dependencies = [
  "clap",
+ "once_cell",
 ]
 
 [[package]]
@@ -504,9 +505,11 @@ name = "mylang_parser"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "bincode",
  "clap",
  "itertools",
  "mylang_ast",
+ "mylang_cli_ext",
  "mylang_token",
  "serde_json",
  "thiserror",

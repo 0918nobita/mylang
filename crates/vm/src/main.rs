@@ -6,7 +6,7 @@ use std::{
 use anyhow::bail;
 use clap::{app_from_crate, Arg};
 use mylang_bytecode::Inst;
-use mylang_cli_ext::FileFormat;
+use mylang_cli_ext::{FileFormat, FILE_FORMAT_POSSIBLE_VALUES};
 
 fn main() -> anyhow::Result<()> {
     let matches = app_from_crate!()
@@ -15,7 +15,7 @@ fn main() -> anyhow::Result<()> {
                 .long("input_format")
                 .visible_alias("if")
                 .takes_value(true)
-                .possible_values(FileFormat::possible_values())
+                .possible_values((*FILE_FORMAT_POSSIBLE_VALUES).clone())
                 .default_value("binary")
                 .help("Format of input bytecode"),
         )

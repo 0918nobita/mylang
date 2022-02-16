@@ -2,7 +2,7 @@
 name = "mylang_parser"
 version = "0.1.0"
 edition = "2021"
-description = "Parser implementation that converts sequence of tokens to AST"
+description = "Parser implementation for mylang that converts sequence of tokens to AST"
 
 [dependencies]
 anyhow = "1.0.53"

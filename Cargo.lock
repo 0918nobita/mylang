@@ -454,6 +454,7 @@ dependencies = [
  "insta",
  "mylang_ast",
  "mylang_bytecode",
+ "mylang_cli_ext",
  "mylang_token",
  "serde_json",
 ]

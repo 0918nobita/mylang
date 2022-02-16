@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use mylang_token::{range, KeywordKind, Pos, Token};
 
 #[derive(Clone, Debug)]
@@ -25,7 +27,7 @@ impl SymbolState {
     }
 
     pub fn tokenize(&self) -> Token {
-        if let Some(keyword_kind) = KeywordKind::parse(&self.acc) {
+        if let Ok(keyword_kind) = KeywordKind::from_str(&self.acc) {
             Token::Keyword(range!(self.start.clone(), self.end.clone()), keyword_kind)
         } else {
             Token::Ident(

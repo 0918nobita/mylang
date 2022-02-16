@@ -4,6 +4,8 @@ mod locatable;
 mod pos;
 mod range;
 
+use std::str::FromStr;
+
 use serde::{Deserialize, Serialize};
 
 pub use locatable::Locatable;
@@ -40,14 +42,16 @@ pub enum KeywordKind {
     PrintStr,
 }
 
-impl KeywordKind {
-    pub fn parse(str: &str) -> Option<Self> {
-        match str {
-            "let" => Some(Self::Let),
-            "in" => Some(Self::In),
-            "print_int" => Some(Self::PrintI32),
-            "print_str" => Some(Self::PrintStr),
-            _ => None,
+impl FromStr for KeywordKind {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "let" => Ok(Self::Let),
+            "in" => Ok(Self::In),
+            "print_int" => Ok(Self::PrintI32),
+            "print_str" => Ok(Self::PrintStr),
+            _ => Err(format!("Invalid keyword: {s}")),
         }
     }
 }

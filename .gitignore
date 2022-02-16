@@ -9,7 +9,9 @@ node_modules/
 
 /target/
 
+*.tok
+*.tok.json
+*.ast
 *.ast.json
 *.bytecode
 *.bc.json
-*.tok.json

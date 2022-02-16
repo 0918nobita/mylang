@@ -40,12 +40,14 @@ fn main() -> anyhow::Result<()> {
                 .takes_value(false)
                 .help("Write bytecode to stdout"),
         )
-        .arg(Arg::new("input").required(false).help("Input AST file"))
         .arg(
             Arg::new("output")
-                .required(false)
+                .long("output")
+                .short('o')
+                .takes_value(true)
                 .help("Output bytecode file"),
         )
+        .arg(Arg::new("input").required(false).help("Input AST file"))
         .get_matches();
 
     let input_format = FileFormat::value_of(&matches, "input_format")?;
@@ -57,8 +59,6 @@ fn main() -> anyhow::Result<()> {
     let output = matches.value_of("output");
 
     let stdin = io::stdin();
-    let stdout = io::stdout();
-
     let src: Box<dyn BufRead> = match (use_stdin, input) {
         (true, Some(_)) => bail!("Cannot specify both --stdin and [input]"),
 
@@ -69,14 +69,17 @@ fn main() -> anyhow::Result<()> {
         (false, None) => bail!("No input specified. You can specify either --stdin or [input]"),
     };
 
+    let stdout = io::stdout();
     let mut dest: Box<dyn Write> = match (use_stdout, output) {
-        (true, Some(_)) => bail!("Cannot specify both --stdout and [output]"),
+        (true, Some(_)) => bail!("Cannot specify both --stdout and --output"),
 
         (true, None) => Box::new(stdout.lock()),
 
         (false, Some(path)) => Box::new(BufWriter::new(File::create(path)?)),
 
-        (false, None) => bail!("No output specified. You can specify either --stdout or [output]"),
+        (false, None) => {
+            bail!("No output specified. You can specify either --stdout or --output")
+        }
     };
 
     let stmts: Vec<Stmt> = match input_format {

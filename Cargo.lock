@@ -429,9 +429,11 @@ name = "mylang_ast_interp"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "bincode",
  "clap",
  "insta",
  "mylang_ast",
+ "mylang_cli_ext",
  "mylang_token",
  "serde_json",
  "thiserror",
@@ -472,8 +474,10 @@ name = "mylang_lexer"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "bincode",
  "clap",
  "itertools",
+ "mylang_cli_ext",
  "mylang_token",
  "proptest",
  "serde_json",

@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["InputFormat",""]],"fn":[["input_format_arg",""],["value_of_input_format",""]]});
+initSidebarItems({"enum":[["FileFormat",""]],"static":[["FILE_FORMAT_POSSIBLE_VALUES",""]]});

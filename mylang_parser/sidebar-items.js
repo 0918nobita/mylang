@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["ParseErr","構文解析中に発生するエラー"]],"fn":[["expr",""],["parse",""],["program",""],["stmt",""],["term",""]]});
+initSidebarItems({"enum":[["ParseErr","構文解析中に発生するエラー"]],"fn":[["parse",""]],"mod":[["parse",""],["result",""]],"type":[["ParseResult",""]]});

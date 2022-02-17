@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ParseErr","構文解析中に発生するエラー"]],"type":[["ParseResult",""]]});

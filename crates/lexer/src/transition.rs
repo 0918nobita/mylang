@@ -5,10 +5,9 @@ mod initial;
 mod str;
 mod symbol;
 
-use mylang_token::Pos;
+use mylang_token::{Pos, Token};
 
 use crate::{
-    result::LexResult,
     state::State,
     transition::{
         i32::{i32_lex, I32LexResult},
@@ -16,9 +15,10 @@ use crate::{
         str::{str_lex, StrLexResult},
         symbol::{symbol_lex, SymbolLexResult},
     },
+    LexResult,
 };
 
-pub fn transition(state: &State, pos_c: (Pos, char)) -> (State, Vec<LexResult>) {
+pub fn transition(state: &State, pos_c: (Pos, char)) -> (State, Vec<LexResult<Token>>) {
     match state {
         State::Initial => initial_lex(pos_c),
 

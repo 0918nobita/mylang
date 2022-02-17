@@ -3,17 +3,19 @@
 use mylang_token::{Pos, Token};
 
 use crate::{
-    result::{LexErr, LexResult},
     state::{i32::I32State, str::StrState, symbol::SymbolState, State},
+    LexErr, LexResult,
 };
 
-pub fn initial_lex((pos, c): (Pos, char)) -> (State, Vec<LexResult>) {
+pub fn initial_lex((pos, c): (Pos, char)) -> (State, Vec<LexResult<Token>>) {
     match c {
         '\n' => (State::Initial, vec![Ok(Token::Newline(pos))]),
 
         '"' => (State::Str(StrState::new(pos)), vec![]),
 
         '+' => (State::Initial, vec![Ok(Token::AddOp(pos))]),
+
+        '=' => (State::Initial, vec![Ok(Token::Equal(pos))]),
 
         c if c.is_ascii_whitespace() => (State::Initial, vec![]),
 

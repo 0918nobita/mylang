@@ -1,0 +1,17 @@
+---
+source: crates/lexer/src/state/i32.rs
+assertion_line: 45
+expression: "(state, token)"
+
+---
+(
+    I32State {
+        start: 0:0,
+        end: 0:1,
+        acc: "12",
+    },
+    I32(
+        0:0-0:1,
+        12,
+    ),
+)

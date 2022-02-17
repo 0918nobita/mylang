@@ -1,6 +1,6 @@
 use mylang_token::{range, Pos, Token};
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct I32State {
     start: Pos,
     end: Pos,
@@ -32,22 +32,16 @@ impl I32State {
 
 #[cfg(test)]
 mod tests {
-    use mylang_token::{pos, Token};
-    use proptest::prelude::proptest;
+    use mylang_token::pos;
 
     use super::I32State;
 
-    proptest! {
-        #[test]
-        fn test_i32_state(line1: u32, char1: u32, line2: u32, char2: u32) {
-            let state = I32State::new(pos!(line1;char1), String::new());
-            let state = state.append_digit_char(pos!(line2;char2), '1');
-            let token = state.tokenize();
-            assert!(matches!(
-                token,
-                Token::I32(range, 1)
-                    if *range.start_ref() == pos!(line1;char1) && *range.end_ref() == pos!(line2;char2)
-            ));
-        }
+    #[test]
+    fn test_i32_state() {
+        let state = I32State::default();
+        let state = state.append_digit_char(pos!(0;0), '1');
+        let state = state.append_digit_char(pos!(0;1), '2');
+        let token = state.tokenize();
+        insta::assert_debug_snapshot!((state, token));
     }
 }

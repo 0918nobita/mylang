@@ -32,7 +32,7 @@ impl I32State {
 
 #[cfg(test)]
 mod tests {
-    use mylang_token::{pos, Token};
+    use mylang_token::pos;
 
     use super::I32State;
 
@@ -42,10 +42,6 @@ mod tests {
         let state = state.append_digit_char(pos!(0;0), '1');
         let state = state.append_digit_char(pos!(0;1), '2');
         let token = state.tokenize();
-        assert!(matches!(
-            token,
-            Token::I32(range, 12)
-                if *range.start_ref() == pos!(0;0) && *range.end_ref() == pos!(0;1)
-        ));
+        insta::assert_debug_snapshot!((state, token));
     }
 }

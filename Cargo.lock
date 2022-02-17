@@ -429,6 +429,7 @@ dependencies = [
  "anyhow",
  "bincode",
  "clap",
+ "insta",
  "itertools",
  "mylang_cli_ext",
  "mylang_token",

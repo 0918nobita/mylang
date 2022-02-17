@@ -96,7 +96,7 @@
 <span class="kw">mod</span> <span class="ident">transition</span>;
 <span class="kw">mod</span> <span class="ident">with_pos</span>;
 
-<span class="kw">use</span> <span class="ident">mylang_token::Pos</span>;
+<span class="kw">use</span> <span class="ident">mylang_token</span>::{<span class="ident">Pos</span>, <span class="ident">Token</span>};
 <span class="kw">use</span> <span class="ident">with_pos::WithPosExt</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">result::LexResult</span>, <span class="ident">state::State</span>, <span class="ident">transition::transition</span>};
@@ -115,7 +115,7 @@
 <span class="kw">where</span>
     <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="ident">Pos</span>, <span class="ident">char</span>)<span class="op">&gt;</span>,
 {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">LexResult</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">LexResult</span><span class="op">&lt;</span><span class="ident">Token</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// 内部イテレータと内部状態をもとに、次のトークンを取り出す</span>
     <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
@@ -169,7 +169,7 @@
 <span class="doccomment">/// 字句解析を実行する</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// 順番に文字を取り出し、字句解析器としての状態を持ち回りながら flatMap を行い、結果を順次流す。</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lex</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">src</span>: <span class="ident">T</span>) -&gt; <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">LexResult</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lex</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">src</span>: <span class="ident">T</span>) -&gt; <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">LexResult</span><span class="op">&lt;</span><span class="ident">Token</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>
 <span class="kw">where</span>
     <span class="ident">T</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">char</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>,
 {

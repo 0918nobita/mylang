@@ -29,7 +29,7 @@
 <span id="24">24</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">mylang_token</span>::{<span class="ident">Pos</span>, <span class="ident">Token</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">result::LexErr</span>, <span class="ident">state::str::StrState</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">state::str::StrState</span>, <span class="ident">LexErr</span>};
 
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">StrLexResult</span> {
     <span class="ident">Continued</span>(<span class="ident">StrState</span>),

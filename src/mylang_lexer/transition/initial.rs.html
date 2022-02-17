@@ -31,22 +31,26 @@
 <span id="26">26</span>
 <span id="27">27</span>
 <span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
 </pre><pre class="rust"><code><span class="doccomment">//! 初期状態のとき、または他の状態で想定外の文字が出現したときに行う状態遷移</span>
 
 <span class="kw">use</span> <span class="ident">mylang_token</span>::{<span class="ident">Pos</span>, <span class="ident">Token</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">result</span>::{<span class="ident">LexErr</span>, <span class="ident">LexResult</span>},
     <span class="ident">state</span>::{<span class="ident">i32::I32State</span>, <span class="ident">str::StrState</span>, <span class="ident">symbol::SymbolState</span>, <span class="ident">State</span>},
+    <span class="ident">LexErr</span>, <span class="ident">LexResult</span>,
 };
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">initial_lex</span>((<span class="ident">pos</span>, <span class="ident">c</span>): (<span class="ident">Pos</span>, <span class="ident">char</span>)) -&gt; (<span class="ident">State</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">LexResult</span><span class="op">&gt;</span>) {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">initial_lex</span>((<span class="ident">pos</span>, <span class="ident">c</span>): (<span class="ident">Pos</span>, <span class="ident">char</span>)) -&gt; (<span class="ident">State</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">LexResult</span><span class="op">&lt;</span><span class="ident">Token</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
     <span class="kw">match</span> <span class="ident">c</span> {
         <span class="string">&#39;\n&#39;</span> =&gt; (<span class="ident">State::Initial</span>, <span class="macro">vec!</span>[<span class="prelude-val">Ok</span>(<span class="ident">Token::Newline</span>(<span class="ident">pos</span>))]),
 
         <span class="string">&#39;&quot;&#39;</span> =&gt; (<span class="ident">State::Str</span>(<span class="ident">StrState::new</span>(<span class="ident">pos</span>)), <span class="macro">vec!</span>[]),
 
         <span class="string">&#39;+&#39;</span> =&gt; (<span class="ident">State::Initial</span>, <span class="macro">vec!</span>[<span class="prelude-val">Ok</span>(<span class="ident">Token::AddOp</span>(<span class="ident">pos</span>))]),
+
+        <span class="string">&#39;=&#39;</span> =&gt; (<span class="ident">State::Initial</span>, <span class="macro">vec!</span>[<span class="prelude-val">Ok</span>(<span class="ident">Token::Equal</span>(<span class="ident">pos</span>))]),
 
         <span class="ident">c</span> <span class="kw">if</span> <span class="ident">c</span>.<span class="ident">is_ascii_whitespace</span>() =&gt; (<span class="ident">State::Initial</span>, <span class="macro">vec!</span>[]),
 

@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["FileFormat",""]],"static":[["FILE_FORMAT_POSSIBLE_VALUES",""]]});
+initSidebarItems({"enum":[["FileFormat",""]],"fn":[["read_from_stdin_or_file",""],["write_to_stdout_or_file",""]],"static":[["FILE_FORMAT_POSSIBLE_VALUES",""]]});

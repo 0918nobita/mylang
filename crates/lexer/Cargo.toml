@@ -15,4 +15,3 @@ thiserror = "1.0.30"
 utf8-chars = "1.0.2"
 
 [dev-dependencies]
-proptest = "1.0.0"

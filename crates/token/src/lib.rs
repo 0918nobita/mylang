@@ -37,7 +37,6 @@ macro_rules! range {
 #[derive(Debug, Serialize, Deserialize)]
 pub enum KeywordKind {
     Let,
-    In,
     PrintI32,
     PrintStr,
 }
@@ -48,7 +47,6 @@ impl FromStr for KeywordKind {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "let" => Ok(Self::Let),
-            "in" => Ok(Self::In),
             "print_int" => Ok(Self::PrintI32),
             "print_str" => Ok(Self::PrintStr),
             _ => Err(format!("Invalid keyword: {s}")),

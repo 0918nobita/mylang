@@ -1,6 +1,6 @@
 //! 字句解析の結果
 
-use mylang_token::{Locatable, Pos, Range, Token};
+use mylang_token::{Locatable, Pos, Range};
 use thiserror::Error;
 
 /// 字句解析中に発生するエラー
@@ -30,5 +30,5 @@ impl Locatable for LexErr {
     }
 }
 
-/// 字句解析中に得られたトークン、または発生したエラー
-pub type LexResult = Result<Token, LexErr>;
+/// 字句解析の結果
+pub type LexResult<T> = Result<T, LexErr>;

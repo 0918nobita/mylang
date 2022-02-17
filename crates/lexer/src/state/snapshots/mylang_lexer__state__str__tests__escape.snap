@@ -1,0 +1,12 @@
+---
+source: crates/lexer/src/state/str.rs
+assertion_line: 80
+expression: state
+
+---
+StrState {
+    start: 0:0,
+    end: 0:0,
+    escape: true,
+    acc: "",
+}

@@ -1,6 +1,6 @@
 use mylang_token::{Pos, Token};
 
-use crate::{result::LexErr, state::str::StrState};
+use crate::{state::str::StrState, LexErr};
 
 pub enum StrLexResult {
     Continued(StrState),

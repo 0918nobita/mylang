@@ -5,7 +5,7 @@ mod state;
 mod transition;
 mod with_pos;
 
-use mylang_token::Pos;
+use mylang_token::{Pos, Token};
 use with_pos::WithPosExt;
 
 use crate::{result::LexResult, state::State, transition::transition};
@@ -24,7 +24,7 @@ impl<I> Iterator for Lex<I>
 where
     I: Iterator<Item = (Pos, char)>,
 {
-    type Item = Vec<LexResult>;
+    type Item = Vec<LexResult<Token>>;
 
     /// 内部イテレータと内部状態をもとに、次のトークンを取り出す
     fn next(&mut self) -> Option<Self::Item> {
@@ -78,7 +78,7 @@ where
 /// 字句解析を実行する
 ///
 /// 順番に文字を取り出し、字句解析器としての状態を持ち回りながら flatMap を行い、結果を順次流す。
-pub fn lex<'a, T>(src: T) -> impl Iterator<Item = LexResult> + 'a
+pub fn lex<'a, T>(src: T) -> impl Iterator<Item = LexResult<Token>> + 'a
 where
     T: Iterator<Item = char> + 'a,
 {

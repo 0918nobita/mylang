@@ -15,6 +15,8 @@ pub fn initial_lex((pos, c): (Pos, char)) -> (State, Vec<LexResult>) {
 
         '+' => (State::Initial, vec![Ok(Token::AddOp(pos))]),
 
+        '=' => (State::Initial, vec![Ok(Token::Equal(pos))]),
+
         c if c.is_ascii_whitespace() => (State::Initial, vec![]),
 
         c if c.is_ascii_digit() => (State::I32(I32State::new(pos, c.to_string())), vec![]),

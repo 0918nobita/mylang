@@ -58,6 +58,7 @@ impl FromStr for KeywordKind {
 pub enum Token {
     I32(Range, i32),
     AddOp(Pos),
+    Equal(Pos),
     Str(Range, String),
     Keyword(Range, KeywordKind),
     Ident(Range, String),
@@ -71,7 +72,7 @@ impl Locatable for Token {
                 r.clone()
             }
 
-            Self::AddOp(p) | Self::Newline(p) => p.clone().into(),
+            Self::AddOp(p) | Self::Equal(p) | Self::Newline(p) => p.clone().into(),
         }
     }
 }

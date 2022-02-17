@@ -9,35 +9,15 @@
 //! term ::= INT_LIT | STRING_LIT ;
 //! ```
 
+mod result;
+
 use itertools::{put_back, PutBack};
 use mylang_ast::{Expr, Stmt};
-use mylang_token::{KeywordKind, Locatable, Pos, Range, Token};
-use thiserror::Error;
+use mylang_token::{KeywordKind, Locatable, Pos, Token};
 
-/// 構文解析中に発生するエラー
-#[derive(Debug, Error)]
-pub enum ParseErr {
-    #[error("Term expected, but not found")]
-    TermExpected(Pos),
+pub use result::{ParseErr, ParseResult};
 
-    #[error("Either print_int or print_str expected, but not found")]
-    KeywordExpected(Range),
-}
-
-impl Locatable for ParseErr {
-    fn locate(&self) -> Range {
-        match self {
-            ParseErr::TermExpected(pos) => pos.clone().into(),
-
-            ParseErr::KeywordExpected(range) => range.clone(),
-        }
-    }
-}
-
-fn term(
-    tokens: &mut PutBack<impl Iterator<Item = Token>>,
-    pos: Pos,
-) -> Result<(Pos, Expr), ParseErr> {
+fn term(tokens: &mut PutBack<impl Iterator<Item = Token>>, pos: Pos) -> ParseResult<(Pos, Expr)> {
     if let Some(tok) = tokens.next() {
         match tok {
             Token::I32(range, n) => Ok((range.end_ref().clone(), Expr::I32Lit(range, n))),
@@ -51,10 +31,7 @@ fn term(
     }
 }
 
-fn expr(
-    tokens: &mut PutBack<impl Iterator<Item = Token>>,
-    pos: Pos,
-) -> Result<(Pos, Expr), ParseErr> {
+fn expr(tokens: &mut PutBack<impl Iterator<Item = Token>>, pos: Pos) -> ParseResult<(Pos, Expr)> {
     let (pos, lhs) = term(tokens, pos)?;
 
     match tokens.next() {
@@ -76,7 +53,7 @@ fn expr(
     }
 }
 
-fn stmt(tokens: &mut PutBack<impl Iterator<Item = Token>>, pos: Pos) -> Result<Stmt, ParseErr> {
+fn stmt(tokens: &mut PutBack<impl Iterator<Item = Token>>, pos: Pos) -> ParseResult<Stmt> {
     match tokens.next() {
         Some(Token::Keyword(range, KeywordKind::PrintI32)) => {
             let (_, expr) = expr(tokens, pos)?;
@@ -94,7 +71,7 @@ fn stmt(tokens: &mut PutBack<impl Iterator<Item = Token>>, pos: Pos) -> Result<S
     }
 }
 
-fn program(tokens: &mut PutBack<impl Iterator<Item = Token>>) -> Vec<Result<Stmt, ParseErr>> {
+fn program(tokens: &mut PutBack<impl Iterator<Item = Token>>) -> Vec<ParseResult<Stmt>> {
     let mut results = Vec::<Result<Stmt, ParseErr>>::new();
 
     while let Some(tok) = tokens.next() {
@@ -112,6 +89,6 @@ fn program(tokens: &mut PutBack<impl Iterator<Item = Token>>) -> Vec<Result<Stmt
     results
 }
 
-pub fn parse(tokens: impl Iterator<Item = Token>) -> Vec<Result<Stmt, ParseErr>> {
+pub fn parse(tokens: impl Iterator<Item = Token>) -> Vec<ParseResult<Stmt>> {
     program(&mut put_back(tokens))
 }

@@ -1,16 +1,15 @@
-use std::{
-    fs::File,
-    io::{self, BufRead, BufReader, BufWriter, Write},
-};
+use std::io;
 
-use anyhow::{anyhow, bail};
+use anyhow::anyhow;
 use clap::{command, Arg};
 use itertools::Itertools;
-use mylang_cli_ext::{FileFormat, FILE_FORMAT_POSSIBLE_VALUES};
+use mylang_cli_ext::{
+    read_from_stdin_or_file, write_to_stdout_or_file, FileFormat, FILE_FORMAT_POSSIBLE_VALUES,
+};
 use utf8_chars::BufReadCharsExt;
 
 fn main() -> anyhow::Result<()> {
-    let matches = command!()
+    let app = command!()
         .arg(
             Arg::new("stdin")
                 .long("stdin")
@@ -38,8 +37,8 @@ fn main() -> anyhow::Result<()> {
                 .takes_value(true)
                 .help("Output tokens file"),
         )
-        .arg(Arg::new("input").required(false).help("Input source file"))
-        .get_matches();
+        .arg(Arg::new("input").required(false).help("Input source file"));
+    let matches = app.get_matches();
 
     let use_stdin = matches.is_present("stdin");
     let input = matches.value_of("input");
@@ -49,26 +48,10 @@ fn main() -> anyhow::Result<()> {
     let output = matches.value_of("output");
 
     let stdin = io::stdin();
-    let mut src: Box<dyn BufRead> = match (use_stdin, input) {
-        (true, Some(_)) => bail!("Cannot specify both --stdin and [input]"),
-
-        (true, None) => Box::new(stdin.lock()),
-
-        (false, Some(path)) => Box::new(BufReader::new(File::open(path)?)),
-
-        (false, None) => bail!("No input specified. You can specify either --stdin or [input]"),
-    };
+    let mut src = read_from_stdin_or_file(&stdin, use_stdin, input)?;
 
     let stdout = io::stdout();
-    let mut dest: Box<dyn Write> = match (use_stdout, output) {
-        (true, Some(_)) => bail!("Cannot specify both --stdout and --output"),
-
-        (true, None) => Box::new(stdout.lock()),
-
-        (false, Some(path)) => Box::new(BufWriter::new(File::create(path)?)),
-
-        (false, None) => bail!("No output specified. You can specify either --stdout or --output"),
-    };
+    let mut dest = write_to_stdout_or_file(&stdout, use_stdout, output)?;
 
     let (tokens, errors): (Vec<_>, Vec<_>) =
         mylang_lexer::lex(src.chars().map(|r| r.unwrap())).partition_result();

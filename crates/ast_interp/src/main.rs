@@ -1,12 +1,8 @@
-use std::{
-    fs::File,
-    io::{self, BufRead, BufReader},
-};
+use std::io;
 
-use anyhow::bail;
 use clap::{command, Arg};
 use mylang_ast::Stmt;
-use mylang_cli_ext::{FileFormat, FILE_FORMAT_POSSIBLE_VALUES};
+use mylang_cli_ext::{read_from_stdin_or_file, FileFormat, FILE_FORMAT_POSSIBLE_VALUES};
 
 use mylang_ast_interp::execute;
 
@@ -34,15 +30,7 @@ fn main() -> anyhow::Result<()> {
     let input = matches.value_of("input");
 
     let stdin = io::stdin();
-    let src: Box<dyn BufRead> = match (use_stdin, input) {
-        (true, Some(_)) => bail!("Cannot specify both --stdin and [input]"),
-
-        (true, None) => Box::new(stdin.lock()),
-
-        (false, Some(path)) => Box::new(BufReader::new(File::open(path)?)),
-
-        (false, None) => bail!("No input specified. You can specify either --stdin or [input]"),
-    };
+    let src = read_from_stdin_or_file(&stdin, use_stdin, input)?;
 
     let stmts: Vec<Stmt> = match input_format {
         FileFormat::Json => serde_json::from_reader(src)?,

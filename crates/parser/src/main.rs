@@ -1,12 +1,11 @@
-use std::{
-    fs::File,
-    io::{self, BufRead, BufReader, BufWriter, Write},
-};
+use std::io;
 
-use anyhow::{anyhow, bail};
+use anyhow::anyhow;
 use clap::{command, Arg};
 use itertools::Itertools;
-use mylang_cli_ext::{FileFormat, FILE_FORMAT_POSSIBLE_VALUES};
+use mylang_cli_ext::{
+    read_from_stdin_or_file, write_to_stdout_or_file, FileFormat, FILE_FORMAT_POSSIBLE_VALUES,
+};
 use mylang_token::Token;
 
 fn main() -> anyhow::Result<()> {
@@ -58,26 +57,10 @@ fn main() -> anyhow::Result<()> {
     let output = matches.value_of("output");
 
     let stdin = io::stdin();
-    let src: Box<dyn BufRead> = match (use_stdin, input) {
-        (true, Some(_)) => bail!("Cannot specify both --stdin and [input]"),
-
-        (true, None) => Box::new(stdin.lock()),
-
-        (false, Some(path)) => Box::new(BufReader::new(File::open(path)?)),
-
-        (false, None) => bail!("No input specified. You can specify either --stdin or [input]"),
-    };
+    let src = read_from_stdin_or_file(&stdin, use_stdin, input)?;
 
     let stdout = io::stdout();
-    let mut dest: Box<dyn Write> = match (use_stdout, output) {
-        (true, Some(_)) => bail!("Cannot specify both --stdout and --output"),
-
-        (true, None) => Box::new(stdout.lock()),
-
-        (false, Some(path)) => Box::new(BufWriter::new(File::create(path)?)),
-
-        (false, None) => bail!("No output specified. You can specify either --stdout or --output"),
-    };
+    let mut dest = write_to_stdout_or_file(&stdout, use_stdout, output)?;
 
     let tokens: Vec<Token> = match input_format {
         FileFormat::Json => serde_json::from_reader(src)?,

@@ -4,13 +4,13 @@ use std::{
 };
 
 use anyhow::{anyhow, bail};
-use clap::{app_from_crate, Arg};
+use clap::{command, Arg};
 use itertools::Itertools;
 use mylang_cli_ext::{FileFormat, FILE_FORMAT_POSSIBLE_VALUES};
 use utf8_chars::BufReadCharsExt;
 
 fn main() -> anyhow::Result<()> {
-    let matches = app_from_crate!()
+    let matches = command!()
         .arg(
             Arg::new("stdin")
                 .long("stdin")

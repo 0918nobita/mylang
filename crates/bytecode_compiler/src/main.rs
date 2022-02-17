@@ -4,14 +4,14 @@ use std::{
 };
 
 use anyhow::bail;
-use clap::{app_from_crate, Arg};
+use clap::{command, Arg};
 use mylang_ast::Stmt;
 use mylang_cli_ext::{FileFormat, FILE_FORMAT_POSSIBLE_VALUES};
 
 use mylang_bytecode_compiler::ast_to_bytecode;
 
 fn main() -> anyhow::Result<()> {
-    let matches = app_from_crate!()
+    let matches = command!()
         .arg(
             Arg::new("input_format")
                 .long("input_format")

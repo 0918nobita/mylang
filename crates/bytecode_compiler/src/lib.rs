@@ -60,7 +60,7 @@ mod tests {
     #[test]
     fn test_addition_to_bytecode() {
         let addition = Expr::Add(
-            Box::new(Expr::I32Lit(range!(0;0,0;0), 3)),
+            Box::new(Expr::I32Lit(range!(0;0), 3)),
             Box::new(Expr::I32Lit(range!(0;4,0;4), 4)),
         );
         let bytecode = expr_to_bytecode(&addition);
@@ -69,7 +69,7 @@ mod tests {
 
     #[test]
     fn test_print_i32_to_bytecode() {
-        let print_i32 = Stmt::PrintI32(range!(0;0,0;8), Expr::I32Lit(range!(0;10,0;10), 3));
+        let print_i32 = Stmt::PrintI32(range!(0;0,0;8), Expr::I32Lit(range!(0;10), 3));
         let bytecode = stmt_to_bytecode(&print_i32);
         insta::assert_debug_snapshot!(bytecode);
     }

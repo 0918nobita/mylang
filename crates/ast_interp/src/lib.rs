@@ -99,36 +99,36 @@ pub fn execute(stmts: &[Stmt]) -> AstInterpResult<()> {
 #[cfg(test)]
 mod tests {
     use mylang_ast::Expr;
-    use mylang_token::Range;
+    use mylang_token::range;
 
     use super::eval_expr;
 
     #[test]
     fn test_i32_lit() {
-        let ent = eval_expr(&Expr::I32Lit(Range::default(), 2));
+        let ent = eval_expr(&Expr::I32Lit(range!(0;0), 2));
         insta::assert_debug_snapshot!(ent);
     }
 
     #[test]
     fn test_i32_lit_plus_i32_lit() {
         let ent = eval_expr(&Expr::Add(
-            Box::new(Expr::I32Lit(Range::default(), 2)),
-            Box::new(Expr::I32Lit(Range::default(), 3)),
+            Box::new(Expr::I32Lit(range!(0;0), 2)),
+            Box::new(Expr::I32Lit(range!(0;0), 3)),
         ));
         insta::assert_debug_snapshot!(ent);
     }
 
     #[test]
     fn test_str_lit() {
-        let ent = eval_expr(&Expr::StrLit(Range::default(), "foo".to_owned()));
+        let ent = eval_expr(&Expr::StrLit(range!(0;0), "foo".to_owned()));
         insta::assert_debug_snapshot!(ent);
     }
 
     #[test]
     fn test_i32_lit_plus_str_lit() {
         let res = eval_expr(&Expr::Add(
-            Box::new(Expr::I32Lit(Range::default(), 3)),
-            Box::new(Expr::StrLit(Range::default(), "bar".to_owned())),
+            Box::new(Expr::I32Lit(range!(0;0), 3)),
+            Box::new(Expr::StrLit(range!(0;0), "bar".to_owned())),
         ));
         insta::assert_debug_snapshot!(res);
     }
@@ -136,8 +136,8 @@ mod tests {
     #[test]
     fn test_str_lit_plus_i32_lit() {
         let res = eval_expr(&Expr::Add(
-            Box::new(Expr::StrLit(Range::default(), "foo".to_owned())),
-            Box::new(Expr::I32Lit(Range::default(), 4)),
+            Box::new(Expr::StrLit(range!(0;0), "foo".to_owned())),
+            Box::new(Expr::I32Lit(range!(0;0), 4)),
         ));
         insta::assert_debug_snapshot!(res);
     }
@@ -145,8 +145,8 @@ mod tests {
     #[test]
     fn test_str_lit_plus_str_lit() {
         let res = eval_expr(&Expr::Add(
-            Box::new(Expr::StrLit(Range::default(), "foo".to_owned())),
-            Box::new(Expr::StrLit(Range::default(), "bar".to_owned())),
+            Box::new(Expr::StrLit(range!(0;0), "foo".to_owned())),
+            Box::new(Expr::StrLit(range!(0;0), "bar".to_owned())),
         ));
         insta::assert_debug_snapshot!(res);
     }

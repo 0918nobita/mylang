@@ -23,14 +23,23 @@ macro_rules! pos {
 /// [`Range`] を簡単に生成するためのマクロ
 #[macro_export]
 macro_rules! range {
-    ($start_line:expr ; $start_char:expr, $end_line:expr ; $end_char:expr) => {
+    ($start_line:expr ; $start_char:expr , $end_line:expr ; $end_char:expr) => {
         mylang_token::Range::new(
             mylang_token::pos!($start_line;$start_char),
             mylang_token::pos!($end_line;$end_char),
         )
     };
-    ($start:expr, $end:expr) => {
+    ($start_line:expr ; $start_char:expr) => {
+        mylang_token::Range::new(
+            mylang_token::pos!($start_line;$start_char),
+            mylang_token::pos!($start_line;$start_char),
+        )
+    };
+    ($start:expr , $end:expr) => {
         mylang_token::Range::new($start, $end)
+    };
+    ($pos:expr) => {
+        mylang_token::Range::new($pos, $pos)
     };
 }
 

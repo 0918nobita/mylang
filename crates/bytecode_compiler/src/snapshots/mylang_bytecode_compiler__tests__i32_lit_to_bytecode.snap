@@ -1,7 +1,7 @@
 ---
 source: crates/bytecode_compiler/src/lib.rs
 assertion_line: 51
-expression: "expr_to_bytecode(&Expr::I32Lit(Range::default(), 3))"
+expression: "expr_to_bytecode(&Expr::I32Lit(range!(0 ; 0), 3))"
 
 ---
 [

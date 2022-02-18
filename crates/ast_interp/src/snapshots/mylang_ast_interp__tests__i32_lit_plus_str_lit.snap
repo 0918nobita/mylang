@@ -1,6 +1,6 @@
 ---
 source: crates/ast_interp/src/lib.rs
-assertion_line: 130
+assertion_line: 137
 expression: res
 
 ---

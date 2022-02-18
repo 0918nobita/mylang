@@ -104,13 +104,15 @@ mod tests {
     use super::eval_expr;
 
     #[test]
-    fn test_i32_lit() {
+    /// 整数リテラルの評価結果が変化していないことを確認する
+    fn i32_lit() {
         let ent = eval_expr(&Expr::I32Lit(range!(0;0), 2));
         insta::assert_debug_snapshot!(ent);
     }
 
     #[test]
-    fn test_i32_lit_plus_i32_lit() {
+    /// 整数リテラル同士の足し算の評価結果が変化していないことを確認する
+    fn i32_lit_plus_i32_lit() {
         let ent = eval_expr(&Expr::Add(
             Box::new(Expr::I32Lit(range!(0;0), 2)),
             Box::new(Expr::I32Lit(range!(0;0), 3)),
@@ -119,13 +121,15 @@ mod tests {
     }
 
     #[test]
-    fn test_str_lit() {
+    /// 文字列リテラルの評価結果が変化していないことを確認する
+    fn str_lit() {
         let ent = eval_expr(&Expr::StrLit(range!(0;0), "foo".to_owned()));
         insta::assert_debug_snapshot!(ent);
     }
 
     #[test]
-    fn test_i32_lit_plus_str_lit() {
+    /// 整数リテラルと文字列リテラルの足し算で発生するエラーの内容が変化していないことを確認する
+    fn i32_lit_plus_str_lit() {
         let res = eval_expr(&Expr::Add(
             Box::new(Expr::I32Lit(range!(0;0), 3)),
             Box::new(Expr::StrLit(range!(0;0), "bar".to_owned())),
@@ -134,7 +138,8 @@ mod tests {
     }
 
     #[test]
-    fn test_str_lit_plus_i32_lit() {
+    /// 文字列リテラルと整数リテラルの足し算で発生するエラーの内容が変化していないことを確認する
+    fn str_lit_plus_i32_lit() {
         let res = eval_expr(&Expr::Add(
             Box::new(Expr::StrLit(range!(0;0), "foo".to_owned())),
             Box::new(Expr::I32Lit(range!(0;0), 4)),
@@ -143,7 +148,8 @@ mod tests {
     }
 
     #[test]
-    fn test_str_lit_plus_str_lit() {
+    /// 文字列リテラル同士の足し算で発生するエラーの内容が変化していないことを確認する
+    fn str_lit_plus_str_lit() {
         let res = eval_expr(&Expr::Add(
             Box::new(Expr::StrLit(range!(0;0), "foo".to_owned())),
             Box::new(Expr::StrLit(range!(0;0), "bar".to_owned())),

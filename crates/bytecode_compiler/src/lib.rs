@@ -42,23 +42,26 @@ pub fn ast_to_bytecode(ast: &[Stmt]) -> Vec<Inst> {
 #[cfg(test)]
 mod tests {
     use mylang_ast::{Expr, Stmt};
-    use mylang_token::{range, Range};
+    use mylang_token::range;
 
     use crate::{expr_to_bytecode, stmt_to_bytecode};
 
     #[test]
-    fn test_i32_lit_to_bytecode() {
-        insta::assert_debug_snapshot!(expr_to_bytecode(&Expr::I32Lit(Range::default(), 3)));
+    /// 整数リテラルから生成されるバイトコードが変化していないことを確認する
+    fn i32_lit_to_bytecode() {
+        insta::assert_debug_snapshot!(expr_to_bytecode(&Expr::I32Lit(range!(0;0), 3)));
     }
 
+    /// 文字列リテラルから生成されるバイトコードが変化していないことを確認する
     #[test]
-    fn test_str_lit_to_bytecode() {
+    fn str_lit_to_bytecode() {
         let bytecode = expr_to_bytecode(&Expr::StrLit(range!(0;0,0;4), "Hello".to_owned()));
         insta::assert_debug_snapshot!(bytecode);
     }
 
     #[test]
-    fn test_addition_to_bytecode() {
+    /// 整数リテラル同士の足し算から生成されるバイトコードが変化していないことを確認する
+    fn addition_to_bytecode() {
         let addition = Expr::Add(
             Box::new(Expr::I32Lit(range!(0;0), 3)),
             Box::new(Expr::I32Lit(range!(0;4,0;4), 4)),
@@ -68,14 +71,16 @@ mod tests {
     }
 
     #[test]
-    fn test_print_i32_to_bytecode() {
+    /// print_i32 文から生成されるバイトコードが変化していないことを確認する
+    fn print_i32_to_bytecode() {
         let print_i32 = Stmt::PrintI32(range!(0;0,0;8), Expr::I32Lit(range!(0;10), 3));
         let bytecode = stmt_to_bytecode(&print_i32);
         insta::assert_debug_snapshot!(bytecode);
     }
 
     #[test]
-    fn test_print_str_to_bytecode() {
+    /// print_str 文から生成されるバイトコードが変化していないことを確認する
+    fn print_str_to_bytecode() {
         let print_str = Stmt::PrintStr(
             range!(0;0,0;8),
             Expr::StrLit(range!(0;10,0;23), "Hello, world!".to_owned()),

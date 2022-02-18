@@ -1,11 +1,12 @@
 [package]
 name = "mylang_lexer"
+authors = ["Kodai Matsumoto <nobita.0918@gmail.com>"]
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
 anyhow = "1.0.53"
-clap = { version = "3.1.0", features = ["cargo"] }
+clap = { version = "3.1.0", features = ["cargo", "derive"] }
 itertools = "0.10.3"
 mylang_cli_ext = { path = "../cli_ext" }
 mylang_token = { path = "../token" }

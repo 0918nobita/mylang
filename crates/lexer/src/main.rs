@@ -1,58 +1,49 @@
 use std::io;
 
 use anyhow::anyhow;
-use clap::{command, Arg};
+use clap::{ArgGroup, Parser};
 use itertools::Itertools;
-use mylang_cli_ext::{
-    reader_from_stdin_or_file, write, writer_to_stdout_or_file, FileFormat,
-    FILE_FORMAT_POSSIBLE_VALUES,
-};
+use mylang_cli_ext::{reader_from_stdin_or_file, write, writer_to_stdout_or_file, FileFormat};
 use utf8_chars::BufReadCharsExt;
 
+#[derive(Parser)]
+#[clap(version, author, about)]
+#[clap(group(ArgGroup::new("output_group").required(true)))]
+struct Cli {
+    /// Input source file
+    input: Option<String>,
+
+    /// Read source code from stdin
+    #[clap(long = "stdin")]
+    use_stdin: bool,
+
+    /// Format of output tokens
+    #[clap(long, arg_enum, default_value = "json")]
+    output_format: FileFormat,
+
+    /// Write tokens to stdout
+    #[clap(long = "stdout", group = "output_group")]
+    use_stdout: bool,
+
+    /// Output tokens file
+    #[clap(short, long, group = "output_group")]
+    output: Option<String>,
+}
+
 fn main() -> anyhow::Result<()> {
-    let app = command!()
-        .arg(
-            Arg::new("stdin")
-                .long("stdin")
-                .takes_value(false)
-                .help("Read source code from stdin"),
-        )
-        .arg(
-            Arg::new("output_format")
-                .long("output_format")
-                .visible_alias("of")
-                .possible_values((*FILE_FORMAT_POSSIBLE_VALUES).clone())
-                .default_value("json")
-                .help("Format of output tokens"),
-        )
-        .arg(
-            Arg::new("stdout")
-                .long("stdout")
-                .takes_value(false)
-                .help("Write tokens to stdout"),
-        )
-        .arg(
-            Arg::new("output")
-                .long("output")
-                .short('o')
-                .takes_value(true)
-                .help("Output tokens file"),
-        )
-        .arg(Arg::new("input").required(false).help("Input source file"));
-    let matches = app.get_matches();
-
-    let use_stdin = matches.is_present("stdin");
-    let input = matches.value_of("input");
-
-    let output_format = FileFormat::value_of(&matches, "output_format")?;
-    let use_stdout = matches.is_present("stdout");
-    let output = matches.value_of("output");
+    let Cli {
+        use_stdin,
+        input,
+        output_format,
+        use_stdout,
+        output,
+    } = Cli::parse();
 
     let stdin = io::stdin();
-    let mut src = reader_from_stdin_or_file(&stdin, use_stdin, input)?;
+    let mut src = reader_from_stdin_or_file(&stdin, use_stdin, input.as_deref())?;
 
     let stdout = io::stdout();
-    let dest = writer_to_stdout_or_file(&stdout, use_stdout, output)?;
+    let dest = writer_to_stdout_or_file(&stdout, use_stdout, output.as_deref())?;
 
     let (tokens, errors): (Vec<_>, Vec<_>) =
         mylang_lexer::lex(src.chars().map(|r| r.unwrap())).partition_result();

@@ -4,7 +4,8 @@ use anyhow::anyhow;
 use clap::{command, Arg};
 use itertools::Itertools;
 use mylang_cli_ext::{
-    read_from_stdin_or_file, write_to_stdout_or_file, FileFormat, FILE_FORMAT_POSSIBLE_VALUES,
+    read, reader_from_stdin_or_file, write, writer_to_stdout_or_file, FileFormat,
+    FILE_FORMAT_POSSIBLE_VALUES,
 };
 use mylang_token::Token;
 
@@ -57,26 +58,19 @@ fn main() -> anyhow::Result<()> {
     let output = matches.value_of("output");
 
     let stdin = io::stdin();
-    let src = read_from_stdin_or_file(&stdin, use_stdin, input)?;
+    let src = reader_from_stdin_or_file(&stdin, use_stdin, input)?;
 
     let stdout = io::stdout();
-    let mut dest = write_to_stdout_or_file(&stdout, use_stdout, output)?;
+    let dest = writer_to_stdout_or_file(&stdout, use_stdout, output)?;
 
-    let tokens: Vec<Token> = match input_format {
-        FileFormat::Json => serde_json::from_reader(src)?,
-        FileFormat::Binary => bincode::deserialize_from(src)?,
-    };
+    let tokens: Vec<Token> = read(src, &input_format)?;
 
     let (stmts, errors): (Vec<_>, Vec<_>) = mylang_parser::parse(tokens.into_iter())
         .into_iter()
         .partition_result();
 
     if errors.is_empty() {
-        match output_format {
-            FileFormat::Json => serde_json::to_writer_pretty(&mut dest, &stmts)?,
-            FileFormat::Binary => bincode::serialize_into(&mut dest, &stmts)?,
-        };
-        Ok(())
+        write(dest, &output_format, &stmts)
     } else {
         for err in errors.iter() {
             eprintln!("{}", err);

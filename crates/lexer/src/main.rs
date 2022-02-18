@@ -4,7 +4,8 @@ use anyhow::anyhow;
 use clap::{command, Arg};
 use itertools::Itertools;
 use mylang_cli_ext::{
-    read_from_stdin_or_file, write_to_stdout_or_file, FileFormat, FILE_FORMAT_POSSIBLE_VALUES,
+    reader_from_stdin_or_file, write, writer_to_stdout_or_file, FileFormat,
+    FILE_FORMAT_POSSIBLE_VALUES,
 };
 use utf8_chars::BufReadCharsExt;
 
@@ -48,20 +49,16 @@ fn main() -> anyhow::Result<()> {
     let output = matches.value_of("output");
 
     let stdin = io::stdin();
-    let mut src = read_from_stdin_or_file(&stdin, use_stdin, input)?;
+    let mut src = reader_from_stdin_or_file(&stdin, use_stdin, input)?;
 
     let stdout = io::stdout();
-    let mut dest = write_to_stdout_or_file(&stdout, use_stdout, output)?;
+    let dest = writer_to_stdout_or_file(&stdout, use_stdout, output)?;
 
     let (tokens, errors): (Vec<_>, Vec<_>) =
         mylang_lexer::lex(src.chars().map(|r| r.unwrap())).partition_result();
 
     if errors.is_empty() {
-        match output_format {
-            FileFormat::Json => serde_json::to_writer_pretty(&mut dest, &tokens)?,
-            FileFormat::Binary => bincode::serialize_into(&mut dest, &tokens)?,
-        };
-        Ok(())
+        write(dest, &output_format, &tokens)
     } else {
         for err in errors.iter() {
             eprintln!("{}", err);

@@ -2,7 +2,7 @@ use std::io;
 
 use clap::{command, Arg};
 use mylang_ast::Stmt;
-use mylang_cli_ext::{read_from_stdin_or_file, FileFormat, FILE_FORMAT_POSSIBLE_VALUES};
+use mylang_cli_ext::{read, reader_from_stdin_or_file, FileFormat, FILE_FORMAT_POSSIBLE_VALUES};
 
 use mylang_ast_interp::execute;
 
@@ -30,12 +30,9 @@ fn main() -> anyhow::Result<()> {
     let input = matches.value_of("input");
 
     let stdin = io::stdin();
-    let src = read_from_stdin_or_file(&stdin, use_stdin, input)?;
+    let src = reader_from_stdin_or_file(&stdin, use_stdin, input)?;
 
-    let stmts: Vec<Stmt> = match input_format {
-        FileFormat::Json => serde_json::from_reader(src)?,
-        FileFormat::Binary => bincode::deserialize_from(src)?,
-    };
+    let stmts: Vec<Stmt> = read(src, &input_format)?;
 
     execute(&stmts)?;
     Ok(())

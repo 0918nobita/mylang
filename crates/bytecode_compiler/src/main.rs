@@ -3,7 +3,8 @@ use std::io;
 use clap::{command, Arg};
 use mylang_ast::Stmt;
 use mylang_cli_ext::{
-    read_from_stdin_or_file, write_to_stdout_or_file, FileFormat, FILE_FORMAT_POSSIBLE_VALUES,
+    read, reader_from_stdin_or_file, write, writer_to_stdout_or_file, FileFormat,
+    FILE_FORMAT_POSSIBLE_VALUES,
 };
 
 use mylang_bytecode_compiler::ast_to_bytecode;
@@ -57,22 +58,14 @@ fn main() -> anyhow::Result<()> {
     let output = matches.value_of("output");
 
     let stdin = io::stdin();
-    let src = read_from_stdin_or_file(&stdin, use_stdin, input)?;
+    let src = reader_from_stdin_or_file(&stdin, use_stdin, input)?;
 
     let stdout = io::stdout();
-    let mut dest = write_to_stdout_or_file(&stdout, use_stdout, output)?;
+    let dest = writer_to_stdout_or_file(&stdout, use_stdout, output)?;
 
-    let stmts: Vec<Stmt> = match input_format {
-        FileFormat::Json => serde_json::from_reader(src)?,
-        FileFormat::Binary => bincode::deserialize_from(src)?,
-    };
+    let stmts: Vec<Stmt> = read(src, &input_format)?;
 
     let insts = ast_to_bytecode(&stmts);
 
-    match output_format {
-        FileFormat::Json => serde_json::to_writer_pretty(&mut dest, &insts)?,
-        FileFormat::Binary => bincode::serialize_into(&mut dest, &insts)?,
-    }
-
-    Ok(())
+    write(dest, &output_format, &insts)
 }

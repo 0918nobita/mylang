@@ -382,13 +382,11 @@ name = "mylang_ast_interp"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "bincode",
  "clap",
  "insta",
  "mylang_ast",
  "mylang_cli_ext",
  "mylang_token",
- "serde_json",
  "thiserror",
 ]
 
@@ -404,14 +402,12 @@ name = "mylang_bytecode_compiler"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "bincode",
  "clap",
  "insta",
  "mylang_ast",
  "mylang_bytecode",
  "mylang_cli_ext",
  "mylang_token",
- "serde_json",
 ]
 
 [[package]]
@@ -419,8 +415,11 @@ name = "mylang_cli_ext"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "bincode",
  "clap",
  "once_cell",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -428,13 +427,11 @@ name = "mylang_lexer"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "bincode",
  "clap",
  "insta",
  "itertools",
  "mylang_cli_ext",
  "mylang_token",
- "serde_json",
  "thiserror",
  "utf8-chars",
 ]

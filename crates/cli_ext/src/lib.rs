@@ -39,7 +39,7 @@ pub static FILE_FORMAT_POSSIBLE_VALUES: Lazy<Vec<PossibleValue<'static>>> = Lazy
         .collect()
 });
 
-pub fn read_from_stdin_or_file<'a>(
+pub fn reader_from_stdin_or_file<'a>(
     stdin: &'a Stdin,
     stdin_flag: bool,
     file_path: Option<&str>,
@@ -57,7 +57,18 @@ pub fn read_from_stdin_or_file<'a>(
     }
 }
 
-pub fn write_to_stdout_or_file<'a>(
+pub fn read<T>(reader: Box<dyn BufRead + '_>, input_format: &FileFormat) -> anyhow::Result<T>
+where
+    T: serde::de::DeserializeOwned,
+{
+    let value = match input_format {
+        FileFormat::Json => serde_json::from_reader(reader)?,
+        FileFormat::Binary => bincode::deserialize_from(reader)?,
+    };
+    Ok(value)
+}
+
+pub fn writer_to_stdout_or_file<'a>(
     stdout: &'a Stdout,
     stdout_flag: bool,
     file_path: Option<&str>,
@@ -73,4 +84,19 @@ pub fn write_to_stdout_or_file<'a>(
             "No output specified. You can specify either --stdout or --output"
         )),
     }
+}
+
+pub fn write<T>(
+    mut writer: Box<dyn Write + '_>,
+    output_format: &FileFormat,
+    value: &T,
+) -> anyhow::Result<()>
+where
+    T: serde::Serialize,
+{
+    match output_format {
+        FileFormat::Json => serde_json::to_writer_pretty(&mut writer, &value)?,
+        FileFormat::Binary => bincode::serialize_into(&mut writer, &value)?,
+    }
+    Ok(())
 }

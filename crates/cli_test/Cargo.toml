@@ -1,0 +1,9 @@
+[package]
+name = "mylang_cli_test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.54"
+clap = { version = "3.1.0", features = ["derive"] }
+mylang_cli_ext = { path = "../cli_ext" }

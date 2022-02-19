@@ -423,6 +423,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "mylang_cli_test"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "mylang_cli_ext",
+]
+
+[[package]]
 name = "mylang_lexer"
 version = "0.1.0"
 dependencies = [

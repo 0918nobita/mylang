@@ -33,25 +33,28 @@ where
         if let Some((pos, c)) = self.iter.next() {
             let (next_state, results) = transition(&state, (pos, c));
             self.state = Some(next_state);
-            Some(results)
-        } else {
-            match state {
-                State::Initial => {
-                    self.state = None;
-                    None
-                }
-                State::I32(i32_state) => {
-                    self.state = None;
-                    Some(vec![Ok(i32_state.tokenize())])
-                }
-                State::Str(str_state) => {
-                    self.state = None;
-                    Some(vec![Err(LexErr::MissingClosingQuoteForStr(str_state.end))])
-                }
-                State::Symbol(symbol_state) => {
-                    self.state = None;
-                    Some(vec![Ok(symbol_state.tokenize())])
-                }
+            return Some(results);
+        }
+
+        match state {
+            State::Initial => {
+                self.state = None;
+                None
+            }
+
+            State::I32(i32_state) => {
+                self.state = None;
+                Some(vec![Ok(i32_state.tokenize())])
+            }
+
+            State::Str(str_state) => {
+                self.state = None;
+                Some(vec![Err(LexErr::MissingClosingQuoteForStr(str_state.end))])
+            }
+
+            State::Symbol(symbol_state) => {
+                self.state = None;
+                Some(vec![Ok(symbol_state.tokenize())])
             }
         }
     }

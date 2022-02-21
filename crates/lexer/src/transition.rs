@@ -41,8 +41,8 @@ pub fn transition(state: &State, pos_c: (Pos, char)) -> (State, Vec<LexResult<To
             StrLexResult::Err(str_state, err) => (State::Str(str_state), vec![Err(err)]),
         },
 
-        State::Symbol(keyword_state) => match symbol_lex(keyword_state, pos_c.clone()) {
-            SymbolLexResult::Continued(keyword_state) => (State::Symbol(keyword_state), vec![]),
+        State::Symbol(symbol_state) => match symbol_lex(symbol_state, pos_c.clone()) {
+            SymbolLexResult::Continued(symbol_state) => (State::Symbol(symbol_state), vec![]),
 
             SymbolLexResult::Interrupted(prev_token) => {
                 let mut results = vec![Ok(prev_token)];

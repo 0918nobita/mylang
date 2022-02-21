@@ -48,9 +48,9 @@ where
                     self.state = None;
                     Some(vec![Err(LexErr::MissingClosingQuoteForStr(str_state.end))])
                 }
-                State::Symbol(keyword_state) => {
+                State::Symbol(symbol_state) => {
                     self.state = None;
-                    Some(vec![Ok(keyword_state.tokenize())])
+                    Some(vec![Ok(symbol_state.tokenize())])
                 }
             }
         }

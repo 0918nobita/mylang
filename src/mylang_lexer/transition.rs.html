@@ -101,8 +101,8 @@
             <span class="ident">StrLexResult::Err</span>(<span class="ident">str_state</span>, <span class="ident">err</span>) =&gt; (<span class="ident">State::Str</span>(<span class="ident">str_state</span>), <span class="macro">vec!</span>[<span class="prelude-val">Err</span>(<span class="ident">err</span>)]),
         },
 
-        <span class="ident">State::Symbol</span>(<span class="ident">keyword_state</span>) =&gt; <span class="kw">match</span> <span class="ident">symbol_lex</span>(<span class="ident">keyword_state</span>, <span class="ident">pos_c</span>.<span class="ident">clone</span>()) {
-            <span class="ident">SymbolLexResult::Continued</span>(<span class="ident">keyword_state</span>) =&gt; (<span class="ident">State::Symbol</span>(<span class="ident">keyword_state</span>), <span class="macro">vec!</span>[]),
+        <span class="ident">State::Symbol</span>(<span class="ident">symbol_state</span>) =&gt; <span class="kw">match</span> <span class="ident">symbol_lex</span>(<span class="ident">symbol_state</span>, <span class="ident">pos_c</span>.<span class="ident">clone</span>()) {
+            <span class="ident">SymbolLexResult::Continued</span>(<span class="ident">symbol_state</span>) =&gt; (<span class="ident">State::Symbol</span>(<span class="ident">symbol_state</span>), <span class="macro">vec!</span>[]),
 
             <span class="ident">SymbolLexResult::Interrupted</span>(<span class="ident">prev_token</span>) =&gt; {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">results</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="prelude-val">Ok</span>(<span class="ident">prev_token</span>)];

@@ -13,4 +13,4 @@ mylang_cli_ext = { path = "../cli_ext" }
 mylang_token = { path = "../token" }
 
 [dev-dependencies]
-insta = "1.12.0"
+insta = "1.13.0"

@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0.56"
 bincode = "1.3.3"
-clap = { version = "3.1.6", features = ["derive"] }
+clap = { version = "3.1.7", features = ["derive"] }
 once_cell = "1.10.0"
 serde = "1.0.136"
 serde_json = "1.0.79"

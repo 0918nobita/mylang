@@ -5,7 +5,7 @@ edition = "2021"
 description = "Compiler implementation for mylang that converts AST to bytecode"
 
 [dependencies]
-anyhow = "1.0.56"
+anyhow = "1.0.57"
 clap = { version = "3.1.8", features = ["cargo"] }
 mylang_ast = { path = "../ast" }
 mylang_bytecode = { path = "../bytecode" }

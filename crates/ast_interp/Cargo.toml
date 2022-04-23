@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.57"
-clap = { version = "3.1.8", features = ["cargo"] }
+clap = { version = "3.1.12", features = ["cargo"] }
 mylang_ast = { path = "../ast" }
 mylang_cli_ext = { path = "../cli_ext" }
 mylang_token = { path = "../token" }

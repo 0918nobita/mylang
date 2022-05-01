@@ -10,7 +10,7 @@ clap = { version = "3.1.12", features = ["cargo"] }
 mylang_bytecode = { path = "../bytecode" }
 mylang_cli_ext = { path = "../cli_ext" }
 serde_json = "1.0.79"
-thiserror = "1.0.30"
+thiserror = "1.0.31"
 
 [dev-dependencies]
 insta = "1.14.0"

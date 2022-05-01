@@ -9,7 +9,7 @@ clap = { version = "3.1.12", features = ["cargo"] }
 mylang_ast = { path = "../ast" }
 mylang_cli_ext = { path = "../cli_ext" }
 mylang_token = { path = "../token" }
-thiserror = "1.0.30"
+thiserror = "1.0.31"
 
 [dev-dependencies]
 insta = "1.14.0"

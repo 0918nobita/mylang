@@ -9,10 +9,10 @@ specifiers:
   eslint: 8.15.0
   prettier: 2.6.2
   typescript: 4.6.4
-  vscode-languageclient: 7.0.0
+  vscode-languageclient: 8.0.1
 
 dependencies:
-  vscode-languageclient: 7.0.0
+  vscode-languageclient: 8.0.1
 
 devDependencies:
   '@types/node': 17.0.14
@@ -1084,29 +1084,29 @@ packages:
     resolution: {integrity: sha512-l8lCEmLcLYZh4nbunNZvQCJc5pv7+RCwa8q/LdUx8u7lsWvPDKmpodJAJNwkAhJC//dFY48KuIEmjtd4RViDrA==}
     dev: true
 
-  /vscode-jsonrpc/6.0.0:
-    resolution: {integrity: sha512-wnJA4BnEjOSyFMvjZdpiOwhSq9uDoK8e/kpRJDTaMYzwlkrhG1fwDIZI94CLsLzlCK5cIbMMtFlJlfR57Lavmg==}
-    engines: {node: '>=8.0.0 || >=10.0.0'}
+  /vscode-jsonrpc/8.0.1:
+    resolution: {integrity: sha512-N/WKvghIajmEvXpatSzvTvOIz61ZSmOSa4BRA4pTLi+1+jozquQKP/MkaylP9iB68k73Oua1feLQvH3xQuigiQ==}
+    engines: {node: '>=14.0.0'}
     dev: false
 
-  /vscode-languageclient/7.0.0:
-    resolution: {integrity: sha512-P9AXdAPlsCgslpP9pRxYPqkNYV7Xq8300/aZDpO35j1fJm/ncize8iGswzYlcvFw5DQUx4eVk+KvfXdL0rehNg==}
-    engines: {vscode: ^1.52.0}
+  /vscode-languageclient/8.0.1:
+    resolution: {integrity: sha512-9XoE+HJfaWvu7Y75H3VmLo5WLCtsbxEgEhrLPqwt7eyoR49lUIyyrjb98Yfa50JCMqF2cePJAEVI6oe2o1sIhw==}
+    engines: {vscode: ^1.67.0}
     dependencies:
       minimatch: 3.1.2
       semver: 7.3.7
-      vscode-languageserver-protocol: 3.16.0
+      vscode-languageserver-protocol: 3.17.1
     dev: false
 
-  /vscode-languageserver-protocol/3.16.0:
-    resolution: {integrity: sha512-sdeUoAawceQdgIfTI+sdcwkiK2KU+2cbEYA0agzM2uqaUy2UpnnGHtWTHVEtS0ES4zHU0eMFRGN+oQgDxlD66A==}
+  /vscode-languageserver-protocol/3.17.1:
+    resolution: {integrity: sha512-BNlAYgQoYwlSgDLJhSG+DeA8G1JyECqRzM2YO6tMmMji3Ad9Mw6AW7vnZMti90qlAKb0LqAlJfSVGEdqMMNzKg==}
     dependencies:
-      vscode-jsonrpc: 6.0.0
-      vscode-languageserver-types: 3.16.0
+      vscode-jsonrpc: 8.0.1
+      vscode-languageserver-types: 3.17.1
     dev: false
 
-  /vscode-languageserver-types/3.16.0:
-    resolution: {integrity: sha512-k8luDIWJWyenLc5ToFQQMaSrqCHiLwyKPHKPQZ5zz21vM+vIVUSvsRpcbiECH4WR88K2XZqc4ScRcZ7nk/jbeA==}
+  /vscode-languageserver-types/3.17.1:
+    resolution: {integrity: sha512-K3HqVRPElLZVVPtMeKlsyL9aK0GxGQpvtAUTfX4k7+iJ4mc1M+JM+zQwkgGy2LzY0f0IAafe8MKqIkJrxfGGjQ==}
     dev: false
 
   /which/2.0.2:

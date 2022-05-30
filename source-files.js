@@ -1,4 +1,4 @@
-var N = null;var sourcesIndex = {};
+var sourcesIndex = {};
 sourcesIndex["mylang_ast"] = {"name":"","files":["expr.rs","lib.rs","stmt.rs"]};
 sourcesIndex["mylang_ast_interp"] = {"name":"","files":["entity.rs","lib.rs"]};
 sourcesIndex["mylang_bytecode"] = {"name":"","files":["lib.rs"]};

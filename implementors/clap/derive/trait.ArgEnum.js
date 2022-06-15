@@ -1,3 +1,0 @@
-(function() {var implementors = {};
-implementors["mylang_cli_ext"] = [{"text":"impl ArgEnum for <a class=\"enum\" href=\"mylang_cli_ext/enum.FileFormat.html\" title=\"enum mylang_cli_ext::FileFormat\">FileFormat</a>","synthetic":false,"types":["mylang_cli_ext::FileFormat"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

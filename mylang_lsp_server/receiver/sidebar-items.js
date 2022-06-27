@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Receiver","言語クライアントからのメッセージを受け取るアクター"]]});
+window.SIDEBAR_ITEMS = {"struct":[["Receiver","言語クライアントからのメッセージを受け取るアクター"]]};

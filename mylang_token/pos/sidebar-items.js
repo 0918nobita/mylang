@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Pos","ソースコード上の位置"]]});
+window.SIDEBAR_ITEMS = {"struct":[["Pos","ソースコード上の位置"]]};

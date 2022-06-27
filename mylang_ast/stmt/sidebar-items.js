@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Stmt","文を表す抽象構文木"]]});
+window.SIDEBAR_ITEMS = {"enum":[["Stmt","文を表す抽象構文木"]]};

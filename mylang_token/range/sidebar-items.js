@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Range","ソースコード中の範囲"]]});
+window.SIDEBAR_ITEMS = {"struct":[["Range","ソースコード中の範囲"]]};

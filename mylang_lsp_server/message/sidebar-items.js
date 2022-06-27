@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["LspMessage",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["LspMessage",""]]};

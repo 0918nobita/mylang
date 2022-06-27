@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["StrState",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["StrState",""]]};

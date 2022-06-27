@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["I32State",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["I32State",""]]};

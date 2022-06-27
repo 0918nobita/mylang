@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["MatchesWithOutput",""],["ParserWithOutput",""]],"trait":[["WithOutputExt",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["MatchesWithOutput",""],["ParserWithOutput",""]],"trait":[["WithOutputExt",""]]};

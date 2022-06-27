@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["Locatable","ソースコード上で対応する範囲が特定できることを表現するトレイト"]]});
+window.SIDEBAR_ITEMS = {"trait":[["Locatable","ソースコード上で対応する範囲が特定できることを表現するトレイト"]]};

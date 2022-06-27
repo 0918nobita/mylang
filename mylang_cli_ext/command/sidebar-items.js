@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["CommandFromParser",""]],"trait":[["CommandFromParserExt",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["CommandFromParser",""]],"trait":[["CommandFromParserExt",""]]};

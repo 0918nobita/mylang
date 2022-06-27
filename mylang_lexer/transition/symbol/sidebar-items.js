@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["SymbolLexResult",""]],"fn":[["symbol_lex",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["SymbolLexResult",""]],"fn":[["symbol_lex",""]]};

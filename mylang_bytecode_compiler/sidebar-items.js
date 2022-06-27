@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["ast_to_bytecode",""],["expr_to_bytecode",""],["stmt_to_bytecode",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["ast_to_bytecode",""],["expr_to_bytecode",""],["stmt_to_bytecode",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Expr","式を表す抽象構文木"]]});
+window.SIDEBAR_ITEMS = {"enum":[["Expr","式を表す抽象構文木"]]};

@@ -5,5 +5,5 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.58"
-clap = { version = "3.2.13", features = ["derive"] }
+clap = { version = "3.2.14", features = ["derive"] }
 mylang_cli_ext = { path = "../cli_ext" }

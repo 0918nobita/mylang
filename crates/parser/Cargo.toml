@@ -13,4 +13,4 @@ mylang_ast = { path = "../ast" }
 mylang_cli_ext = { path = "../cli_ext" }
 mylang_token = { path = "../token" }
 serde_json = "1.0.82"
-thiserror = "1.0.31"
+thiserror = "1.0.32"

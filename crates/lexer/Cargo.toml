@@ -5,7 +5,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-anyhow = "1.0.59"
+anyhow = "1.0.60"
 clap = { version = "3.2.16", features = ["cargo", "derive"] }
 itertools = "0.10.3"
 mylang_cli_ext = { path = "../cli_ext" }

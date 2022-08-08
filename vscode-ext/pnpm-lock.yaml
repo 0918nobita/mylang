@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@types/node': 17.0.14
-  '@types/vscode': 1.69.0
+  '@types/vscode': 1.70.0
   '@typescript-eslint/eslint-plugin': 5.32.0
   '@typescript-eslint/parser': 5.32.0
   esbuild: 0.14.53
@@ -16,7 +16,7 @@ dependencies:
 
 devDependencies:
   '@types/node': 17.0.14
-  '@types/vscode': 1.69.0
+  '@types/vscode': 1.70.0
   '@typescript-eslint/eslint-plugin': 5.32.0_iosr3hrei2tubxveewluhu5lhy
   '@typescript-eslint/parser': 5.32.0_qugx7qdu5zevzvxaiqyxfiwquq
   esbuild: 0.14.53
@@ -100,8 +100,8 @@ packages:
     resolution: {integrity: sha512-SbjLmERksKOGzWzPNuW7fJM7fk3YXVTFiZWB/Hs99gwhk+/dnrQRPBQjPW9aO+fi1tAffi9PrwFvsmOKmDTyng==}
     dev: true
 
-  /@types/vscode/1.69.0:
-    resolution: {integrity: sha512-RlzDAnGqUoo9wS6d4tthNyAdZLxOIddLiX3djMoWk29jFfSA1yJbIwr0epBYqqYarWB6s2Z+4VaZCQ80Jaa3kA==}
+  /@types/vscode/1.70.0:
+    resolution: {integrity: sha512-3/9Fz0F2eBgwciazc94Ien+9u1elnjFg9YAhvAb3qDy/WeFWD9VrOPU7CIytryOVUdbxus8uzL4VZYONA0gDtA==}
     dev: true
 
   /@typescript-eslint/eslint-plugin/5.32.0_iosr3hrei2tubxveewluhu5lhy:

@@ -14,4 +14,4 @@ thiserror = "1.0.32"
 utf8-chars = "2.0.2"
 
 [dev-dependencies]
-insta = "1.17.2"
+insta = "1.18.0"

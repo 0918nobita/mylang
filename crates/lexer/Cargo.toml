@@ -10,7 +10,7 @@ clap = { version = "3.2.16", features = ["cargo", "derive"] }
 itertools = "0.10.3"
 mylang_cli_ext = { path = "../cli_ext" }
 mylang_token = { path = "../token" }
-thiserror = "1.0.32"
+thiserror = "1.0.37"
 utf8-chars = "2.0.2"
 
 [dev-dependencies]

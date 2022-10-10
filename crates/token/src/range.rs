@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use super::pos::Pos;
 
 /// ソースコード中の範囲
-#[derive(Clone, Default, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Default, Eq, PartialEq, Serialize, Deserialize)]
 pub struct Range {
     /// 始端
     start: Pos,

@@ -3,7 +3,7 @@ use std::fmt;
 use serde::{Deserialize, Serialize};
 
 /// ソースコード上の位置
-#[derive(Clone, Default, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Default, Eq, PartialEq, Serialize, Deserialize)]
 pub struct Pos {
     /// 行番号
     line: u32,

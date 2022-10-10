@@ -20,8 +20,8 @@
   "devDependencies": {
     "@types/node": "17.0.14",
     "@types/vscode": "1.72.0",
-    "@typescript-eslint/eslint-plugin": "5.36.2",
-    "@typescript-eslint/parser": "5.36.2",
+    "@typescript-eslint/eslint-plugin": "5.40.0",
+    "@typescript-eslint/parser": "5.40.0",
     "esbuild": "0.15.10",
     "eslint": "8.25.0",
     "prettier": "2.7.1",

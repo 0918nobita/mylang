@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/lexer/src/transition.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>transition.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../mylang_lexer/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../mylang_lexer/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../mylang_lexer/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/lexer/src/transition.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>transition.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><a class="sidebar-logo" href="../../mylang_lexer/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../mylang_lexer/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -53,60 +53,60 @@
 <span id="53">53</span>
 <span id="54">54</span>
 <span id="55">55</span>
-</pre><pre class="rust"><code><span class="doccomment">//! 字句解析器内部の状態遷移の実装</span>
+</pre><pre class="rust"><code><span class="doccomment">//! 字句解析器内部の状態遷移の実装
 
-<span class="kw">mod</span> <span class="ident">i32</span>;
-<span class="kw">mod</span> <span class="ident">initial</span>;
-<span class="kw">mod</span> <span class="ident">str</span>;
-<span class="kw">mod</span> <span class="ident">symbol</span>;
+</span><span class="kw">mod </span>i32;
+<span class="kw">mod </span>initial;
+<span class="kw">mod </span>str;
+<span class="kw">mod </span>symbol;
 
-<span class="kw">use</span> <span class="ident">mylang_token</span>::{<span class="ident">Pos</span>, <span class="ident">Token</span>};
+<span class="kw">use </span>mylang_token::{Pos, Token};
 
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">state::State</span>,
-    <span class="ident">transition</span>::{
-        <span class="ident">i32</span>::{<span class="ident">i32_lex</span>, <span class="ident">I32LexResult</span>},
-        <span class="ident">initial::initial_lex</span>,
-        <span class="ident">str</span>::{<span class="ident">str_lex</span>, <span class="ident">StrLexResult</span>},
-        <span class="ident">symbol</span>::{<span class="ident">symbol_lex</span>, <span class="ident">SymbolLexResult</span>},
+<span class="kw">use crate</span>::{
+    state::State,
+    transition::{
+        i32::{i32_lex, I32LexResult},
+        initial::initial_lex,
+        str::{str_lex, StrLexResult},
+        symbol::{symbol_lex, SymbolLexResult},
     },
-    <span class="ident">LexResult</span>,
+    LexResult,
 };
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">transition</span>(<span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="ident">State</span>, <span class="ident">pos_c</span>: (<span class="ident">Pos</span>, <span class="ident">char</span>)) -&gt; (<span class="ident">State</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">LexResult</span><span class="op">&lt;</span><span class="ident">Token</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
-    <span class="kw">match</span> <span class="ident">state</span> {
-        <span class="ident">State::Initial</span> =&gt; <span class="ident">initial_lex</span>(<span class="ident">pos_c</span>),
+<span class="kw">pub fn </span>transition(state: <span class="kw-2">&amp;</span>State, pos_c: (Pos, char)) -&gt; (State, Vec&lt;LexResult&lt;Token&gt;&gt;) {
+    <span class="kw">match </span>state {
+        State::Initial =&gt; initial_lex(pos_c),
 
-        <span class="ident">State::I32</span>(<span class="ident">i32_state</span>) =&gt; <span class="kw">match</span> <span class="ident">i32_lex</span>(<span class="ident">i32_state</span>, <span class="ident">pos_c</span>.<span class="ident">clone</span>()) {
-            <span class="ident">I32LexResult::Continued</span>(<span class="ident">i32_state</span>) =&gt; (<span class="ident">State::I32</span>(<span class="ident">i32_state</span>), <span class="macro">vec!</span>[]),
+        State::I32(i32_state) =&gt; <span class="kw">match </span>i32_lex(i32_state, pos_c.clone()) {
+            I32LexResult::Continued(i32_state) =&gt; (State::I32(i32_state), <span class="macro">vec!</span>[]),
 
-            <span class="ident">I32LexResult::Interrupted</span>(<span class="ident">token</span>) =&gt; {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">results</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="prelude-val">Ok</span>(<span class="ident">token</span>)];
-                <span class="kw">let</span> (<span class="ident">next_state</span>, <span class="ident">next_results</span>) <span class="op">=</span> <span class="ident">initial_lex</span>(<span class="ident">pos_c</span>);
-                <span class="ident">results</span>.<span class="ident">extend</span>(<span class="ident">next_results</span>);
-                (<span class="ident">next_state</span>, <span class="ident">results</span>)
+            I32LexResult::Interrupted(token) =&gt; {
+                <span class="kw">let </span><span class="kw-2">mut </span>results = <span class="macro">vec!</span>[<span class="prelude-val">Ok</span>(token)];
+                <span class="kw">let </span>(next_state, next_results) = initial_lex(pos_c);
+                results.extend(next_results);
+                (next_state, results)
             }
         },
 
-        <span class="ident">State::Str</span>(<span class="ident">str_state</span>) =&gt; <span class="kw">match</span> <span class="ident">str_lex</span>(<span class="ident">str_state</span>, <span class="ident">pos_c</span>) {
-            <span class="ident">StrLexResult::Continued</span>(<span class="ident">str_state</span>) =&gt; (<span class="ident">State::Str</span>(<span class="ident">str_state</span>), <span class="macro">vec!</span>[]),
+        State::Str(str_state) =&gt; <span class="kw">match </span>str_lex(str_state, pos_c) {
+            StrLexResult::Continued(str_state) =&gt; (State::Str(str_state), <span class="macro">vec!</span>[]),
 
-            <span class="ident">StrLexResult::Completed</span>(<span class="ident">token</span>) =&gt; (<span class="ident">State::Initial</span>, <span class="macro">vec!</span>[<span class="prelude-val">Ok</span>(<span class="ident">token</span>)]),
+            StrLexResult::Completed(token) =&gt; (State::Initial, <span class="macro">vec!</span>[<span class="prelude-val">Ok</span>(token)]),
 
-            <span class="ident">StrLexResult::Err</span>(<span class="ident">str_state</span>, <span class="ident">err</span>) =&gt; (<span class="ident">State::Str</span>(<span class="ident">str_state</span>), <span class="macro">vec!</span>[<span class="prelude-val">Err</span>(<span class="ident">err</span>)]),
+            StrLexResult::Err(str_state, err) =&gt; (State::Str(str_state), <span class="macro">vec!</span>[<span class="prelude-val">Err</span>(err)]),
         },
 
-        <span class="ident">State::Symbol</span>(<span class="ident">symbol_state</span>) =&gt; <span class="kw">match</span> <span class="ident">symbol_lex</span>(<span class="ident">symbol_state</span>, <span class="ident">pos_c</span>.<span class="ident">clone</span>()) {
-            <span class="ident">SymbolLexResult::Continued</span>(<span class="ident">symbol_state</span>) =&gt; (<span class="ident">State::Symbol</span>(<span class="ident">symbol_state</span>), <span class="macro">vec!</span>[]),
+        State::Symbol(symbol_state) =&gt; <span class="kw">match </span>symbol_lex(symbol_state, pos_c.clone()) {
+            SymbolLexResult::Continued(symbol_state) =&gt; (State::Symbol(symbol_state), <span class="macro">vec!</span>[]),
 
-            <span class="ident">SymbolLexResult::Interrupted</span>(<span class="ident">prev_token</span>) =&gt; {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">results</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="prelude-val">Ok</span>(<span class="ident">prev_token</span>)];
-                <span class="kw">let</span> (<span class="ident">next_state</span>, <span class="ident">next_results</span>) <span class="op">=</span> <span class="ident">initial_lex</span>(<span class="ident">pos_c</span>);
-                <span class="ident">results</span>.<span class="ident">extend</span>(<span class="ident">next_results</span>);
-                (<span class="ident">next_state</span>, <span class="ident">results</span>)
+            SymbolLexResult::Interrupted(prev_token) =&gt; {
+                <span class="kw">let </span><span class="kw-2">mut </span>results = <span class="macro">vec!</span>[<span class="prelude-val">Ok</span>(prev_token)];
+                <span class="kw">let </span>(next_state, next_results) = initial_lex(pos_c);
+                results.extend(next_results);
+                (next_state, results)
             }
         },
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mylang_lexer" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0-nightly (20ffea693 2022-08-11)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mylang_lexer" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (81f391930 2022-10-09)" ></div></body></html>

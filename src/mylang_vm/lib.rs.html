@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/vm/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../mylang_vm/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../mylang_vm/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../mylang_vm/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/vm/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><a class="sidebar-logo" href="../../mylang_vm/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../mylang_vm/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -192,199 +192,199 @@
 <span id="192">192</span>
 <span id="193">193</span>
 <span id="194">194</span>
-</pre><pre class="rust"><code><span class="doccomment">//! バイトコードインタプリタ</span>
+</pre><pre class="rust"><code><span class="doccomment">//! バイトコードインタプリタ
 
-<span class="kw">mod</span> <span class="ident">entity</span>;
+</span><span class="kw">mod </span>entity;
 
-<span class="kw">use</span> <span class="ident">mylang_bytecode::Inst</span>;
-<span class="kw">use</span> <span class="ident">thiserror::Error</span>;
+<span class="kw">use </span>mylang_bytecode::Inst;
+<span class="kw">use </span>thiserror::Error;
 
-<span class="kw">use</span> <span class="ident">entity</span>::{<span class="ident">Entity</span>, <span class="ident">I32Entity</span>, <span class="ident">RuntimeTypeInfo</span>, <span class="ident">StrEntity</span>};
+<span class="kw">use </span>entity::{Entity, I32Entity, RuntimeTypeInfo, StrEntity};
 
-<span class="doccomment">/// バイトコードインタプリタで発生するエラー</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Error</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">VMError</span> {
-    <span class="doccomment">/// スタックが空であり、値をスタックから取り出せなかった</span>
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Stack underflow ({0})&quot;</span>)]</span>
-    <span class="ident">StackUnderflow</span>(<span class="ident">String</span>),
+<span class="doccomment">/// バイトコードインタプリタで発生するエラー
+</span><span class="attribute">#[derive(Debug, Error)]
+</span><span class="kw">pub enum </span>VMError {
+    <span class="doccomment">/// スタックが空であり、値をスタックから取り出せなかった
+    </span><span class="attribute">#[error(<span class="string">&quot;Stack underflow ({0})&quot;</span>)]
+    </span>StackUnderflow(String),
 
-    <span class="doccomment">/// 取り出した値が、期待した型の値ではなかった</span>
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Type mismatch (expected: {expected}, actual: {actual})&quot;</span>)]</span>
-    <span class="ident">TypeMismatch</span> {
-        <span class="ident">expected</span>: <span class="ident">RuntimeTypeInfo</span>,
-        <span class="ident">actual</span>: <span class="ident">RuntimeTypeInfo</span>,
+    <span class="doccomment">/// 取り出した値が、期待した型の値ではなかった
+    </span><span class="attribute">#[error(<span class="string">&quot;Type mismatch (expected: {expected}, actual: {actual})&quot;</span>)]
+    </span>TypeMismatch {
+        expected: RuntimeTypeInfo,
+        actual: RuntimeTypeInfo,
     },
 }
 
-<span class="doccomment">/// バイトコードの実行結果</span>
-<span class="kw">type</span> <span class="ident">VMResult</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">VMError</span><span class="op">&gt;</span>;
+<span class="doccomment">/// バイトコードの実行結果
+</span><span class="kw">type </span>VMResult&lt;T&gt; = <span class="prelude-ty">Result</span>&lt;T, VMError&gt;;
 
-<span class="doccomment">/// I32Const 命令を実行する</span>
-<span class="kw">fn</span> <span class="ident">i32_const</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Entity</span><span class="op">&gt;</span>, <span class="ident">immediate</span>: <span class="ident">i32</span>) {
-    <span class="ident">stack</span>.<span class="ident">push</span>(<span class="ident">Entity::I32</span>(<span class="ident">I32Entity::new</span>(<span class="ident">immediate</span>)));
+<span class="doccomment">/// I32Const 命令を実行する
+</span><span class="kw">fn </span>i32_const(stack: <span class="kw-2">&amp;mut </span>Vec&lt;Entity&gt;, immediate: i32) {
+    stack.push(Entity::I32(I32Entity::new(immediate)));
 }
 
-<span class="doccomment">/// I32Add 命令を実行する</span>
-<span class="kw">fn</span> <span class="ident">i32_add</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Entity</span><span class="op">&gt;</span>) -&gt; <span class="ident">VMResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">lhs</span> <span class="op">=</span> <span class="ident">stack</span>.<span class="ident">pop</span>().<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
-        <span class="ident">VMError::StackUnderflow</span>(<span class="string">&quot;Failed to get left-hand side of the addition&quot;</span>.<span class="ident">to_owned</span>())
+<span class="doccomment">/// I32Add 命令を実行する
+</span><span class="kw">fn </span>i32_add(stack: <span class="kw-2">&amp;mut </span>Vec&lt;Entity&gt;) -&gt; VMResult&lt;()&gt; {
+    <span class="kw">let </span>lhs = stack.pop().ok_or_else(|| {
+        VMError::StackUnderflow(<span class="string">&quot;Failed to get left-hand side of the addition&quot;</span>.to_owned())
     })<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">rhs</span> <span class="op">=</span> <span class="ident">stack</span>.<span class="ident">pop</span>().<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
-        <span class="ident">VMError::StackUnderflow</span>(<span class="string">&quot;Failed to get right-hand side of the addition&quot;</span>.<span class="ident">to_owned</span>())
+    <span class="kw">let </span>rhs = stack.pop().ok_or_else(|| {
+        VMError::StackUnderflow(<span class="string">&quot;Failed to get right-hand side of the addition&quot;</span>.to_owned())
     })<span class="question-mark">?</span>;
 
-    <span class="kw">let</span> <span class="ident">lhs</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">lhs</span> {
-        <span class="ident">Entity::I32</span>(<span class="ident">i32_entity</span>) =&gt; <span class="ident">i32_entity</span>,
-        <span class="kw">_</span> =&gt; {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">VMError::TypeMismatch</span> {
-                <span class="ident">expected</span>: <span class="ident">RuntimeTypeInfo::I32</span>,
-                <span class="ident">actual</span>: <span class="ident">lhs</span>.<span class="ident">get_type</span>(),
+    <span class="kw">let </span>lhs = <span class="kw">match </span>lhs {
+        Entity::I32(i32_entity) =&gt; i32_entity,
+        <span class="kw">_ </span>=&gt; {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(VMError::TypeMismatch {
+                expected: RuntimeTypeInfo::I32,
+                actual: lhs.get_type(),
             })
         }
     };
 
-    <span class="kw">let</span> <span class="ident">rhs</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">rhs</span> {
-        <span class="ident">Entity::I32</span>(<span class="ident">i32_entity</span>) =&gt; <span class="ident">i32_entity</span>,
-        <span class="kw">_</span> =&gt; {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">VMError::TypeMismatch</span> {
-                <span class="ident">expected</span>: <span class="ident">RuntimeTypeInfo::I32</span>,
-                <span class="ident">actual</span>: <span class="ident">rhs</span>.<span class="ident">get_type</span>(),
+    <span class="kw">let </span>rhs = <span class="kw">match </span>rhs {
+        Entity::I32(i32_entity) =&gt; i32_entity,
+        <span class="kw">_ </span>=&gt; {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(VMError::TypeMismatch {
+                expected: RuntimeTypeInfo::I32,
+                actual: rhs.get_type(),
             })
         }
     };
 
-    <span class="ident">stack</span>.<span class="ident">push</span>(<span class="ident">Entity::I32</span>(<span class="ident">lhs</span>.<span class="ident">add</span>(<span class="kw-2">&amp;</span><span class="ident">rhs</span>)));
+    stack.push(Entity::I32(lhs.add(<span class="kw-2">&amp;</span>rhs)));
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="doccomment">/// StrConst 命令を実行する</span>
-<span class="kw">fn</span> <span class="ident">str_const</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Entity</span><span class="op">&gt;</span>, <span class="ident">immediate</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-    <span class="ident">stack</span>.<span class="ident">push</span>(<span class="ident">Entity::Str</span>(<span class="ident">StrEntity::new</span>(<span class="ident">immediate</span>.<span class="ident">to_owned</span>())));
+<span class="doccomment">/// StrConst 命令を実行する
+</span><span class="kw">fn </span>str_const(stack: <span class="kw-2">&amp;mut </span>Vec&lt;Entity&gt;, immediate: <span class="kw-2">&amp;</span>str) {
+    stack.push(Entity::Str(StrEntity::new(immediate.to_owned())));
 }
 
-<span class="doccomment">/// PrintI32 命令を実行する</span>
-<span class="kw">fn</span> <span class="ident">print_i32</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Entity</span><span class="op">&gt;</span>) -&gt; <span class="ident">VMResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">ent</span> <span class="op">=</span> <span class="ident">stack</span>
-        .<span class="ident">pop</span>()
-        .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">VMError::StackUnderflow</span>(<span class="string">&quot;Failed to get the entity to output&quot;</span>.<span class="ident">to_owned</span>()))<span class="question-mark">?</span>;
+<span class="doccomment">/// PrintI32 命令を実行する
+</span><span class="kw">fn </span>print_i32(stack: <span class="kw-2">&amp;mut </span>Vec&lt;Entity&gt;) -&gt; VMResult&lt;()&gt; {
+    <span class="kw">let </span>ent = stack
+        .pop()
+        .ok_or_else(|| VMError::StackUnderflow(<span class="string">&quot;Failed to get the entity to output&quot;</span>.to_owned()))<span class="question-mark">?</span>;
 
-    <span class="kw">let</span> <span class="ident">ent</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">ent</span> {
-        <span class="ident">Entity::I32</span>(<span class="ident">i32_entity</span>) =&gt; <span class="ident">i32_entity</span>,
-        <span class="kw">_</span> =&gt; {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">VMError::TypeMismatch</span> {
-                <span class="ident">expected</span>: <span class="ident">RuntimeTypeInfo::I32</span>,
-                <span class="ident">actual</span>: <span class="ident">ent</span>.<span class="ident">get_type</span>(),
+    <span class="kw">let </span>ent = <span class="kw">match </span>ent {
+        Entity::I32(i32_entity) =&gt; i32_entity,
+        <span class="kw">_ </span>=&gt; {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(VMError::TypeMismatch {
+                expected: RuntimeTypeInfo::I32,
+                actual: ent.get_type(),
             })
         }
     };
 
-    <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">ent</span>);
+    <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, ent);
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="doccomment">/// PrintStr 命令を実行する</span>
-<span class="kw">fn</span> <span class="ident">print_str</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Entity</span><span class="op">&gt;</span>) -&gt; <span class="ident">VMResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">ent</span> <span class="op">=</span> <span class="ident">stack</span>
-        .<span class="ident">pop</span>()
-        .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">VMError::StackUnderflow</span>(<span class="string">&quot;Failed to get entity&quot;</span>.<span class="ident">to_owned</span>()))<span class="question-mark">?</span>;
+<span class="doccomment">/// PrintStr 命令を実行する
+</span><span class="kw">fn </span>print_str(stack: <span class="kw-2">&amp;mut </span>Vec&lt;Entity&gt;) -&gt; VMResult&lt;()&gt; {
+    <span class="kw">let </span>ent = stack
+        .pop()
+        .ok_or_else(|| VMError::StackUnderflow(<span class="string">&quot;Failed to get entity&quot;</span>.to_owned()))<span class="question-mark">?</span>;
 
-    <span class="kw">let</span> <span class="ident">ent</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">ent</span> {
-        <span class="ident">Entity::Str</span>(<span class="ident">str_entity</span>) =&gt; <span class="ident">str_entity</span>,
-        <span class="kw">_</span> =&gt; {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">VMError::TypeMismatch</span> {
-                <span class="ident">expected</span>: <span class="ident">RuntimeTypeInfo::Str</span>,
-                <span class="ident">actual</span>: <span class="ident">ent</span>.<span class="ident">get_type</span>(),
+    <span class="kw">let </span>ent = <span class="kw">match </span>ent {
+        Entity::Str(str_entity) =&gt; str_entity,
+        <span class="kw">_ </span>=&gt; {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(VMError::TypeMismatch {
+                expected: RuntimeTypeInfo::Str,
+                actual: ent.get_type(),
             })
         }
     };
 
-    <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">ent</span>);
+    <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, ent);
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="kw">fn</span> <span class="ident">call</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Entity</span><span class="op">&gt;</span>, <span class="ident">pc</span>: <span class="kw-2">&amp;mut</span> <span class="ident">usize</span>, <span class="ident">addr</span>: <span class="ident">usize</span>) -&gt; <span class="ident">VMResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="ident">stack</span>.<span class="ident">push</span>(<span class="ident">Entity::Addr</span>(<span class="kw-2">*</span><span class="ident">pc</span> <span class="op">+</span> <span class="number">1</span>));
-    <span class="kw-2">*</span><span class="ident">pc</span> <span class="op">=</span> <span class="ident">addr</span>;
+<span class="kw">fn </span>call(stack: <span class="kw-2">&amp;mut </span>Vec&lt;Entity&gt;, pc: <span class="kw-2">&amp;mut </span>usize, addr: usize) -&gt; VMResult&lt;()&gt; {
+    stack.push(Entity::Addr(<span class="kw-2">*</span>pc + <span class="number">1</span>));
+    <span class="kw-2">*</span>pc = addr;
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="kw">fn</span> <span class="ident">ret</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Entity</span><span class="op">&gt;</span>, <span class="ident">pc</span>: <span class="kw-2">&amp;mut</span> <span class="ident">usize</span>) -&gt; <span class="ident">VMResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">stack</span>
-        .<span class="ident">pop</span>()
-        .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">VMError::StackUnderflow</span>(<span class="string">&quot;Failed to get return address&quot;</span>.<span class="ident">to_owned</span>()))<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">addr</span> {
-        <span class="ident">Entity::Addr</span>(<span class="ident">addr</span>) =&gt; <span class="ident">addr</span>,
-        <span class="kw">_</span> =&gt; {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">VMError::TypeMismatch</span> {
-                <span class="ident">expected</span>: <span class="ident">RuntimeTypeInfo::Addr</span>,
-                <span class="ident">actual</span>: <span class="ident">addr</span>.<span class="ident">get_type</span>(),
+<span class="kw">fn </span>ret(stack: <span class="kw-2">&amp;mut </span>Vec&lt;Entity&gt;, pc: <span class="kw-2">&amp;mut </span>usize) -&gt; VMResult&lt;()&gt; {
+    <span class="kw">let </span>addr = stack
+        .pop()
+        .ok_or_else(|| VMError::StackUnderflow(<span class="string">&quot;Failed to get return address&quot;</span>.to_owned()))<span class="question-mark">?</span>;
+    <span class="kw">let </span>addr = <span class="kw">match </span>addr {
+        Entity::Addr(addr) =&gt; addr,
+        <span class="kw">_ </span>=&gt; {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(VMError::TypeMismatch {
+                expected: RuntimeTypeInfo::Addr,
+                actual: addr.get_type(),
             })
         }
     };
 
-    <span class="kw-2">*</span><span class="ident">pc</span> <span class="op">=</span> <span class="ident">addr</span>;
+    <span class="kw-2">*</span>pc = addr;
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="doccomment">/// バイトコードを解釈実行する</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">execute</span>(<span class="ident">insts</span>: <span class="kw-2">&amp;</span>[<span class="ident">Inst</span>]) -&gt; <span class="ident">VMResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stack</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">Entity</span><span class="op">&gt;</span><span class="ident">::new</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pc</span> <span class="op">=</span> <span class="number">0</span>;
-    <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">insts</span>.<span class="ident">len</span>();
+<span class="doccomment">/// バイトコードを解釈実行する
+</span><span class="kw">pub fn </span>execute(insts: <span class="kw-2">&amp;</span>[Inst]) -&gt; VMResult&lt;()&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>stack = Vec::&lt;Entity&gt;::new();
+    <span class="kw">let </span><span class="kw-2">mut </span>pc = <span class="number">0</span>;
+    <span class="kw">let </span>len = insts.len();
 
-    <span class="kw">while</span> <span class="ident">pc</span> <span class="op">&lt;</span> <span class="ident">len</span> {
-        <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">insts</span>[<span class="ident">pc</span>] {
-            <span class="ident">Inst::I32Const</span>(<span class="ident">i</span>) =&gt; <span class="ident">i32_const</span>(<span class="kw-2">&amp;mut</span> <span class="ident">stack</span>, <span class="kw-2">*</span><span class="ident">i</span>),
+    <span class="kw">while </span>pc &lt; len {
+        <span class="kw">match </span><span class="kw-2">&amp;</span>insts[pc] {
+            Inst::I32Const(i) =&gt; i32_const(<span class="kw-2">&amp;mut </span>stack, <span class="kw-2">*</span>i),
 
-            <span class="ident">Inst::I32Add</span> =&gt; <span class="ident">i32_add</span>(<span class="kw-2">&amp;mut</span> <span class="ident">stack</span>)<span class="question-mark">?</span>,
+            Inst::I32Add =&gt; i32_add(<span class="kw-2">&amp;mut </span>stack)<span class="question-mark">?</span>,
 
-            <span class="ident">Inst::StrConst</span>(<span class="ident">s</span>) =&gt; <span class="ident">str_const</span>(<span class="kw-2">&amp;mut</span> <span class="ident">stack</span>, <span class="ident">s</span>),
+            Inst::StrConst(s) =&gt; str_const(<span class="kw-2">&amp;mut </span>stack, s),
 
-            <span class="ident">Inst::PrintI32</span> =&gt; <span class="ident">print_i32</span>(<span class="kw-2">&amp;mut</span> <span class="ident">stack</span>)<span class="question-mark">?</span>,
+            Inst::PrintI32 =&gt; print_i32(<span class="kw-2">&amp;mut </span>stack)<span class="question-mark">?</span>,
 
-            <span class="ident">Inst::PrintStr</span> =&gt; <span class="ident">print_str</span>(<span class="kw-2">&amp;mut</span> <span class="ident">stack</span>)<span class="question-mark">?</span>,
+            Inst::PrintStr =&gt; print_str(<span class="kw-2">&amp;mut </span>stack)<span class="question-mark">?</span>,
 
-            <span class="ident">Inst::Call</span>(<span class="ident">addr</span>) =&gt; <span class="ident">call</span>(<span class="kw-2">&amp;mut</span> <span class="ident">stack</span>, <span class="kw-2">&amp;mut</span> <span class="ident">pc</span>, <span class="kw-2">*</span><span class="ident">addr</span>)<span class="question-mark">?</span>,
+            Inst::Call(addr) =&gt; call(<span class="kw-2">&amp;mut </span>stack, <span class="kw-2">&amp;mut </span>pc, <span class="kw-2">*</span>addr)<span class="question-mark">?</span>,
 
-            <span class="ident">Inst::Return</span> =&gt; <span class="ident">ret</span>(<span class="kw-2">&amp;mut</span> <span class="ident">stack</span>, <span class="kw-2">&amp;mut</span> <span class="ident">pc</span>)<span class="question-mark">?</span>,
+            Inst::Return =&gt; ret(<span class="kw-2">&amp;mut </span>stack, <span class="kw-2">&amp;mut </span>pc)<span class="question-mark">?</span>,
         }
 
-        <span class="ident">pc</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+        pc += <span class="number">1</span>;
     }
 
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::{
-        <span class="ident">entity</span>::{<span class="ident">Entity</span>, <span class="ident">I32Entity</span>, <span class="ident">StrEntity</span>},
-        <span class="ident">i32_add</span>,
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use crate</span>::{
+        entity::{Entity, I32Entity, StrEntity},
+        i32_add,
     };
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_i32_add</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stack</span> <span class="op">=</span> <span class="macro">vec!</span>[
-            <span class="ident">Entity::I32</span>(<span class="ident">I32Entity::new</span>(<span class="number">3</span>)),
-            <span class="ident">Entity::I32</span>(<span class="ident">I32Entity::new</span>(<span class="number">4</span>)),
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_i32_add() {
+        <span class="kw">let </span><span class="kw-2">mut </span>stack = <span class="macro">vec!</span>[
+            Entity::I32(I32Entity::new(<span class="number">3</span>)),
+            Entity::I32(I32Entity::new(<span class="number">4</span>)),
         ];
-        <span class="macro">insta::assert_debug_snapshot!</span>((<span class="ident">i32_add</span>(<span class="kw-2">&amp;mut</span> <span class="ident">stack</span>), <span class="ident">stack</span>));
+        <span class="macro">insta::assert_debug_snapshot!</span>((i32_add(<span class="kw-2">&amp;mut </span>stack), stack));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_i32_add_underflow</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stack</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">Entity::I32</span>(<span class="ident">I32Entity::new</span>(<span class="number">3</span>))];
-        <span class="macro">insta::assert_debug_snapshot!</span>((<span class="ident">i32_add</span>(<span class="kw-2">&amp;mut</span> <span class="ident">stack</span>), <span class="ident">stack</span>));
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_i32_add_underflow() {
+        <span class="kw">let </span><span class="kw-2">mut </span>stack = <span class="macro">vec!</span>[Entity::I32(I32Entity::new(<span class="number">3</span>))];
+        <span class="macro">insta::assert_debug_snapshot!</span>((i32_add(<span class="kw-2">&amp;mut </span>stack), stack));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_i32_add_type_mismatch</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stack</span> <span class="op">=</span> <span class="macro">vec!</span>[
-            <span class="ident">Entity::Str</span>(<span class="ident">StrEntity::new</span>(<span class="string">&quot;foo&quot;</span>.<span class="ident">to_owned</span>())),
-            <span class="ident">Entity::I32</span>(<span class="ident">I32Entity::new</span>(<span class="number">4</span>)),
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_i32_add_type_mismatch() {
+        <span class="kw">let </span><span class="kw-2">mut </span>stack = <span class="macro">vec!</span>[
+            Entity::Str(StrEntity::new(<span class="string">&quot;foo&quot;</span>.to_owned())),
+            Entity::I32(I32Entity::new(<span class="number">4</span>)),
         ];
-        <span class="macro">insta::assert_debug_snapshot!</span>((<span class="ident">i32_add</span>(<span class="kw-2">&amp;mut</span> <span class="ident">stack</span>), <span class="ident">stack</span>));
+        <span class="macro">insta::assert_debug_snapshot!</span>((i32_add(<span class="kw-2">&amp;mut </span>stack), stack));
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mylang_vm" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0-nightly (20ffea693 2022-08-11)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mylang_vm" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (81f391930 2022-10-09)" ></div></body></html>

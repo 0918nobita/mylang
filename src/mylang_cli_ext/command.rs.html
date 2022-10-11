@@ -41,19 +41,19 @@
 
 <span class="kw">use </span>clap::{Command, Parser};
 
-<span class="kw">pub struct </span>CommandFromParser&lt;<span class="lifetime">&#39;a</span>, P&gt;
+<span class="kw">pub struct </span>CommandFromParser&lt;P&gt;
 <span class="kw">where
     </span>P: Parser,
 {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) cmd: Command&lt;<span class="lifetime">&#39;a</span>&gt;,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) cmd: Command,
     parser: PhantomData&lt;P&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, P&gt; CommandFromParser&lt;<span class="lifetime">&#39;a</span>, P&gt;
+<span class="kw">impl</span>&lt;P&gt; CommandFromParser&lt;P&gt;
 <span class="kw">where
     </span>P: Parser,
 {
-    <span class="kw">pub fn </span>new(cmd: Command&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>new(cmd: Command) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             cmd,
             parser: PhantomData,
@@ -61,20 +61,20 @@
     }
 }
 
-<span class="kw">pub trait </span>CommandFromParserExt&lt;<span class="lifetime">&#39;a</span>, P&gt;
+<span class="kw">pub trait </span>CommandFromParserExt&lt;P&gt;
 <span class="kw">where
     </span>P: Parser,
 {
-    <span class="kw">fn </span>to_command() -&gt; CommandFromParser&lt;<span class="lifetime">&#39;a</span>, P&gt;;
+    <span class="kw">fn </span>to_command() -&gt; CommandFromParser&lt;P&gt;;
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, P&gt; CommandFromParserExt&lt;<span class="lifetime">&#39;a</span>, P&gt; <span class="kw">for </span>P
+<span class="kw">impl</span>&lt;P&gt; CommandFromParserExt&lt;P&gt; <span class="kw">for </span>P
 <span class="kw">where
     </span>P: Parser,
 {
-    <span class="kw">fn </span>to_command() -&gt; CommandFromParser&lt;<span class="lifetime">&#39;a</span>, P&gt; {
+    <span class="kw">fn </span>to_command() -&gt; CommandFromParser&lt;P&gt; {
         CommandFromParser::new(P::command())
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mylang_cli_ext" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (81f391930 2022-10-09)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mylang_cli_ext" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (a6b7274a4 2022-10-10)" ></div></body></html>

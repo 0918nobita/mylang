@@ -106,8 +106,6 @@
 <span id="106">106</span>
 <span id="107">107</span>
 <span id="108">108</span>
-<span id="109">109</span>
-<span id="110">110</span>
 </pre><pre class="rust"><code><span class="kw">mod </span>command;
 <span class="kw">mod </span>matches;
 <span class="kw">mod </span>with_output;
@@ -119,22 +117,24 @@
 };
 
 <span class="kw">use </span>anyhow::anyhow;
-<span class="kw">use </span>clap::{ArgEnum, ArgMatches, Error, PossibleValue};
+<span class="kw">use </span>clap::{builder::PossibleValuesParser, ArgMatches, ValueEnum};
 <span class="kw">use </span>once_cell::sync::Lazy;
 
 <span class="kw">pub use </span>command::{CommandFromParser, CommandFromParserExt};
 <span class="kw">pub use </span>matches::MatchesFromParser;
 <span class="kw">pub use </span>with_output::WithOutputExt;
 
-<span class="attribute">#[derive(Clone, ArgEnum)]
+<span class="attribute">#[derive(Clone, ValueEnum)]
 </span><span class="kw">pub enum </span>FileFormat {
     Json,
     Binary,
 }
 
 <span class="kw">impl </span>FileFormat {
-    <span class="kw">pub fn </span>value_of(matches: <span class="kw-2">&amp;</span>ArgMatches, name: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, Error&gt; {
-        matches.value_of_t::&lt;<span class="self">Self</span>&gt;(name)
+    <span class="kw">pub fn </span>value_of(matches: <span class="kw-2">&amp;</span>ArgMatches, name: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;FileFormat, anyhow::Error&gt; {
+        <span class="kw">let </span>val = matches.get_one::&lt;String&gt;(name).unwrap().as_str();
+        &lt;FileFormat <span class="kw">as </span>ValueEnum&gt;::from_str(val, <span class="bool-val">true</span>)
+            .map_err(|s| <span class="macro">anyhow!</span>(<span class="string">&quot;Failed to parse {} as file format&quot;</span>, s))
     }
 }
 
@@ -150,17 +150,13 @@
     }
 }
 
-<span class="kw">pub static </span>FILE_FORMAT_POSSIBLE_VALUES: Lazy&lt;Vec&lt;PossibleValue&lt;<span class="lifetime">&#39;static</span>&gt;&gt;&gt; = Lazy::new(|| {
-    FileFormat::value_variants()
-        .iter()
-        .filter_map(ArgEnum::to_possible_value)
-        .collect()
-});
+<span class="kw">pub static </span>FILE_FORMAT_PARSER: Lazy&lt;PossibleValuesParser&gt; =
+    Lazy::new(|| PossibleValuesParser::new([<span class="string">&quot;json&quot;</span>, <span class="string">&quot;binary&quot;</span>]));
 
 <span class="kw">pub fn </span>reader_from_stdin_or_file&lt;<span class="lifetime">&#39;a</span>&gt;(
     stdin: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Stdin,
     stdin_flag: bool,
-    file_path: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+    file_path: <span class="prelude-ty">Option</span>&lt;String&gt;,
 ) -&gt; anyhow::Result&lt;Box&lt;<span class="kw">dyn </span>BufRead + <span class="lifetime">&#39;a</span>&gt;&gt; {
     <span class="kw">match </span>(stdin_flag, file_path) {
         (<span class="bool-val">true</span>, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; <span class="prelude-val">Err</span>(<span class="macro">anyhow!</span>(<span class="string">&quot;Cannot specify both --stdin and [input]&quot;</span>)),
@@ -189,7 +185,7 @@
 <span class="kw">pub fn </span>writer_to_stdout_or_file&lt;<span class="lifetime">&#39;a</span>&gt;(
     stdout: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Stdout,
     stdout_flag: bool,
-    file_path: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+    file_path: <span class="prelude-ty">Option</span>&lt;String&gt;,
 ) -&gt; anyhow::Result&lt;Box&lt;<span class="kw">dyn </span>Write + <span class="lifetime">&#39;a</span>&gt;&gt; {
     <span class="kw">match </span>(stdout_flag, file_path) {
         (<span class="bool-val">true</span>, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; <span class="prelude-val">Err</span>(<span class="macro">anyhow!</span>(<span class="string">&quot;Cannot specify both --stdout and --output&quot;</span>)),
@@ -219,4 +215,4 @@
     <span class="prelude-val">Ok</span>(())
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mylang_cli_ext" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (81f391930 2022-10-09)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mylang_cli_ext" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (a6b7274a4 2022-10-10)" ></div></body></html>

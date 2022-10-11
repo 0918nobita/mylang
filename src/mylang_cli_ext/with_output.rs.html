@@ -97,7 +97,6 @@
 <span id="97">97</span>
 <span id="98">98</span>
 <span id="99">99</span>
-<span id="100">100</span>
 </pre><pre class="rust"><code><span class="kw">use </span>std::{
     fs::File,
     io::{BufWriter, Stdout, Write},
@@ -121,8 +120,8 @@
     </span>P: Parser,
 {
     <span class="kw">pub fn </span>output&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, stdout: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Stdout) -&gt; anyhow::Result&lt;Box&lt;<span class="kw">dyn </span>Write + <span class="lifetime">&#39;a</span>&gt;&gt; {
-        <span class="kw">let </span>stdout_flag = <span class="self">self</span>.matches.is_present(<span class="string">&quot;stdout&quot;</span>);
-        <span class="kw">let </span>file_path = <span class="self">self</span>.matches.value_of(<span class="string">&quot;output&quot;</span>);
+        <span class="kw">let </span>stdout_flag = <span class="self">self</span>.matches.contains_id(<span class="string">&quot;stdout&quot;</span>);
+        <span class="kw">let </span>file_path = <span class="self">self</span>.matches.get_one::&lt;String&gt;(<span class="string">&quot;output&quot;</span>);
         <span class="kw">match </span>(stdout_flag, file_path) {
             (<span class="bool-val">true</span>, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Cannot specify both --stdout and --output&quot;</span>),
 
@@ -146,19 +145,19 @@
     }
 }
 
-<span class="kw">pub struct </span>ParserWithOutput&lt;<span class="lifetime">&#39;a</span>, P&gt;
+<span class="kw">pub struct </span>ParserWithOutput&lt;P&gt;
 <span class="kw">where
     </span>P: Parser,
 {
-    cmd: Command&lt;<span class="lifetime">&#39;a</span>&gt;,
+    cmd: Command,
     parser: PhantomData&lt;P&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, P&gt; ParserWithOutput&lt;<span class="lifetime">&#39;a</span>, P&gt;
+<span class="kw">impl</span>&lt;P&gt; ParserWithOutput&lt;P&gt;
 <span class="kw">where
     </span>P: Parser,
 {
-    <span class="kw">pub fn </span>new(cmd_from_parser: CommandFromParser&lt;<span class="lifetime">&#39;a</span>, P&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>new(cmd_from_parser: CommandFromParser&lt;P&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             cmd: cmd_from_parser
                 .cmd
@@ -168,7 +167,6 @@
                     Arg::new(<span class="string">&quot;output&quot;</span>)
                         .long(<span class="string">&quot;output&quot;</span>)
                         .short(<span class="string">&#39;o&#39;</span>)
-                        .takes_value(<span class="bool-val">true</span>)
                         .group(<span class="string">&quot;output_group&quot;</span>),
                 ),
             parser: PhantomData,
@@ -183,20 +181,20 @@
     }
 }
 
-<span class="kw">pub trait </span>WithOutputExt&lt;<span class="lifetime">&#39;a</span>, P&gt;
+<span class="kw">pub trait </span>WithOutputExt&lt;P&gt;
 <span class="kw">where
     </span>P: Parser,
 {
-    <span class="kw">fn </span>with_output(<span class="self">self</span>) -&gt; ParserWithOutput&lt;<span class="lifetime">&#39;a</span>, P&gt;;
+    <span class="kw">fn </span>with_output(<span class="self">self</span>) -&gt; ParserWithOutput&lt;P&gt;;
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, P&gt; WithOutputExt&lt;<span class="lifetime">&#39;a</span>, P&gt; <span class="kw">for </span>CommandFromParser&lt;<span class="lifetime">&#39;a</span>, P&gt;
+<span class="kw">impl</span>&lt;P&gt; WithOutputExt&lt;P&gt; <span class="kw">for </span>CommandFromParser&lt;P&gt;
 <span class="kw">where
     </span>P: Parser,
 {
-    <span class="kw">fn </span>with_output(<span class="self">self</span>) -&gt; ParserWithOutput&lt;<span class="lifetime">&#39;a</span>, P&gt; {
+    <span class="kw">fn </span>with_output(<span class="self">self</span>) -&gt; ParserWithOutput&lt;P&gt; {
         ParserWithOutput::new(<span class="self">self</span>)
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mylang_cli_ext" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (81f391930 2022-10-09)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mylang_cli_ext" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (a6b7274a4 2022-10-10)" ></div></body></html>

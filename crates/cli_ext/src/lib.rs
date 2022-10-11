@@ -9,22 +9,24 @@ use std::{
 };
 
 use anyhow::anyhow;
-use clap::{ArgEnum, ArgMatches, Error, PossibleValue};
+use clap::{builder::PossibleValuesParser, ArgMatches, ValueEnum};
 use once_cell::sync::Lazy;
 
 pub use command::{CommandFromParser, CommandFromParserExt};
 pub use matches::MatchesFromParser;
 pub use with_output::WithOutputExt;
 
-#[derive(Clone, ArgEnum)]
+#[derive(Clone, ValueEnum)]
 pub enum FileFormat {
     Json,
     Binary,
 }
 
 impl FileFormat {
-    pub fn value_of(matches: &ArgMatches, name: &str) -> Result<Self, Error> {
-        matches.value_of_t::<Self>(name)
+    pub fn value_of(matches: &ArgMatches, name: &str) -> Result<FileFormat, anyhow::Error> {
+        let val = matches.get_one::<String>(name).unwrap().as_str();
+        <FileFormat as ValueEnum>::from_str(val, true)
+            .map_err(|s| anyhow!("Failed to parse {} as file format", s))
     }
 }
 
@@ -40,17 +42,13 @@ impl FromStr for FileFormat {
     }
 }
 
-pub static FILE_FORMAT_POSSIBLE_VALUES: Lazy<Vec<PossibleValue<'static>>> = Lazy::new(|| {
-    FileFormat::value_variants()
-        .iter()
-        .filter_map(ArgEnum::to_possible_value)
-        .collect()
-});
+pub static FILE_FORMAT_PARSER: Lazy<PossibleValuesParser> =
+    Lazy::new(|| PossibleValuesParser::new(["json", "binary"]));
 
 pub fn reader_from_stdin_or_file<'a>(
     stdin: &'a Stdin,
     stdin_flag: bool,
-    file_path: Option<&str>,
+    file_path: Option<String>,
 ) -> anyhow::Result<Box<dyn BufRead + 'a>> {
     match (stdin_flag, file_path) {
         (true, Some(_)) => Err(anyhow!("Cannot specify both --stdin and [input]")),
@@ -79,7 +77,7 @@ where
 pub fn writer_to_stdout_or_file<'a>(
     stdout: &'a Stdout,
     stdout_flag: bool,
-    file_path: Option<&str>,
+    file_path: Option<String>,
 ) -> anyhow::Result<Box<dyn Write + 'a>> {
     match (stdout_flag, file_path) {
         (true, Some(_)) => Err(anyhow!("Cannot specify both --stdout and --output")),

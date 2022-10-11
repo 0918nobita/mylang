@@ -2,19 +2,19 @@ use std::marker::PhantomData;
 
 use clap::{Command, Parser};
 
-pub struct CommandFromParser<'a, P>
+pub struct CommandFromParser<P>
 where
     P: Parser,
 {
-    pub(crate) cmd: Command<'a>,
+    pub(crate) cmd: Command,
     parser: PhantomData<P>,
 }
 
-impl<'a, P> CommandFromParser<'a, P>
+impl<P> CommandFromParser<P>
 where
     P: Parser,
 {
-    pub fn new(cmd: Command<'a>) -> Self {
+    pub fn new(cmd: Command) -> Self {
         Self {
             cmd,
             parser: PhantomData,
@@ -22,18 +22,18 @@ where
     }
 }
 
-pub trait CommandFromParserExt<'a, P>
+pub trait CommandFromParserExt<P>
 where
     P: Parser,
 {
-    fn to_command() -> CommandFromParser<'a, P>;
+    fn to_command() -> CommandFromParser<P>;
 }
 
-impl<'a, P> CommandFromParserExt<'a, P> for P
+impl<P> CommandFromParserExt<P> for P
 where
     P: Parser,
 {
-    fn to_command() -> CommandFromParser<'a, P> {
+    fn to_command() -> CommandFromParser<P> {
         CommandFromParser::new(P::command())
     }
 }

@@ -21,8 +21,8 @@ where
     P: Parser,
 {
     pub fn output<'a>(&self, stdout: &'a Stdout) -> anyhow::Result<Box<dyn Write + 'a>> {
-        let stdout_flag = self.matches.is_present("stdout");
-        let file_path = self.matches.value_of("output");
+        let stdout_flag = self.matches.contains_id("stdout");
+        let file_path = self.matches.get_one::<String>("output");
         match (stdout_flag, file_path) {
             (true, Some(_)) => panic!("Cannot specify both --stdout and --output"),
 
@@ -46,19 +46,19 @@ where
     }
 }
 
-pub struct ParserWithOutput<'a, P>
+pub struct ParserWithOutput<P>
 where
     P: Parser,
 {
-    cmd: Command<'a>,
+    cmd: Command,
     parser: PhantomData<P>,
 }
 
-impl<'a, P> ParserWithOutput<'a, P>
+impl<P> ParserWithOutput<P>
 where
     P: Parser,
 {
-    pub fn new(cmd_from_parser: CommandFromParser<'a, P>) -> Self {
+    pub fn new(cmd_from_parser: CommandFromParser<P>) -> Self {
         Self {
             cmd: cmd_from_parser
                 .cmd
@@ -68,7 +68,6 @@ where
                     Arg::new("output")
                         .long("output")
                         .short('o')
-                        .takes_value(true)
                         .group("output_group"),
                 ),
             parser: PhantomData,
@@ -83,18 +82,18 @@ where
     }
 }
 
-pub trait WithOutputExt<'a, P>
+pub trait WithOutputExt<P>
 where
     P: Parser,
 {
-    fn with_output(self) -> ParserWithOutput<'a, P>;
+    fn with_output(self) -> ParserWithOutput<P>;
 }
 
-impl<'a, P> WithOutputExt<'a, P> for CommandFromParser<'a, P>
+impl<P> WithOutputExt<P> for CommandFromParser<P>
 where
     P: Parser,
 {
-    fn with_output(self) -> ParserWithOutput<'a, P> {
+    fn with_output(self) -> ParserWithOutput<P> {
         ParserWithOutput::new(self)
     }
 }

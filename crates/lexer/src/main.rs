@@ -18,7 +18,7 @@ struct Cli {
     use_stdin: bool,
 
     /// Format of output tokens
-    #[clap(long, arg_enum, default_value = "json")]
+    #[clap(long, value_enum, default_value = "json")]
     output_format: FileFormat,
 
     /// Write tokens to stdout
@@ -40,10 +40,10 @@ fn main() -> anyhow::Result<()> {
     } = Cli::parse();
 
     let stdin = io::stdin();
-    let mut src = reader_from_stdin_or_file(&stdin, use_stdin, input.as_deref())?;
+    let mut src = reader_from_stdin_or_file(&stdin, use_stdin, input)?;
 
     let stdout = io::stdout();
-    let dest = writer_to_stdout_or_file(&stdout, use_stdout, output.as_deref())?;
+    let dest = writer_to_stdout_or_file(&stdout, use_stdout, output)?;
 
     let (tokens, errors): (Vec<_>, Vec<_>) =
         mylang_lexer::lex(src.chars().map(|r| r.unwrap())).partition_result();

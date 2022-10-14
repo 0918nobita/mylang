@@ -6,7 +6,7 @@ description = "Compiler implementation for mylang that converts AST to bytecode"
 
 [dependencies]
 anyhow = "1.0.65"
-clap = { version = "4.0.14", features = ["cargo"] }
+clap = { version = "4.0.15", features = ["cargo"] }
 mylang_ast = { path = "../ast" }
 mylang_bytecode = { path = "../bytecode" }
 mylang_cli_ext = { path = "../cli_ext" }

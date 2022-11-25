@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 actix = "0.13.0"
 anyhow = "1.0.66"
-env_logger = "0.9.1"
+env_logger = "0.10.0"
 itertools = "0.10.5"
 log = "0.4.17"
 mylang_ast = { path = "../ast" }

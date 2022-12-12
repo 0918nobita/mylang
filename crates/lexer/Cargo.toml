@@ -11,7 +11,7 @@ itertools = "0.10.5"
 mylang_cli_ext = { path = "../cli_ext" }
 mylang_token = { path = "../token" }
 thiserror = "1.0.37"
-utf8-chars = "2.0.2"
+utf8-chars = "2.0.3"
 
 [dev-dependencies]
 insta = "1.22.0"

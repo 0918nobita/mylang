@@ -6,7 +6,7 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.68"
-clap = { version = "4.0.29", features = ["cargo", "derive"] }
+clap = { version = "4.0.30", features = ["cargo", "derive"] }
 itertools = "0.10.5"
 mylang_cli_ext = { path = "../cli_ext" }
 mylang_token = { path = "../token" }

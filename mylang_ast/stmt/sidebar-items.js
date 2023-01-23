@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":[["VARIANTS",""]],"enum":[["Stmt","文を表す抽象構文木"],["__Field",""]],"macro":[["try",""]],"struct":[["__FieldVisitor",""],["__Visitor",""]]};
+window.SIDEBAR_ITEMS = {"enum":[["Stmt","文を表す抽象構文木"]]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":[["FIELDS",""]],"enum":[["__Field",""]],"macro":[["try",""]],"struct":[["Pos","ソースコード上の位置"],["__FieldVisitor",""],["__Visitor",""]]};
+window.SIDEBAR_ITEMS = {"struct":[["Pos","ソースコード上の位置"]]};

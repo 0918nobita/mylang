@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["WithPos",""]],"trait":[["WithPosExt",""]]};
+window.SIDEBAR_ITEMS = {"struct":["WithPos"],"trait":["WithPosExt"]};

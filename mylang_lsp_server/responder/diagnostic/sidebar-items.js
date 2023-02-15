@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["lex_err_to_diagnostic",""],["parse_err_to_diagnostic",""]]};
+window.SIDEBAR_ITEMS = {"fn":["lex_err_to_diagnostic","parse_err_to_diagnostic"]};

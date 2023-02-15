@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["LspMessage",""]]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["LspMessage","__Field"],"struct":["__FieldVisitor","__Visitor"]};

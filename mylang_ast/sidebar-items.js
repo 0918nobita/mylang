@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Expr","式を表す抽象構文木"],["Stmt","文を表す抽象構文木"]],"mod":[["expr",""],["stmt",""]]};
+window.SIDEBAR_ITEMS = {"enum":["Expr","Stmt"],"mod":["expr","stmt"]};

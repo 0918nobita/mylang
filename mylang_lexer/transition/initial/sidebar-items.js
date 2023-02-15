@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["initial_lex",""]]};
+window.SIDEBAR_ITEMS = {"fn":["initial_lex"]};

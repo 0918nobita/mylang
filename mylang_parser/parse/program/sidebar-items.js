@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["program",""]]};
+window.SIDEBAR_ITEMS = {"fn":["program"]};

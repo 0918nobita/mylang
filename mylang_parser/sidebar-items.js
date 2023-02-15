@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["ParseErr","構文解析中に発生するエラー"]],"fn":[["parse",""]],"mod":[["parse",""],["result",""]],"type":[["ParseResult",""]]};
+window.SIDEBAR_ITEMS = {"enum":["ParseErr"],"fn":["parse"],"mod":["parse","result"],"type":["ParseResult"]};

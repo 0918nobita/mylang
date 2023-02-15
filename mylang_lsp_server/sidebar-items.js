@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["launch_lsp_server","言語サーバに関連する各アクターを起動する"]],"mod":[["message",""],["receiver",""],["responder",""],["sender",""]]};
+window.SIDEBAR_ITEMS = {"fn":["launch_lsp_server"],"mod":["message","receiver","responder","sender"]};

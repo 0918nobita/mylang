@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["I32LexResult",""]],"fn":[["i32_lex",""]]};
+window.SIDEBAR_ITEMS = {"enum":["I32LexResult"],"fn":["i32_lex"]};

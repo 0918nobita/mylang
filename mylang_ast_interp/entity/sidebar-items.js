@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Entity","バイトコード実行時に扱う値"],["RuntimeTypeInfo","実行時型情報"]],"struct":[["I32Entity","符号付き32ビット整数値"],["StrEntity","文字列データ"]]};
+window.SIDEBAR_ITEMS = {"enum":["Entity","RuntimeTypeInfo"],"struct":["I32Entity","StrEntity"]};

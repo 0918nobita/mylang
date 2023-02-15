@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Range","ソースコード中の範囲"]]};
+window.SIDEBAR_ITEMS = {"constant":["FIELDS"],"enum":["__Field"],"struct":["Range","__FieldVisitor","__Visitor"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["VMError","バイトコードインタプリタで発生するエラー"]],"fn":[["call",""],["execute","バイトコードを解釈実行する"],["i32_add","I32Add 命令を実行する"],["i32_const","I32Const 命令を実行する"],["print_i32","PrintI32 命令を実行する"],["print_str","PrintStr 命令を実行する"],["ret",""],["str_const","StrConst 命令を実行する"]],"mod":[["entity","仮想マシンで扱う「実体」の定義"]],"type":[["VMResult","バイトコードの実行結果"]]};
+window.SIDEBAR_ITEMS = {"enum":["VMError"],"fn":["call","execute","i32_add","i32_const","print_i32","print_str","ret","str_const"],"mod":["entity"],"type":["VMResult"]};

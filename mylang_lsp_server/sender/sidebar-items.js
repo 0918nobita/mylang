@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Sender","依頼された応答・通知メッセージを言語クライアントに送信するアクター"]]};
+window.SIDEBAR_ITEMS = {"struct":["Sender"]};

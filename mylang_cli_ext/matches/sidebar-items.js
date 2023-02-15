@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"trait":[["MatchesFromParser",""]]};
+window.SIDEBAR_ITEMS = {"trait":["MatchesFromParser"]};

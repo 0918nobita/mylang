@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["locatable_to_lsp_range",""]]};
+window.SIDEBAR_ITEMS = {"fn":["locatable_to_lsp_range"]};

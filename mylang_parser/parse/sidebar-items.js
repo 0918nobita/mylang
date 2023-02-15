@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["parse",""]],"mod":[["expr",""],["program",""],["stmt",""],["term",""]]};
+window.SIDEBAR_ITEMS = {"fn":["parse"],"mod":["expr","program","stmt","term"]};

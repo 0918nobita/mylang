@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["AstInterpError",""]],"fn":[["eval_expr",""],["execute","抽象構文木を解釈実行する"]],"mod":[["entity","抽象構文木インタプリタで扱う「実体」の定義"]],"type":[["AstInterpResult",""]]};
+window.SIDEBAR_ITEMS = {"enum":["AstInterpError"],"fn":["eval_expr","execute"],"mod":["entity"],"type":["AstInterpResult"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["StrLexResult",""]],"fn":[["str_lex",""]]};
+window.SIDEBAR_ITEMS = {"enum":["StrLexResult"],"fn":["str_lex"]};

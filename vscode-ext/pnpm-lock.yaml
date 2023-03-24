@@ -7,7 +7,7 @@ specifiers:
   '@typescript-eslint/parser': 5.56.0
   esbuild: 0.17.12
   eslint: 8.36.0
-  prettier: 2.8.6
+  prettier: 2.8.7
   typescript: 5.0.2
   vscode-languageclient: 8.1.0
 
@@ -21,7 +21,7 @@ devDependencies:
   '@typescript-eslint/parser': 5.56.0_j4766f7ecgqbon3u7zlxn5zszu
   esbuild: 0.17.12
   eslint: 8.36.0
-  prettier: 2.8.6
+  prettier: 2.8.7
   typescript: 5.0.2
 
 packages:
@@ -1051,8 +1051,8 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
-  /prettier/2.8.6:
-    resolution: {integrity: sha512-mtuzdiBbHwPEgl7NxWlqOkithPyp4VN93V7VeHVWBF+ad3I5avc0RVDT4oImXQy9H/AqxA2NSQH8pSxHW6FYbQ==}
+  /prettier/2.8.7:
+    resolution: {integrity: sha512-yPngTo3aXUUmyuTjeTUT75txrf+aMh9FiD7q9ZE/i6r0bPb22g4FsE6Y338PQX1bmfy08i9QQCB7/rcUAVntfw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true

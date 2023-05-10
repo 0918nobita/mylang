@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["LexErr"],"fn":["lex"],"mod":["result","state","transition","with_pos"],"opaque":[""],"struct":["Lex"],"trait":["LexExt"]};
+window.SIDEBAR_ITEMS = {"enum":["LexErr"],"fn":["lex"],"mod":["result","state","transition","with_pos"],"struct":["Lex"],"trait":["LexExt"]};

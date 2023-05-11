@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["VARIANTS"],"enum":["KeywordKind","Token","__Field"],"macro":["pos","range"],"mod":["locatable","pos","range"],"struct":["Pos","Range","__FieldVisitor","__Visitor"],"trait":["Locatable"]};
+window.SIDEBAR_ITEMS = {"enum":["KeywordKind","Token"],"macro":["pos","range"],"mod":["locatable","pos","range"],"struct":["Pos","Range"],"trait":["Locatable"]};

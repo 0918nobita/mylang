@@ -8,7 +8,7 @@ actix = "0.13.0"
 anyhow = "1.0.71"
 env_logger = "0.10.0"
 itertools = "0.10.5"
-log = "0.4.17"
+log = "0.4.18"
 mylang_ast = { path = "../ast" }
 mylang_lexer = { path = "../lexer" }
 mylang_parser = { path = "../parser" }

@@ -12,4 +12,4 @@ mylang_token = { path = "../token" }
 thiserror = "1.0.40"
 
 [dev-dependencies]
-insta = "1.29.0"
+insta = "1.30.0"

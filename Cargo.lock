@@ -859,9 +859,9 @@ checksum = "b15811caf2415fb889178633e7724bad2509101cde276048e013b9def5e51fa0"
 
 [[package]]
 name = "utf8-chars"
-version = "2.1.0"
+version = "3.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ba5e66f1c5aaffcfab80d6af42d90c096516779b1f80aceb1e38e1e3c3abeaab"
+checksum = "0264d875626af0ca1580edc9a6a528c218b3a336c65cb2c4842572c484c2aa62"
 dependencies = [
  "arrayvec",
 ]

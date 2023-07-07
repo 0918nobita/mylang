@@ -5,4 +5,4 @@ edition = "2021"
 
 [dependencies]
 mylang_token = { path = "../token" }
-serde = { version = "1.0.166", features = ["derive"] }
+serde = { version = "1.0.167", features = ["derive"] }

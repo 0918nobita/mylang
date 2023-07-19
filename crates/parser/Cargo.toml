@@ -7,7 +7,7 @@ description = "Parser implementation for mylang that converts sequence of tokens
 [dependencies]
 anyhow = "1.0.71"
 bincode = "1.3.3"
-clap = { version = "4.3.12", features = ["cargo"] }
+clap = { version = "4.3.17", features = ["cargo"] }
 itertools = "0.11.0"
 mylang_ast = { path = "../ast" }
 mylang_cli_ext = { path = "../cli_ext" }

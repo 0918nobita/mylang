@@ -1,4 +1,4 @@
-var sourcesIndex = JSON.parse('{\
+var srcIndex = JSON.parse('{\
 "mylang_ast":["",[],["expr.rs","lib.rs","stmt.rs"]],\
 "mylang_ast_interp":["",[],["entity.rs","lib.rs"]],\
 "mylang_bytecode":["",[],["lib.rs"]],\
@@ -11,4 +11,4 @@ var sourcesIndex = JSON.parse('{\
 "mylang_token":["",[],["lib.rs","locatable.rs","pos.rs","range.rs"]],\
 "mylang_vm":["",[],["entity.rs","lib.rs"]]\
 }');
-createSourceSidebar();
+createSrcSidebar();

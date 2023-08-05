@@ -11,8 +11,8 @@ dependencies:
 
 devDependencies:
   '@types/node':
-    specifier: 18.17.2
-    version: 18.17.2
+    specifier: 18.17.3
+    version: 18.17.3
   '@types/vscode':
     specifier: 1.81.0
     version: 1.81.0
@@ -322,8 +322,8 @@ packages:
     resolution: {integrity: sha512-Hr5Jfhc9eYOQNPYO5WLDq/n4jqijdHNlDXjuAQkkt+mWdQR+XJToOHrsD4cPaMXpn6KO7y2+wM8AZEs8VpBLVA==}
     dev: true
 
-  /@types/node@18.17.2:
-    resolution: {integrity: sha512-wBo3KqP/PBqje5TI9UTiuL3yWfP6sdPtjtygSOqcYZWT232dfDeDOnkDps5wqZBP9NgGgYrNejinl0faAuE+HQ==}
+  /@types/node@18.17.3:
+    resolution: {integrity: sha512-2x8HWtFk0S99zqVQABU9wTpr8wPoaDHZUcAkoTKH+nL7kPv3WUI9cRi/Kk5Mz4xdqXSqTkKP7IWNoQQYCnDsTA==}
     dev: true
 
   /@types/semver@7.5.0:

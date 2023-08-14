@@ -19,5 +19,5 @@ serde_json = "1.0.104"
 valq = "0.1.0"
 
 [dependencies.tokio]
-version = "1.30.0"
+version = "1.31.0"
 features = ["io-std"]

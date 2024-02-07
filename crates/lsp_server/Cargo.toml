@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-actix = "0.13.0"
+actix = "0.13.3"
 anyhow = "1.0.75"
 env_logger = "0.10.0"
 itertools = "0.11.0"

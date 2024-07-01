@@ -1,0 +1,1 @@
+searchState.loadedDescShard("mylang_lsp_server", 0, "mylang を記述するための、LSP …\n…\nReturns the argument unchanged.\nCalls <code>U::from(self)</code>.\n…\nReturns the argument unchanged.\nCalls <code>U::from(self)</code>.\n…\nReturns the argument unchanged.\nCalls <code>U::from(self)</code>.\n…\nReturns the argument unchanged.\nCalls <code>U::from(self)</code>.")

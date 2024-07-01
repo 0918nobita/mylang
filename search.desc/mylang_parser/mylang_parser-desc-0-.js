@@ -1,0 +1,1 @@
+searchState.loadedDescShard("mylang_parser", 0, "構文解析器\nContains the error value\nContains the success value\n構文解析中に発生するエラー\nContains the error value\nContains the success value\n構文解析中に発生するエラー\nReturns the argument unchanged.\nCalls <code>U::from(self)</code>.")

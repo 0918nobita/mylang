@@ -1,0 +1,1 @@
+searchState.loadedDescShard("mylang_ast", 0, "抽象構文木の定義\n式を表す抽象構文木\n文を表す抽象構文木\n式を表す抽象構文木\nReturns the argument unchanged.\nCalls <code>U::from(self)</code>.\n文を表す抽象構文木\nReturns the argument unchanged.\nCalls <code>U::from(self)</code>.")

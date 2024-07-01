@@ -1,0 +1,1 @@
+searchState.loadedDescShard("mylang_bytecode", 0, "バイトコードの定義\nPC + 1 をスタックに push …\n命令\nスタックトから pop した番地にジャンプする\nReturns the argument unchanged.\nCalls <code>U::from(self)</code>.")

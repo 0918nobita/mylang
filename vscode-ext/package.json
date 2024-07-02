@@ -25,7 +25,7 @@
     "esbuild": "0.19.2",
     "eslint": "8.48.0",
     "prettier": "3.3.2",
-    "typescript": "5.1.6"
+    "typescript": "5.5.3"
   },
   "activationEvents": [
     "onLanguage:mylang"

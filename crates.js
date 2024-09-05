@@ -1,1 +1,2 @@
 window.ALL_CRATES = ["mylang_ast","mylang_ast_interp","mylang_bytecode","mylang_bytecode_compiler","mylang_cli_ext","mylang_cli_test","mylang_lexer","mylang_lsp_server","mylang_parser","mylang_token","mylang_vm"];
+//{"start":21,"fragment_lengths":[12,20,18,27,17,18,15,20,16,15,12]}

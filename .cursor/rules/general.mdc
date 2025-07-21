@@ -1,0 +1,159 @@
+---
+alwaysApply: true
+---
+
+## プロジェクト概要
+
+自作プログラミング言語を作成してセルフホストを達成することを目的としているプロジェクトです。
+
+TypeScript で第1世代コンパイラを実装します。
+
+## 自作言語の概要
+
+JavaScript (ESM) にコンパイルされる動的型付けの手続き型プログラミング言語
+
+自作言語で記述したソースコードの例：
+
+```
+use "parser.mylang" as parser
+
+fn main(source) {
+  let ast, err = parser.parse(source)
+
+  if err != nil
+    print_error "パースに失敗しました"
+    print_error err
+    return
+  end
+
+  print ast // ここで AST が出力される
+}
+```
+
+## 言語仕様
+
+### 基本構文
+
+- 予約語は小文字（`let`, `mut`, `fn`, `if`, `while`, `for`, `end`等）
+- コメントは `//` で開始する行コメント
+- ブロックは `end` キーワードで終了（波括弧は使用しない）
+- 関数定義は `fn` キーワード
+
+### データ型
+
+- プリミティブ型: `nil`, `number`, `char`, `string`, `boolean`
+- 複合型: 配列（要素の型制限なし）
+- char型: `'a'` (単一Unicode文字)
+- string型: `"hello"` (UTF-8文字列)
+
+### 可変性制御
+
+- `let mut var_name = value` で可変変数
+- `let var_name = value` で不変変数
+- 再代入チェックはコンパイル時に実行
+
+### 複値返却・代入
+
+```
+let mut a, b = some_function() // a だけが再代入可能になる
+```
+
+```
+let a, mut b = some_function() // b だけが再代入可能になる
+```
+
+```
+let mut a, mut b = some_function() // a, b ともに再代入可能になる
+```
+
+### モジュールシステム
+
+- `use "module.mylang" as namespace;` でインポート
+- `pub use "module.mylang" as namespace;` でre-export
+- `pub fn function_name()` で関数をエクスポート
+
+### 型安全性
+
+- 真偽値判定は厳格（boolean値のみ受け入れ）
+- 比較演算子は primitive 値のみ許可（配列・オブジェクトは禁止）
+- 実行時型チェックをヘルパー関数で実装
+
+## コーディング規約
+
+### 手続き的スタイルの採用
+
+セルフホスト時の移植を考慮し、関数型よりも手続き的なスタイルを採用する：
+
+```typescript
+// BAD: 関数型スタイル
+const tokens = input.split('').reduce((acc, char) =>
+  isDigit(char) ? [...acc, parseNumber(char)] : acc, [])
+
+// GOOD: 手続き的スタイル
+let tokens: Token[] = []
+let position = 0
+while (position < input.length) {
+  const char = input[position]
+  if (isDigit(char)) {
+    const number = readNumber(input, position)
+    tokens.push(number)
+  }
+  position++
+}
+```
+
+### 状態管理
+
+- グローバル変数は使用禁止
+- 状態は関数間で明示的に受け渡し
+
+### ESTree準拠AST
+
+- ノード型は標準的なESTree仕様に従う
+- `BinaryExpression`, `CallExpression`, `VariableDeclaration`等
+- カスタムプロパティが必要な場合は明確にコメント
+
+### ヘルパー関数の生成
+
+char / string型・比較演算・条件式評価のために、適切なランタイムヘルパーを生成：
+
+```javascript
+// 生成されるJavaScriptの例
+if (toBool(x == 0)) {  // 条件式チェック
+  console.log({ type: 'str', value: 'zero' });  // string型
+}
+```
+
+## テスト戦略
+
+- TDD（テスト駆動開発）を重視
+- 各モジュール（lexer, parser, codegen）を独立してテスト
+- エラーケースを重点的にテスト
+- セルフホスト移植時の比較用テストケースを作成
+
+## 開発フロー
+
+1. 最小限の機能を TDD で実装
+2. Web 開発ツールで即座に動作確認
+3. AST ビューアーでパーサーの動作を視覚的に検証
+4. 段階的に言語機能を拡張
+
+## コード生成ルール
+
+- ESModule 形式で出力
+- 型安全性のためランタイムヘルパーを挿入
+- 生成される JavaScript は可読性を重視
+- ソースマップ対応（将来的）
+
+## 注意事項
+
+- JavaScript の暗黙型変換を避ける設計
+- Unicode 文字の適切な処理（char / string型）
+- セルフホスト移植時の作業量を最小化する設計
+- 段階的な機能追加でモチベーション維持
+
+## 参考仕様
+
+- ESTree: https://github.com/estree/estree
+- Rust言語のモジュールシステム
+- 各種プログラミング言語のセルフホスト事例

@@ -1,17 +1,34 @@
-.ionide/
-.paket/
-bin/
-obj/
-paket-files/
+# dependencies (bun install)
+node_modules
 
-build/
-node_modules/
+# output
+out
+dist
+*.tgz
 
-/target/
+# code coverage
+coverage
+*.lcov
 
-*.tok
-*.tok.json
-*.ast
-*.ast.json
-*.bytecode
-*.bc.json
+# logs
+logs
+_.log
+report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# caches
+.eslintcache
+.cache
+*.tsbuildinfo
+
+# IntelliJ based IDEs
+.idea
+
+# Finder (MacOS) folder config
+.DS_Store

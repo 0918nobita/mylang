@@ -1,2 +1,0 @@
-print_int 3 + 4 + 5
-print_str "Hello, world!"

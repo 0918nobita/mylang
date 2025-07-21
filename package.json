@@ -3,6 +3,10 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
   "devDependencies": {
     "@eslint/js": "9.31.0",
     "@types/bun": "latest",

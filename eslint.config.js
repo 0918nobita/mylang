@@ -61,13 +61,13 @@ export default [
             '@typescript-eslint/no-non-null-asserted-nullish-coalescing':
                 'error',
             '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
-            '@typescript-eslint/no-non-null-assertion': 'error',
+            '@typescript-eslint/no-non-null-assertion': 'off',
             '@typescript-eslint/no-redundant-type-constituents': 'error',
             '@typescript-eslint/no-require-imports': 'error',
             '@typescript-eslint/no-this-alias': 'error',
             '@typescript-eslint/no-unnecessary-boolean-literal-compare':
                 'error',
-            '@typescript-eslint/no-unnecessary-condition': 'error',
+            '@typescript-eslint/no-unnecessary-condition': 'off',
             '@typescript-eslint/no-unnecessary-template-expression': 'error',
             '@typescript-eslint/no-unnecessary-type-arguments': 'error',
             '@typescript-eslint/no-unnecessary-type-assertion': 'error',

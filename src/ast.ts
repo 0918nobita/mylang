@@ -1,21 +1,21 @@
-export type NullLiteral = {
+export type NullLiteral = Readonly<{
     type: 'nullLiteral';
-};
+}>;
 
-export type BooleanLiteral = {
+export type BooleanLiteral = Readonly<{
     type: 'booleanLiteral';
     value: boolean;
-};
+}>;
 
-export type NumberLiteral = {
+export type NumberLiteral = Readonly<{
     type: 'numberLiteral';
     value: number;
-};
+}>;
 
-export type StringLiteral = {
+export type StringLiteral = Readonly<{
     type: 'stringLiteral';
     value: string;
-};
+}>;
 
 export type Literal =
     | NullLiteral
@@ -23,28 +23,36 @@ export type Literal =
     | NumberLiteral
     | StringLiteral;
 
-export type Identifier = {
+export type Identifier = Readonly<{
     type: 'identifier';
     name: string;
-};
+}>;
 
-export type CallExpression = {
+export type BinaryExpression = Readonly<{
+    type: 'binaryExpression';
+    operator: '+' | '*';
+    left: Expression;
+    right: Expression;
+}>;
+
+export type CallExpression = Readonly<{
     type: 'callExpression';
     callee: Expression;
     arguments: Expression[];
     optional: boolean;
-};
+}>;
 
-export type MemberExpression = {
+export type MemberExpression = Readonly<{
     type: 'memberExpression';
     object: Expression;
     property: Expression;
     computed: boolean;
     optional: boolean;
-};
+}>;
 
 export type Expression =
     | Literal
     | Identifier
+    | BinaryExpression
     | CallExpression
     | MemberExpression;

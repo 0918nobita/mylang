@@ -24,8 +24,16 @@ const program: Program = {
                 },
                 arguments: [
                     {
-                        type: 'Literal',
-                        value: 'Hello, world!',
+                        type: 'BinaryExpression',
+                        operator: '+',
+                        left: {
+                            type: 'Literal',
+                            value: 3,
+                        },
+                        right: {
+                            type: 'Literal',
+                            value: 4,
+                        },
                     },
                 ],
                 optional: false,

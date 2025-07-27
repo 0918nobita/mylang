@@ -1,10 +1,10 @@
-import * as ast from './ast';
+import type * as jsAst from './jsAst';
 
 import { assertNever } from './assertNever';
 import { withParentheses } from './withParentheses';
 
 export const generateExpression = (
-    expression: ast.Expression
+    expression: jsAst.Expression
 ): { content: string; precedence: number } => {
     if (expression.type === 'nullLiteral') {
         return { content: 'null', precedence: 20 };

@@ -1,6 +1,12 @@
 import { generate } from 'astring';
 import type { Program } from 'estree';
 
+import { compile } from './compiler';
+import { generateExpression } from './generateExpression';
+import { parse } from './parser';
+
+parse('こんにちは🌤️');
+
 const program: Program = {
     type: 'Program',
     sourceType: 'module',
@@ -43,3 +49,8 @@ const program: Program = {
 };
 
 console.log(generate(program));
+
+const jsExpr = compile('Hello, world!');
+const jsSrc = generateExpression(jsExpr).content;
+
+console.log(jsSrc);
